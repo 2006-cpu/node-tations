@@ -11,6 +11,16 @@ async function buildTables() {
     // drop tables in correct order
 
     // build tables in correct order
+    await client.query(`
+    CREATE TABLE products(
+      id SERIAL PRIMARY KEY,
+      name varchar(255) UNIQUE NOT NULL,
+      description VARCHAR(255) NOT NULL,
+      price NUMERIC NOT NULL,
+      imageURL VARCHAR(255) NOT NULL DEFAULT null,
+      "inStock" BOOLEAN DEFAULT false,
+      category NOT NULL
+      );`)
 
   } catch (error) {
     throw error;
