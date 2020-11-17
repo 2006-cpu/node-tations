@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-  getSomething
+  getProducts,
 } from '../api';
 
 const App = () => {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    getSomething()
+    getProducts()
       .then(response => {
         setMessage(response.message);
       })

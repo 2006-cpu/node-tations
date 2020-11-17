@@ -1,5 +1,5 @@
 import axios from 'axios';
-// const BASE = 'https://fitnesstrac-kr.herokuapp.com/api'
+const BASE = 'https://cryptic-journey-09371.herokuapp.com/api'
 export async function getProducts() {
   try {
     const { data } = await axios.get(`${BASE}/products`);
