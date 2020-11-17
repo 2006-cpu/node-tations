@@ -1,6 +1,6 @@
 const { client } = require('./index');
 
-export const getProductById = async id => {
+const getProductById = async id => {
 	if (typeof id !== 'number') {
 		throw Error('Invalid id');
 	}
@@ -17,7 +17,7 @@ export const getProductById = async id => {
 	}
 };
 
-export const getAllProducts = async () => {
+const getAllProducts = async () => {
 	try {
 		const products = await client.query(`select * from products`);
 		return products;
@@ -27,7 +27,7 @@ export const getAllProducts = async () => {
 	}
 };
 
-export const createProducts = async product => {
+const createProducts = async (product = {}) => {
 	// Field length validation
 	if (Object.keys(product).length !== 6) {
 		throw Error('Missing fields');
@@ -44,3 +44,9 @@ export const createProducts = async product => {
 		throw error;
 	}
 };
+
+module.exports = {
+	createProducts,
+	getAllProducts,
+	getProductById
+  }
