@@ -1,6 +1,7 @@
 {
   "name": "starting_code",
   "version": "1.0.0",
+  
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -41,4 +42,5 @@
       "last 1 safari version"
     ]
   }
+  
 }
