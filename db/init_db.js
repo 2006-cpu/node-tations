@@ -4,6 +4,10 @@ const {
   // other db methods 
 } = require('./index');
 
+const {
+  createProducts
+} = require('./products');
+
 async function buildTables() {
   try {
     client.connect();
@@ -70,8 +74,26 @@ async function buildTables() {
   }
 }
 
+async function createInitialProducts() {
+  console.log('Starting to create products...');
+  try {
+
+      const beef = await createProducts({ name: 'ground beef' , description: '85% lean, 15% fat all natural ground beef' , price: '8.99', imageurl: 'null', inStock: true, category: 'beef'})
+      const chicken = await createProducts({ name: 'chicken breast' , description: '100% organic chicken breast' , price: '5.99', imageurl: 'null', inStock: true, category: 'poultry'})
+      const pork = await createProducts({ name: 'pork chops' , description: 'Bone in pork chop' , price: '4.99', imageurl: 'null', inStock: true, category: 'pork'})
+
+    console.log('Products created:');
+    console.log(beef, chicken, pork);
+    console.log('Finished creating Products!');
+  } catch (error) {
+    console.error('Error creating Products!');
+    throw error;
+  }
+}
+
 async function populateInitialData() {
   try {
+    await createInitialProducts()
     // create useful starting data
   } catch (error) {
     throw error;

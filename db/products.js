@@ -6,7 +6,7 @@ const getProductById = async id => {
 	}
 
 	try {
-		const product = await client.query(
+		const {rows: product} = await client.query(
 			`select * from products where id = $1`,
 			[id]
 		);
@@ -19,7 +19,7 @@ const getProductById = async id => {
 
 const getAllProducts = async () => {
 	try {
-		const products = await client.query(`select * from products`);
+		const {rows: products} = await client.query(`select * from products`);
 		return products;
 	} catch (error) {
 		console.error(error);
@@ -32,11 +32,11 @@ const createProducts = async product => {
 	if (Object.keys(product).length !== 6) {
 		throw Error('Missing fields');
 	}
-
+	
 	try {
-		const newProduct = await client.query(
-			`insert into products(name, description, price, imageurl, "inStock", category) values($1, $2, $3, $4, $5, $6)`,
-			[Object.values(product)]
+		const {rows: newProduct} = await client.query(
+			`insert into products(name, description, price, imageurl, "inStock", category) values($1, $2, $3, $4, $5, $6) RETURNING *;`,
+			Object.values(product)
 		);
 		return newProduct;
 	} catch (error) {
