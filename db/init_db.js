@@ -16,11 +16,11 @@ async function buildTables() {
       id SERIAL PRIMARY KEY,
       name varchar(255) UNIQUE NOT NULL,
       description VARCHAR(255) NOT NULL,
-      price NUMERIC NOT NULL,
+      price INTEGER NOT NULL,
       imageURL VARCHAR(255) NOT NULL DEFAULT null,
       "inStock" BOOLEAN DEFAULT false,
-      category NOT NULL
-      );`)
+      category VARCHAR(255) NOT NULL
+      )`)
 
   } catch (error) {
     throw error;
