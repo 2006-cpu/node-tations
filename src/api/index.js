@@ -1,6 +1,6 @@
 import axios from 'axios';
-const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
-const BASE_URL = `${CORS_PROXY}https://node-tations-2006.herokuapp.com/api`;
+// const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+const BASE_URL = `/api`;
 
 export const callApi = async ({ path, method, token }, body = null) => {
 	const axiosConfig = {
