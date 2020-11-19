@@ -7,7 +7,7 @@ const getProductById = async id => {
 
 	try {
 		const {
-			rows: product
+			rows: [product]
 		} = await client.query(`select * from products where id = $1`, [id]);
 		return product;
 	} catch (error) {
