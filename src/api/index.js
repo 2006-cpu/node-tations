@@ -1,21 +1,22 @@
 import axios from 'axios';
-const BASE = 'https://cryptic-journey-09371.herokuapp.com/api'
-export async function getProducts() {
-  try {
-    const { data } = await axios.get(`${BASE}/products`);
-    console.log("allProducts:", data)
-    return data;
-  } catch (error) {
-    throw error;
-  }
-}
+const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+const BASE_URL = `${CORS_PROXY}https://node-tations-2006.herokuapp.com/api`;
 
-export async function getProductById(productId) {
-  try {
-    const { data } = await axios.get(`${BASE}/product/${productId}`);
-    console.log("productById:", data)
-    return data;
-  } catch (error) {
-    throw error;
-  }
-}
+export const callApi = async ({ path, method, token }, body = null) => {
+	const axiosConfig = {
+		url: `${BASE_URL + path}`,
+		method: `${method}`,
+		data: body
+	};
+
+	if (token) {
+		axiosConfig.headers = { Authorization: `Bearer ${token}` };
+	}
+
+	try {
+		const { data } = await axios(axiosConfig);
+		return data;
+	} catch (error) {
+		console.error(error);
+	}
+};

@@ -1,33 +1,31 @@
 // code to build and initialize DB goes here
 const {
-  client
-  // other db methods 
+	client
+	// other db methods
 } = require('./index');
 
-const {
-  createProducts
-} = require('./products');
+const { createProducts } = require('./products');
 
 async function buildTables() {
-  try {
-    client.connect();
+	try {
+		client.connect();
 
-  // drop tables in correct order
-    console.log('Dropping All Tables...');
+		// drop tables in correct order
+		console.log('Dropping All Tables...');
 
-    client.query(`
+		client.query(`
     DROP TABLE IF EXISTS order_products;
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS products;
     `);
 
-    console.log('Finished dropping tables!');
+		console.log('Finished dropping tables!');
 
-    // build tables in correct order
-    console.log("Starting to build tables...");
+		// build tables in correct order
+		console.log('Starting to build tables...');
 
-    await client.query(`
+		await client.query(`
     CREATE TABLE products(
       id SERIAL PRIMARY KEY,
       name varchar(255) UNIQUE NOT NULL,
@@ -66,41 +64,60 @@ async function buildTables() {
 
       `);
 
-      console.log('Finished constructing tables!');
-
-  } catch (error) {
-    console.error('Error constructing tables!');
-    throw error;
-  }
+		console.log('Finished constructing tables!');
+	} catch (error) {
+		console.error('Error constructing tables!');
+		throw error;
+	}
 }
 
 async function createInitialProducts() {
-  console.log('Starting to create products...');
-  try {
+	console.log('Starting to create products...');
+	try {
+		const beef = await createProducts({
+			name: 'ground beef',
+			description: '85% lean, 15% fat all natural ground beef',
+			price: '8.99',
+			imageurl: 'null',
+			inStock: true,
+			category: 'beef'
+		});
+		const chicken = await createProducts({
+			name: 'chicken breast',
+			description: '100% organic chicken breast',
+			price: '5.99',
+			imageurl: 'null',
+			inStock: true,
+			category: 'poultry'
+		});
+		const pork = await createProducts({
+			name: 'pork chops',
+			description: 'Bone in pork chop',
+			price: '4.99',
+			imageurl: 'null',
+			inStock: true,
+			category: 'pork'
+		});
 
-      const beef = await createProducts({ name: 'ground beef' , description: '85% lean, 15% fat all natural ground beef' , price: '8.99', imageurl: 'null', inStock: true, category: 'beef'})
-      const chicken = await createProducts({ name: 'chicken breast' , description: '100% organic chicken breast' , price: '5.99', imageurl: 'null', inStock: true, category: 'poultry'})
-      const pork = await createProducts({ name: 'pork chops' , description: 'Bone in pork chop' , price: '4.99', imageurl: 'null', inStock: true, category: 'pork'})
-
-    console.log('Products created:');
-    console.log(beef, chicken, pork);
-    console.log('Finished creating Products!');
-  } catch (error) {
-    console.error('Error creating Products!');
-    throw error;
-  }
+		console.log('Products created:');
+		console.log(beef, chicken, pork);
+		console.log('Finished creating Products!');
+	} catch (error) {
+		console.error('Error creating Products!');
+		throw error;
+	}
 }
 
 async function populateInitialData() {
-  try {
-    await createInitialProducts()
-    // create useful starting data
-  } catch (error) {
-    throw error;
-  }
+	try {
+		await createInitialProducts();
+		// create useful starting data
+	} catch (error) {
+		throw error;
+	}
 }
 
 buildTables()
-  .then(populateInitialData)
-  .catch(console.error)
-  .finally(() => client.end());
+	.then(populateInitialData)
+	.catch(console.error)
+	.finally(() => client.end());
