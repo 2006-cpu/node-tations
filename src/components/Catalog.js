@@ -23,9 +23,5 @@ export const Catalog = () => {
 		fetchProducts();
 	}, []);
 
-	useEffect(() => {
-		console.log(products);
-	}, [products]);
-
-	return <ProductCard />;
+	return <ProductCard products={ products }/>;
 };
