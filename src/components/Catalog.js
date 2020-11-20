@@ -13,7 +13,7 @@ export const Catalog = () => {
 
 		try {
 			const products = await callApi(config);
-			setProducts(products.message);
+			setProducts(products);
 		} catch (error) {
 			console.error(error);
 		}
@@ -23,5 +23,5 @@ export const Catalog = () => {
 		fetchProducts();
 	}, []);
 
-	return <ProductCard products={ products }/>;
+	return <ProductCard products={products} />;
 };
