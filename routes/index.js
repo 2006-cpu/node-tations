@@ -1,5 +1,5 @@
 const apiRouter = require('express').Router();
-const { getAllProducts, getProductById } = require('../db/products');
+const { productsRouter } = require('./products');
 
 apiRouter.get('/', (req, res, next) => {
 	res.send({
@@ -7,25 +7,6 @@ apiRouter.get('/', (req, res, next) => {
 	});
 });
 
-apiRouter.get('/products', async (req, res, next) => {
-	try {
-		const products = await getAllProducts();
-		console.log('products:', products);
-		res.send({
-			message: products
-		});
-	} catch (error) {}
-});
+apiRouter.use('/products', productsRouter);
 
-apiRouter.get('/product/:productId', async (req, res, next) => {
-	const { productId } = req.params;
-	try {
-		const products = await getProductById(productId);
-		console.log('products:', products);
-		res.send({
-			message: products
-		});
-	} catch (error) {}
-});
-
-module.exports = apiRouter;
+module.exports = { apiRouter, productsRouter };
