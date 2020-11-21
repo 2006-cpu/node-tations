@@ -1,12 +1,34 @@
 const apiRouter = require('express').Router();
+
+//Routers
 const { productsRouter } = require('./products');
 const { usersRouter } = require('./users');
 const { ordersRouter } = require('./orders');
 
-apiRouter.get('/', (req, res, next) => {
-	res.send({
-		message: 'API is under construction!'
-	});
+//Auth utils
+const { verify } = require('jsonwebtoken');
+const { getUserById } = require('../db/users');
+const { JWT_SECRET } = process.env;
+
+apiRouter.use('/', async (req, res, next) => {
+	const auth = req.header('Authorization');
+
+	if (!auth) {
+		return next();
+	}
+
+	if (auth.startsWith('Bearer ')) {
+		const token = auth.slice('Bearer '.length);
+
+		const { id } = verify(token, JWT_SECRET);
+
+		if (id) {
+			req.user = await getUserById(id);
+			return next();
+		}
+	} else {
+		next({ name: 'Auth error', message: 'Error in auth format' });
+	}
 });
 
 apiRouter.use('/products', productsRouter);
