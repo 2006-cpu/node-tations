@@ -117,21 +117,27 @@ async function createInitialUsers() {
 			lastname: 'Hertado',
 			email: 'ahertado510@gmail.com',
 			imageurl: 'http://www.pennlalsa.org/uploads/1/3/4/8/13489220/current-anthony-headshot_orig.png',
-			username: 'The Sultan of Steaks'
+			username: 'The Sultan of Steaks',
+			password : 'albatross311',
+			isAdmin : 'false'
 		});
 		await createUsers({
 			firstname: 'Martin',
 			lastname: 'Phillips',
 			email: 'phillipsconstruction@gmail.com',
 			imageurl: 'https://www.thomharrisdesign.com/wp-content/uploads/2011/06/Phillips-Construction-blog-500x384.jpg',
-			username: 'Hammer-Time'
+			username: 'Hammer-Time',
+			password: 'nailedit',
+			isAdmin : 'false'
 		});
 		await createUsers({
 			firstname: 'Jessie',
 			lastname: 'Nguyen',
 			email: 'lockjessmonster@gmail.com',
 			imageurl: 'https://static.standard.co.uk/s3fs-public/styles/story_large/public/thumbnails/image/2014/10/27/11/lochnessmonster2710a.jpg',
-			username: 'tinker-tailor'
+			username: 'tinker-tailor',
+			password: 'mossy+bossy',
+			isAdmin: 'true'
 		});
 
 		console.log('Users created:');
