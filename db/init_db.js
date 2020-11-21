@@ -5,8 +5,8 @@ const {
 } = require('./index');
 
 const { createProducts } = require('./products');
-// const { createUsers } = require('./users');
-// const { createOrders } = require('./orders');
+const { createUsers } = require('./users');
+const { createOrders } = require('./orders');
 
 async function buildTables() {
 	try {
