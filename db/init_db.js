@@ -5,6 +5,8 @@ const {
 } = require('./index');
 
 const { createProducts } = require('./products');
+// const { createUsers } = require('./users');
+// const { createOrders } = require('./orders');
 
 async function buildTables() {
 	try {
@@ -107,9 +109,73 @@ async function createInitialProducts() {
 	}
 }
 
+async function createInitialUsers() {
+	console.log('Starting to create users...');
+	try {
+		await createUsers({
+			firstname: 'Anthony',
+			lastname: 'Hertado',
+			email: 'ahertado510@gmail.com',
+			imageurl: 'http://www.pennlalsa.org/uploads/1/3/4/8/13489220/current-anthony-headshot_orig.png',
+			username: 'The Sultan of Steaks'
+		});
+		await createUsers({
+			firstname: 'Martin',
+			lastname: 'Phillips',
+			email: 'phillipsconstruction@gmail.com',
+			imageurl: 'https://www.thomharrisdesign.com/wp-content/uploads/2011/06/Phillips-Construction-blog-500x384.jpg',
+			username: 'Hammer-Time'
+		});
+		await createUsers({
+			firstname: 'Jessie',
+			lastname: 'Nguyen',
+			email: 'lockjessmonster@gmail.com',
+			imageurl: 'https://static.standard.co.uk/s3fs-public/styles/story_large/public/thumbnails/image/2014/10/27/11/lochnessmonster2710a.jpg',
+			username: 'tinker-tailor'
+		});
+
+		console.log('Users created:');
+		console.log('Finished creating Users!');
+	} catch (error) {
+		console.error('Error creating Users!');
+		throw error;
+	}
+}
+
+async function createInitialOrders() {
+	console.log('Starting to create orders...');
+	try {
+		await createOrders({
+			status: 'Pending',
+			userId: '1',
+			datePlaced: '11/21/2020'
+			
+		});
+		await createOrders({
+			status: 'Delivered',
+			userId: '3',
+			datePlaced: '11/18/2020'
+			
+		});
+		await createOrders({
+			status: 'return',
+			userId: '2',
+			datePlaced: '11/15/2020'
+			
+		});
+		console.log('Orders created:');
+		console.log('Finished creating Orders!');
+	} catch (error) {
+		console.error('Error creating Orders!');
+		throw error;
+	}
+}
+
 async function populateInitialData() {
 	try {
 		await createInitialProducts();
+		await createInitialUsers();
+		await createInitialOrders();
 		// create useful starting data
 	} catch (error) {
 		throw error;
