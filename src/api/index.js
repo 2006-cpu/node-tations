@@ -8,6 +8,7 @@ export const callApi = async ({ path, method, token }, body = null) => {
 		method: `${method}`,
 		data: body
 	};
+	console.log("url", axiosConfig.url)
 
 	if (token) {
 		axiosConfig.headers = { Authorization: `Bearer ${token}` };

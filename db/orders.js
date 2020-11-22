@@ -106,11 +106,11 @@ const getCartByUser = async({ id }) => {
 
 const createOrder = async ({ status, userId }) => {
 	try {
-		const { rows: newProduct } = await client.query(
-			`insert into products(status, "userId") values($1, $2) RETURNING *;`,
+		const { rows: orders } = await client.query(
+			`insert into orders(status, "userId") values($1, $2) RETURNING *;`,
 			[status, userId]
 		);
-		return newProduct;
+		return orders;
 	} catch (error) {
 		console.error(error);
 		throw error;
