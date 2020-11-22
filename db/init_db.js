@@ -5,8 +5,8 @@ const {
 } = require('./index');
 
 const { createProducts } = require('./products');
-const { createUsers } = require('./users');
-const { createOrders } = require('./orders');
+const { createUser } = require('./users');
+const { createOrder } = require('./orders');
 
 async function buildTables() {
 	try {
@@ -112,29 +112,29 @@ async function createInitialProducts() {
 async function createInitialUsers() {
 	console.log('Starting to create users...');
 	try {
-		await createUsers({
-			firstname: 'Anthony',
-			lastname: 'Hertado',
+		await createUser({
+			firstName: 'Anthony',
+			lastName: 'Hertado',
 			email: 'ahertado510@gmail.com',
-			imageurl: 'http://www.pennlalsa.org/uploads/1/3/4/8/13489220/current-anthony-headshot_orig.png',
+			imageUrl: 'http://www.pennlalsa.org/uploads/1/3/4/8/13489220/current-anthony-headshot_orig.png',
 			username: 'The Sultan of Steaks',
 			password : 'albatross311',
 			isAdmin : 'false'
 		});
-		await createUsers({
-			firstname: 'Martin',
-			lastname: 'Phillips',
+		await createUser({
+			firstName: 'Martin',
+			lastName: 'Phillips',
 			email: 'phillipsconstruction@gmail.com',
-			imageurl: 'https://www.thomharrisdesign.com/wp-content/uploads/2011/06/Phillips-Construction-blog-500x384.jpg',
+			imageUrl: 'https://www.thomharrisdesign.com/wp-content/uploads/2011/06/Phillips-Construction-blog-500x384.jpg',
 			username: 'Hammer-Time',
 			password: 'nailedit',
 			isAdmin : 'false'
 		});
-		await createUsers({
-			firstname: 'Jessie',
-			lastname: 'Nguyen',
+		await createUser({
+			firstName: 'Jessie',
+			lastName: 'Nguyen',
 			email: 'lockjessmonster@gmail.com',
-			imageurl: 'https://static.standard.co.uk/s3fs-public/styles/story_large/public/thumbnails/image/2014/10/27/11/lochnessmonster2710a.jpg',
+			imageUrl: 'https://static.standard.co.uk/s3fs-public/styles/story_large/public/thumbnails/image/2014/10/27/11/lochnessmonster2710a.jpg',
 			username: 'tinker-tailor',
 			password: 'mossy+bossy',
 			isAdmin: 'true'
@@ -151,19 +151,19 @@ async function createInitialUsers() {
 async function createInitialOrders() {
 	console.log('Starting to create orders...');
 	try {
-		await createOrders({
+		await createOrder({
 			status: 'Pending',
 			userId: '1',
 			datePlaced: '11/21/2020'
 			
 		});
-		await createOrders({
+		await createOrder({
 			status: 'Delivered',
 			userId: '3',
 			datePlaced: '11/18/2020'
 			
 		});
-		await createOrders({
+		await createOrder({
 			status: 'return',
 			userId: '2',
 			datePlaced: '11/15/2020'
