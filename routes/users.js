@@ -54,7 +54,7 @@ usersRouter.post('/login', async (req, res, next) => {
 				JWT_SECRET
 			);
 
-			res.send({ message: 'You are logged in', token });
+			res.send({ message: 'You are logged in', user, token });
 		}
 	} catch ({ name, message }) {
 		res.send({ name, message });
