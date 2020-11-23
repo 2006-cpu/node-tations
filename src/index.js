@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Header, Catalog } from './components';
-import { getCurrentUser, getCurrentUserToken } from './auth';
+import { Header, Catalog, SoloCard, ProductCard } from './components';
 
 const App = () => {
-	const [token, setToken] = useState(getCurrentUserToken());
-	const [currentUser, setCurrentUser] = useState(getCurrentUser());
-
-
+	const [products, setProducts] = useState([]);
+	const [product, setProduct] = useState({});
+	console.log("product:", product)
+	const [productId, setProductId] = useState({});
 	return (
 		<Router>
 			<ChakraProvider>
@@ -22,9 +21,14 @@ const App = () => {
 								Welcome to Title of Website
 							</h2>
 						</Route>
-						<Route path='/products'>
-							<Catalog />
+						<Route exact path='/products'>
+							<Catalog products={products} setProducts={setProducts} product={product} setProduct={setProduct} productId={productId} setProductId={setProductId} />
 						</Route>
+						<Route exact path='/viewitem' >
+							<SoloCard productId={productId} product={product} setProduct={setProduct} setProductId={setProductId} products={products} setProducts={setProducts}/>
+						</Route>
+						
+						
 					</Switch>
 				</div>
 			</ChakraProvider>
