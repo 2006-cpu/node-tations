@@ -15,7 +15,19 @@ import {
 	ModalFooter
  } from '@chakra-ui/react';
 
-const Header = () => {
+ import {
+    storeCurrentUser,
+	storeCurrentUserToken,
+	clearCurrentUser,
+	clearCurrentUserToken
+  } from '../auth';
+
+const Header = ({
+	token,
+	setToken,
+	setCurrentUser,
+	currentUser
+}) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -41,17 +53,44 @@ const Header = () => {
             if(register)
             {
                 const registration = await callApi({method: 'post', path: '/users/register'},{firstname: firstName, lastname: lastName, email: email, username: username, password: password});
-                console.log(registration);
+				console.log(registration);
+				if(registration.token)
+				{     
+				  setToken(registration.token);
+				  storeCurrentUserToken(registration.token);
+				}
+				if(registration.user)
+				{
+				  storeCurrentUser(registration.user);
+				  setCurrentUser(registration.user);
+				}
             }
             else
             {
                 const login = await callApi({method: 'post', path: '/users/login'},{username: username, password: password});
-                console.log(login);
+				console.log(login);
+				if(login.token)
+				{      
+				  setToken(login.token);
+				  storeCurrentUserToken(login.token);
+				}
+				if(login.user)
+				{
+				  storeCurrentUser(login.user);
+				  setCurrentUser(login.user);
+				}
             }
         } catch (error) {
             console.error(error);
         }
 	};
+
+	const handleUserLogout = () => {
+		clearCurrentUser();
+		clearCurrentUserToken();
+		setCurrentUser(null);
+		setToken(null);
+	  }
 
 	return (
 		<header>
@@ -75,8 +114,9 @@ const Header = () => {
 					</form>
 				</Flex>
 				<>
-					<Button onClick={onOpen}>Login</Button>
-
+				{
+					token ? null : <Button onClick={onOpen}>Login</Button>
+				}
 					<Modal isOpen={isOpen} onClose={onClose}>
 						<ModalOverlay />
 						<ModalContent>
@@ -140,6 +180,9 @@ const Header = () => {
 						</ModalContent>
 					</Modal>
 				</>
+				{
+					token ? <Button className="Logout" type="submit" onClick={ handleUserLogout }>LOG OUT, { currentUser.username }</Button> : null
+				}
 			</Flex>
 		</header>
 	);

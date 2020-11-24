@@ -14,7 +14,7 @@ const App = () => {
 		<Router>
 			<ChakraProvider>
 				<div className='App'>
-					<Header />
+					<Header token={ token } setToken={ setToken } currentUser={ currentUser } setCurrentUser={ setCurrentUser }/>
 					<Switch>
 						<Route path='/home'>
 							<h2 className='Home'>
