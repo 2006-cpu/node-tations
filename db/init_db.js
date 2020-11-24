@@ -53,7 +53,7 @@ async function buildTables() {
             id SERIAL PRIMARY KEY,
             status VARCHAR(255) DEFAULT 'created',
             "userId" INTEGER REFERENCES users(id),
-            "datePlaced" DATE
+            "datePlaced" Timestamp DEFAULT NOW()
             );
 
             CREATE TABLE order_products(
@@ -112,7 +112,7 @@ async function createInitialProducts() {
 async function createInitialUsers() {
 	console.log('Starting to create users...');
 	try {
-		await createUser({
+		const anthony = await createUser({
 			firstName: 'Anthony',
 			lastName: 'Hertado',
 			email: 'ahertado510@gmail.com',
@@ -121,7 +121,7 @@ async function createInitialUsers() {
 			password : 'albatross311',
 			isAdmin : 'false'
 		});
-		await createUser({
+		const martin = await createUser({
 			firstName: 'Martin',
 			lastName: 'Phillips',
 			email: 'phillipsconstruction@gmail.com',
@@ -130,7 +130,7 @@ async function createInitialUsers() {
 			password: 'nailedit',
 			isAdmin : 'false'
 		});
-		await createUser({
+		const jessie = await createUser({
 			firstName: 'Jessie',
 			lastName: 'Nguyen',
 			email: 'lockjessmonster@gmail.com',
@@ -139,7 +139,7 @@ async function createInitialUsers() {
 			password: 'mossy+bossy',
 			isAdmin: 'true'
 		});
-
+		console.log(anthony, martin, jessie)
 		console.log('Users created:');
 		console.log('Finished creating Users!');
 	} catch (error) {
@@ -151,24 +151,19 @@ async function createInitialUsers() {
 async function createInitialOrders() {
 	console.log('Starting to create orders...');
 	try {
-		await createOrder({
+		const pending = await createOrder({
 			status: 'Pending',
-			userId: '1',
-			datePlaced: '11/21/2020'
-			
+			id: 1
 		});
-		await createOrder({
+		const delivered = await createOrder({
 			status: 'Delivered',
-			userId: '3',
-			datePlaced: '11/18/2020'
-			
+			id: 3
 		});
-		await createOrder({
+		const returnOrder = await createOrder({
 			status: 'return',
-			userId: '2',
-			datePlaced: '11/15/2020'
-			
+			id: 2
 		});
+		console.log(pending, delivered, returnOrder )
 		console.log('Orders created:');
 		console.log('Finished creating Orders!');
 	} catch (error) {
