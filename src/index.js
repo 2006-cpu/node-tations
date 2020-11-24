@@ -27,7 +27,7 @@ const App = () => {
 						<Route exact path='/products'>
 							<Catalog products={products} setProducts={setProducts} product={product} setProduct={setProduct} productId={productId} setProductId={setProductId} />
 						</Route>
-						<Route exact path='/viewitem' >
+						<Route exact path={`/product/${product}`} >
 							<SoloCard productId={productId} product={product} setProduct={setProduct} setProductId={setProductId} products={products} setProducts={setProducts}/>
 						</Route>
 						

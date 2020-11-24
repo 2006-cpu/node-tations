@@ -9,7 +9,7 @@ export const SoloCard = ({products, product}) => {
         
         products.map(({ id, name, description, price, imageurl, inStock, category}) => {
             return(
-            id === product ? (<Box textAlign="center">Products
+            id === product ? (<Box textAlign="center">Product
             <Grid templateColumns="repeat(3, 1fr)">
                     
                     <Box key={ id } className="Activity" border="1px solid black">
@@ -20,7 +20,6 @@ export const SoloCard = ({products, product}) => {
                     <Text>inStock: { inStock ? "In Stock": "Out of Stock" }</Text>
                     <Text>Price: { price }</Text>
                     </Box>
-                    ))
             </Grid>
             </Box>) : ""
         )})
