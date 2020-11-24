@@ -119,13 +119,13 @@ const getCartByUser = async ({ id }) => {
 	}
 };
 
-const createOrder = async (status, id, datePlaced) => {
+const createOrder = async ({status, id}) => {
 	try {
 		const {
 			rows: orders
 		} = await client.query(
-			`insert into orders(status, "userId", "datePlaced") values($1, $2, $3) RETURNING *;`,
-			[status, id, datePlaced]
+			`insert into orders(status, "userId") values($1, $2) RETURNING *;`,
+			[status, id]
 		);
 		return orders;
 	} catch (error) {
