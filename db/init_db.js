@@ -5,20 +5,22 @@ const {
 } = require('./index');
 
 const { createProducts } = require('./products');
+const { createUser } = require('./users');
+const { createOrder } = require('./orders');
 
 async function buildTables() {
 	try {
-		client.connect();
+		await client.connect();
 
 		// drop tables in correct order
 		console.log('Dropping All Tables...');
 
-		client.query(`
-    DROP TABLE IF EXISTS order_products;
-    DROP TABLE IF EXISTS orders;
-    DROP TABLE IF EXISTS users;
-    DROP TABLE IF EXISTS products;
-    `);
+		await client.query(`
+            DROP TABLE IF EXISTS order_products;
+            DROP TABLE IF EXISTS orders;
+            DROP TABLE IF EXISTS users;
+            DROP TABLE IF EXISTS products;
+            `);
 
 		console.log('Finished dropping tables!');
 
@@ -26,43 +28,42 @@ async function buildTables() {
 		console.log('Starting to build tables...');
 
 		await client.query(`
-    CREATE TABLE products(
-      id SERIAL PRIMARY KEY,
-      name varchar(255) UNIQUE NOT NULL,
-      description VARCHAR(255) NOT NULL,
-      price NUMERIC(10,2) NOT NULL,
-      imageURL VARCHAR(255) DEFAULT 'no image',
-      "inStock" BOOLEAN DEFAULT false,
-      category VARCHAR(255) NOT NULL
-      );
+            CREATE TABLE products(
+            id SERIAL PRIMARY KEY,
+            name varchar(255) UNIQUE NOT NULL,
+            description VARCHAR(255) NOT NULL,
+            price NUMERIC(10,2) NOT NULL,
+            imageURL VARCHAR(255) DEFAULT 'no image',
+            "inStock" BOOLEAN DEFAULT false,
+            category VARCHAR(255) NOT NULL
+            );
 
-      CREATE TABLE users(
-        id SERIAL PRIMARY KEY,
-        firstName VARCHAR(255) NOT NULL,
-        lastName VARCHAR(255) NOT NULL,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        imageURL VARCHAR(255) DEFAULT 'no image',
-        username VARCHAR(255) UNIQUE NOT NULL,
-        password VARCHAR(255) UNIQUE NOT NULL,
-        "isAdmin" BOOLEAN DEFAULT false
-        );
+            CREATE TABLE users(
+            id SERIAL PRIMARY KEY,
+            firstName VARCHAR(255) NOT NULL,
+            lastName VARCHAR(255) NOT NULL,
+            email VARCHAR(255) UNIQUE NOT NULL,
+            imageURL VARCHAR(255) DEFAULT 'no image',
+            username VARCHAR(255) UNIQUE NOT NULL,
+            password VARCHAR(255) UNIQUE NOT NULL,
+            "isAdmin" BOOLEAN DEFAULT false
+            );
 
-        CREATE TABLE orders(
-          id SERIAL PRIMARY KEY,
-          status VARCHAR(255) DEFAULT 'created',
-          "userId" INTEGER REFERENCES users(id),
-          "datePlaced" DATE
-          );
+            CREATE TABLE orders(
+            id SERIAL PRIMARY KEY,
+            status VARCHAR(255) DEFAULT 'created',
+            "userId" INTEGER REFERENCES users(id),
+            "datePlaced" Timestamp DEFAULT NOW()
+            );
 
-          CREATE TABLE order_products(
+            CREATE TABLE order_products(
             id SERIAL PRIMARY KEY,
             "productId" INTEGER REFERENCES products(id),
             "orderId" INTEGER REFERENCES orders(id),
             price NUMERIC(10,2) NOT NULL,
             quantity NUMERIC(10,2) DEFAULT 0 NOT NULL
             );
-
-      `);
+        `);
 
 		console.log('Finished constructing tables!');
 	} catch (error) {
@@ -108,9 +109,74 @@ async function createInitialProducts() {
 	}
 }
 
+async function createInitialUsers() {
+	console.log('Starting to create users...');
+	try {
+		const anthony = await createUser({
+			firstName: 'Anthony',
+			lastName: 'Hertado',
+			email: 'ahertado510@gmail.com',
+			imageUrl: 'http://www.pennlalsa.org/uploads/1/3/4/8/13489220/current-anthony-headshot_orig.png',
+			username: 'The Sultan of Steaks',
+			password : 'albatross311',
+			isAdmin : 'false'
+		});
+		const martin = await createUser({
+			firstName: 'Martin',
+			lastName: 'Phillips',
+			email: 'phillipsconstruction@gmail.com',
+			imageUrl: 'https://www.thomharrisdesign.com/wp-content/uploads/2011/06/Phillips-Construction-blog-500x384.jpg',
+			username: 'Hammer-Time',
+			password: 'nailedit',
+			isAdmin : 'false'
+		});
+		const jessie = await createUser({
+			firstName: 'Jessie',
+			lastName: 'Nguyen',
+			email: 'lockjessmonster@gmail.com',
+			imageUrl: 'https://static.standard.co.uk/s3fs-public/styles/story_large/public/thumbnails/image/2014/10/27/11/lochnessmonster2710a.jpg',
+			username: 'tinker-tailor',
+			password: 'mossy+bossy',
+			isAdmin: 'true'
+		});
+		console.log(anthony, martin, jessie)
+		console.log('Users created:');
+		console.log('Finished creating Users!');
+	} catch (error) {
+		console.error('Error creating Users!');
+		throw error;
+	}
+}
+
+async function createInitialOrders() {
+	console.log('Starting to create orders...');
+	try {
+		const pending = await createOrder({
+			status: 'Pending',
+			id: 1
+		});
+		const delivered = await createOrder({
+			status: 'Delivered',
+			id: 3
+		});
+		const returnOrder = await createOrder({
+			status: 'return',
+			id: 2
+		});
+		console.log(pending, delivered, returnOrder )
+		console.log('Orders created:');
+		console.log('Finished creating Orders!');
+	} catch (error) {
+		console.error('Error creating Orders!');
+		throw error;
+	}
+}
+
 async function populateInitialData() {
 	try {
 		await createInitialProducts();
+		await createInitialUsers();
+		await createInitialOrders();
 		// create useful starting data
 	} catch (error) {
 		throw error;

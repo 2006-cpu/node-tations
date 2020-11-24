@@ -1,5 +1,5 @@
 import axios from 'axios';
-// const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+
 const BASE_URL = `/api`;
 
 export const callApi = async ({ path, method, token }, body = null) => {
@@ -8,6 +8,7 @@ export const callApi = async ({ path, method, token }, body = null) => {
 		method: `${method}`,
 		data: body
 	};
+	console.log("url", axiosConfig.url)
 
 	if (token) {
 		axiosConfig.headers = { Authorization: `Bearer ${token}` };
@@ -16,7 +17,8 @@ export const callApi = async ({ path, method, token }, body = null) => {
 	try {
 		const { data } = await axios(axiosConfig);
 		return data;
-	} catch (error) {
-		console.error(error);
+	} catch ({ name, message }) {
+		console.error({ name, message });
+		return { name, message };
 	}
 };
