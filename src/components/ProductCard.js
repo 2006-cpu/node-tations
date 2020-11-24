@@ -12,7 +12,7 @@ export const ProductCard = ({products, setProduct }) => {
 				{products.map(({ id, name, description, price, imageurl, inStock, category}) => (
 				
         		<Box key={ id } className="Activity" border="1px solid black">
-          		<Text>Name: { <Link to="./viewitem" id={id} setProduct={setProduct} onClick={()=> {
+          		<Text>Name: { <Link to={`/product/${id}`} id={id} setProduct={setProduct} onClick={()=> {
 					  console.log("productId:", id)
 					  setProduct(id)
 				  }}>{name}</Link> }</Text>
