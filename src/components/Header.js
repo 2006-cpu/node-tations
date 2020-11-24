@@ -52,17 +52,14 @@ const Header = ({
         try {
             if(register)
             {
-                const registration = await callApi({method: 'post', path: '/users/register'},{firstname: firstName, lastname: lastName, email: email, username: username, password: password});
+                const registration = await callApi({method: 'post', path: '/users/register'},{firstName: firstName, lastName: lastName, email: email, username: username, password: password});
 				console.log(registration);
-				if(registration.token)
-				{     
-				  setToken(registration.token);
-				  storeCurrentUserToken(registration.token);
-				}
-				if(registration.user)
+				if(registration.newUser && registration.token)
 				{
-				  storeCurrentUser(registration.user);
-				  setCurrentUser(registration.user);
+				  storeCurrentUser(registration.newUser);
+				  setCurrentUser(registration.newUser);
+				  storeCurrentUserToken(registration.token);
+				  setToken(registration.token);
 				}
             }
             else
