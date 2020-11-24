@@ -42,7 +42,7 @@ const getUserByUsername = async username => {
 		const {
 			rows: [user]
 		} = await client.query(
-			'select username, password, id from users where username = $1',
+			'select username, password, id, "isAdmin" from users where username = $1',
 			[username]
 		);
 
@@ -78,9 +78,10 @@ const getUserById = async userId => {
 	try {
 		const {
 			rows: [user]
-		} = await client.query(`select username, id from users where id = $1`, [
-			userId
-		]);
+		} = await client.query(
+			`select username, id, "isAdmin" from users where id = $1`,
+			[userId]
+		);
 
 		return user;
 	} catch (error) {

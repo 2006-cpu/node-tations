@@ -28,7 +28,11 @@ usersRouter.post('/register', async (req, res, next) => {
 		const newUser = await createUser(req.body);
 
 		const token = sign(
-			{ id: newUser.id, user: newUser.username },
+			{
+				id: newUser.id,
+				user: newUser.username,
+				isAdmin: newUser.isAdmin
+			},
 			JWT_SECRET
 		);
 
@@ -50,7 +54,7 @@ usersRouter.post('/login', async (req, res, next) => {
 
 		if (user) {
 			const token = sign(
-				{ id: user.id, username: user.username },
+				{ id: user.id, username: user.username, isAdmin: user.isAdmin },
 				JWT_SECRET
 			);
 
