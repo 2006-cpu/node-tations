@@ -56,25 +56,22 @@ const Header = ({
 				console.log(registration);
 				if(registration.newUser && registration.token)
 				{
-				  storeCurrentUser(registration.newUser);
-				  setCurrentUser(registration.newUser);
-				  storeCurrentUserToken(registration.token);
-				  setToken(registration.token);
+					storeCurrentUser(registration.newUser);
+					setCurrentUser(registration.newUser);
+					storeCurrentUserToken(registration.token);
+					setToken(registration.token);
 				}
             }
             else
             {
                 const login = await callApi({method: 'post', path: '/users/login'},{username: username, password: password});
 				console.log(login);
-				if(login.token)
+				if(login.token && login.user)
 				{      
-				  setToken(login.token);
-				  storeCurrentUserToken(login.token);
-				}
-				if(login.user)
-				{
-				  storeCurrentUser(login.user);
-				  setCurrentUser(login.user);
+					setCurrentUser(login.user);	
+					storeCurrentUser(login.user);
+					setToken(login.token);
+					storeCurrentUserToken(login.token);
 				}
             }
         } catch (error) {
@@ -178,7 +175,7 @@ const Header = ({
 					</Modal>
 				</>
 				{
-					token ? <Button className="Logout" type="submit" onClick={ handleUserLogout }>LOG OUT, { currentUser.username }</Button> : null
+					token && currentUser.username ? <Button className="Logout" type="submit" onClick={ handleUserLogout }>LOG OUT, { currentUser.username }</Button> : null
 				}
 			</Flex>
 		</header>
