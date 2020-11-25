@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Header, Catalog, SoloCard, ProductCard } from './components';
+import { Header, Catalog, SoloCard, MyOrders, Orders, ShoppingCart } from './components';
 import { getCurrentUser, getCurrentUserToken } from './auth';
 
 const App = () => {
 	const [products, setProducts] = useState([]);
+	const [orders, setOrders] = useState([]);
+	console.log("orders:", orders)
 	const [product, setProduct] = useState({});
 	const [token, setToken] = useState(getCurrentUserToken());
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
@@ -25,10 +27,16 @@ const App = () => {
 							</h2>
 						</Route>
 						<Route exact path='/products'>
-							<Catalog products={products} setProducts={setProducts} product={product} setProduct={setProduct} productId={productId} setProductId={setProductId} />
+							<Catalog orders={orders} setOrders={setOrders} products={products} setProducts={setProducts} product={product} setProduct={setProduct} productId={productId} setProductId={setProductId} />
 						</Route>
 						<Route exact path={`/product/${product}`} >
 							<SoloCard productId={productId} product={product} setProduct={setProduct} setProductId={setProductId} products={products} setProducts={setProducts}/>
+						</Route>
+						<Route exact path='/orders' >
+							<Orders orders={orders} setOrders={setOrders} productId={productId} product={product} setProduct={setProduct} setProductId={setProductId} products={products} setProducts={setProducts}/>
+						</Route>
+						<Route exact path='/cart'>
+						<ShoppingCart/>
 						</Route>
 						
 						

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ProductCard } from './ProductCard';
 import { callApi } from '../api';
 
-export const Catalog = ({products, setProducts, product, setProduct, setProductId}) => {
+export const Catalog = ({products, setProducts, setOrders, product, setProduct, setProductId}) => {
 	
 
 	const fetchProducts = async () => {
@@ -22,11 +22,12 @@ export const Catalog = ({products, setProducts, product, setProduct, setProductI
 			console.error(error);
 		}
 	};
+	
 
 	useEffect(() => {
 		fetchProducts();
 	}, []);
 
 	
-	return <ProductCard products={products} product={product} setProduct={setProduct} />
+	return <ProductCard products={products} product={product} />
 };

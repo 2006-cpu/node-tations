@@ -96,6 +96,12 @@ const Header = ({
 				<NavLink to='/products' activeClassName='current'>
 					Products
 				</NavLink>
+				<NavLink to='/orders' activeClassName='current'>
+					MyOrders
+				</NavLink>
+				<NavLink to='/cart' activeClassName='current'>
+					<i class="material-icons">shopping_cart</i>
+				</NavLink>
 				<Flex>
 					<form onSubmit={handleSubmit}>
 						<Input

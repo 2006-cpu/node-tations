@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom'
-import {SoloCard} from './SoloCard'
 import { Grid, Image, Text, Box } from '@chakra-ui/react';
 
 export const ProductCard = ({products, setProduct }) => {
