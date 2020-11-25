@@ -3,16 +3,13 @@ import ReactDOM from 'react-dom';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Header, Catalog, SoloCard, ProductCard } from './components';
+import { Header, Catalog, ProductPage } from './components';
 import { getCurrentUser, getCurrentUserToken } from './auth';
 
 const App = () => {
-	const [products, setProducts] = useState([]);
-	const [product, setProduct] = useState({});
 	const [token, setToken] = useState(getCurrentUserToken());
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
-	console.log('product:', product);
-	const [productId, setProductId] = useState({});
+
 	return (
 		<Router>
 			<ChakraProvider>
@@ -25,24 +22,10 @@ const App = () => {
 					/>
 					<Switch>
 						<Route path='/store'>
-							<Catalog
-								products={products}
-								setProducts={setProducts}
-								product={product}
-								setProduct={setProduct}
-								productId={productId}
-								setProductId={setProductId}
-							/>
+							<Catalog />
 						</Route>
-						<Route exact path={`/product/${product}`}>
-							<SoloCard
-								productId={productId}
-								product={product}
-								setProduct={setProduct}
-								setProductId={setProductId}
-								products={products}
-								setProducts={setProducts}
-							/>
+						<Route path={'/products/:productId'}>
+							<ProductPage />
 						</Route>
 					</Switch>
 				</div>

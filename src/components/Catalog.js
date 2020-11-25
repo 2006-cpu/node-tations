@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ProductCard } from './ProductCard';
+import { ProductPreviewCard } from '../components';
 import { callApi } from '../api';
+import { Grid } from '@chakra-ui/react';
 
-export const Catalog = ({products, setProducts, product, setProduct, setProductId}) => {
-	
+export const Catalog = () => {
+	const [productList, setProductList] = useState([]);
 
 	const fetchProducts = async () => {
 		const config = {
@@ -13,11 +14,7 @@ export const Catalog = ({products, setProducts, product, setProduct, setProductI
 
 		try {
 			const products = await callApi(config);
-			setProducts(products);
-			products.map(({ id, name, description, price, imageurl, inStock, category}) => {
-				const productId = id
-				setProductId(productId)
-			})
+			setProductList(products);
 		} catch (error) {
 			console.error(error);
 		}
@@ -27,6 +24,13 @@ export const Catalog = ({products, setProducts, product, setProduct, setProductI
 		fetchProducts();
 	}, []);
 
-	
-	return <ProductCard products={products} product={product} setProduct={setProduct} />
+	return (
+		<Grid templateColumns='33% 33% 33%' justifyItems='center'>
+			{productList.map(product => {
+				return (
+					<ProductPreviewCard product={product} key={product.id} />
+				);
+			})}
+		</Grid>
+	);
 };
