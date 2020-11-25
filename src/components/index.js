@@ -1,4 +1,4 @@
 export { Header } from './Header';
-export { ProductCard } from './ProductCard';
+export { ProductPage } from './ProductPage';
 export { Catalog } from './Catalog';
-export { SoloCard } from './SoloCard';
+export { ProductPreviewCard } from './ProductPreviewCard';

@@ -33,14 +33,13 @@ import {
 	clearCurrentUserToken
 } from '../auth';
 
-export const Header = ({ token, setToken, setCurrentUser, currentUser }) => {
+export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [register, setRegister] = useState(false);
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const handleChange = async event => {
@@ -51,41 +50,63 @@ export const Header = ({ token, setToken, setCurrentUser, currentUser }) => {
 		event.preventDefault();
 	};
 
+	const handleRegisterSubmit = async event => {
+		try {
+			const registration = await callApi(
+				{ method: 'post', path: '/users/register' },
+				{
+					firstName: firstName,
+					lastName: lastName,
+					email: email,
+					username: username,
+					password: password
+				}
+			);
+			console.log(registration);
+			if (registration.newUser && registration.token) {
+				storeCurrentUser(registration.newUser);
+				setCurrentUser(registration.newUser);
+				storeCurrentUserToken(registration.token);
+				setToken(registration.token);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	const handleSubmitLogin = async event => {
 		event.preventDefault();
 		console.log(username);
 		console.log(password);
 		try {
-			if (register) {
-				const registration = await callApi(
-					{ method: 'post', path: '/users/register' },
-					{
-						firstName: firstName,
-						lastName: lastName,
-						email: email,
-						username: username,
-						password: password
-					}
-				);
-				console.log(registration);
-				if (registration.newUser && registration.token) {
-					storeCurrentUser(registration.newUser);
-					setCurrentUser(registration.newUser);
-					storeCurrentUserToken(registration.token);
-					setToken(registration.token);
+			const registration = await callApi(
+				{ method: 'post', path: '/users/register' },
+				{
+					firstName: firstName,
+					lastName: lastName,
+					email: email,
+					username: username,
+					password: password
 				}
-			} else {
-				const login = await callApi(
-					{ method: 'post', path: '/users/login' },
-					{ username: username, password: password }
-				);
-				console.log(login);
-				if (login.token && login.user) {
-					setCurrentUser(login.user);
-					storeCurrentUser(login.user);
-					setToken(login.token);
-					storeCurrentUserToken(login.token);
-				}
+			);
+			console.log(registration);
+			if (registration.newUser && registration.token) {
+				storeCurrentUser(registration.newUser);
+				setCurrentUser(registration.newUser);
+				storeCurrentUserToken(registration.token);
+				setToken(registration.token);
+			}
+
+			const login = await callApi(
+				{ method: 'post', path: '/users/login' },
+				{ username: username, password: password }
+			);
+			console.log(login);
+			if (login.token && login.user) {
+				setCurrentUser(login.user);
+				storeCurrentUser(login.user);
+				setToken(login.token);
+				storeCurrentUserToken(login.token);
 			}
 		} catch (error) {
 			console.error(error);
@@ -102,8 +123,11 @@ export const Header = ({ token, setToken, setCurrentUser, currentUser }) => {
 	return (
 		<Grid
 			templateColumns='15% 60% 15% 10%'
-			margin='25px'
 			justifyItems='center'
+			marginTop='25px'
+			marginBottom='25px'
+			borderBottom='1px solid #d3d3d3'
+			paddingBottom='25px'
 		>
 			<Link to='/store'>
 				<Heading>STORE</Heading>
