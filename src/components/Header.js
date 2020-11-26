@@ -79,24 +79,6 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 		console.log(username);
 		console.log(password);
 		try {
-			const registration = await callApi(
-				{ method: 'post', path: '/users/register' },
-				{
-					firstName: firstName,
-					lastName: lastName,
-					email: email,
-					username: username,
-					password: password
-				}
-			);
-			console.log(registration);
-			if (registration.newUser && registration.token) {
-				storeCurrentUser(registration.newUser);
-				setCurrentUser(registration.newUser);
-				storeCurrentUserToken(registration.token);
-				setToken(registration.token);
-			}
-
 			const login = await callApi(
 				{ method: 'post', path: '/users/login' },
 				{ username: username, password: password }
@@ -138,10 +120,14 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 					<IconButton icon={<FaSearch />} />
 				</InputRightAddon>
 			</InputGroup>
+			{token && currentUser ?
+			<Button variant='outline' onClick={handleUserLogout}>
+				Logout
+			</Button>:
 			<Button variant='outline' onClick={onOpen}>
 				Login
 			</Button>
-
+			}
 			<IconButton
 				variant='outline'
 				icon={<MdShoppingCart />}
@@ -159,7 +145,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 							<TabPanel>
 								<FormControl
 									isRequired
-									onSubmit={handleSubmitLogin}
+									onSubmit={handleRegisterSubmit}
 									// gridTemplateRows = ''
 								>
 									<FormLabel>Username</FormLabel>
