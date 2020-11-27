@@ -7,6 +7,7 @@ const {
 const { createProducts } = require('./products');
 const { createUser } = require('./users');
 const { createOrder } = require('./orders');
+const { addProductToOrder } = require('./order_products');
 
 async function buildTables() {
 	try {
@@ -172,11 +173,42 @@ async function createInitialOrders() {
 	}
 }
 
+async function createInitialOrderProducts() {
+	console.log('Starting to create order_products...');
+	try {
+		const order1 = await addProductToOrder({
+			orderId: 1, 
+			productId: 1, 
+			price: 8.99,
+			quantity: 1
+		});
+		const order2 = await addProductToOrder({
+			orderId: 2, 
+			productId: 2, 
+			price: 8.98,
+			quantity: 1.5
+		});
+		const order3 = await addProductToOrder({
+			orderId: 3, 
+			productId: 3, 
+			price: 9.98,
+			quantity: 2
+		});
+		console.log(order1, order2, order3 )
+		console.log('order_products created:');
+		console.log('Finished creating order_products!');
+	} catch (error) {
+		console.error('Error creating order_products!');
+		throw error;
+	}
+}
+
 async function populateInitialData() {
 	try {
 		await createInitialProducts();
 		await createInitialUsers();
 		await createInitialOrders();
+		await createInitialOrderProducts();
 		// create useful starting data
 	} catch (error) {
 		throw error;
