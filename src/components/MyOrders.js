@@ -11,13 +11,13 @@ export const MyOrders = ({orders, user, isAdmin, currentUser}) => {
 		<Grid templateColumns="repeat(3, 1fr)">
                 {orders.map(({id, status, userId, datePlaced}) =>
                 
-				
+				(userId === currentUser.id) ?
         		<Box key={id} className="Activity" border="1px solid black">
           		<Text>Order Status:  {status} </Text>
             	<Text>Order Date: {datePlaced }</Text>
 				
 				</Box>
-                )}
+				: "")}
 		</Grid>
 		</Box>
 	)

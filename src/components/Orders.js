@@ -3,7 +3,7 @@ import { ProductCard } from './ProductCard';
 import { callApi } from '../api';
 import { MyOrders } from './MyOrders';
 
-export const Orders = ({orders, setOrders, user}) => {
+export const Orders = ({orders, currentUser, setOrders, user}) => {
 
     
 	console.log("orders:", orders)
@@ -35,5 +35,5 @@ export const Orders = ({orders, setOrders, user}) => {
 	}, []);
 
 	
-	return <MyOrders  user={user} orders={orders} setOrders={setOrders} />
+	return <MyOrders currentUser={currentUser} user={user} orders={orders} setOrders={setOrders} />
 };

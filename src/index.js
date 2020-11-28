@@ -36,7 +36,7 @@ const App = () => {
 							<SoloCard productId={productId} product={product} setProduct={setProduct} setProductId={setProductId} products={products} setProducts={setProducts}/>
 						</Route>
 						<Route exact path='/orders' >
-							<Orders  orders={orders} setOrders={setOrders} user={user} setUser={setUser} productId={productId} product={product} setProduct={setProduct} setProductId={setProductId} products={products} setProducts={setProducts}/>
+							<Orders  currentUser={currentUser} orders={orders} setOrders={setOrders} user={user} setUser={setUser} productId={productId} product={product} setProduct={setProduct} setProductId={setProductId} products={products} setProducts={setProducts}/>
 						</Route>
 						<Route exact path='/cart'>
 						<ShoppingCart/>
