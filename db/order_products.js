@@ -1,8 +1,23 @@
 const { client } = require('./index');
 
+
+const getUserOrderProducts = async ({ id, orderProductId }) => {
+	try {
+        const { rows: product_orders } = await client.query
+        (`select order_products.* FROM order_products JOIN
+        orders on order_products."orderId" = orders.id
+        where orders."userId" = $1 and "orders_products.id = $2`, [id, orderProductId]);
+        
+        return product_orders;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
+
 const getOrderProductById = async id => {
 	try {
-		const { rows: product_orders } = await client.query(`select * FROM order_products where id = $1`, [id]);
+		const { rows: product_orders } = await client.query(`select * FROM order_products where "orderId" = $1`, [id]);
         
         return product_orders;
 	} catch (error) {
@@ -68,5 +83,6 @@ module.exports = {
     getOrderProductById,
     addProductToOrder,
     updateOrderProduct,
-    destroyOrderProduct
+    destroyOrderProduct,
+    getUserOrderProducts
 };
