@@ -26,7 +26,12 @@ const Header = ({
 	token,
 	setToken,
 	setCurrentUser,
-	currentUser
+	currentUser,
+	setIsAdmin,
+	isAdmin,
+	setUser,
+	user
+
 }) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');
@@ -58,6 +63,7 @@ const Header = ({
 				{
 					storeCurrentUser(registration.newUser);
 					setCurrentUser(registration.newUser);
+					
 					storeCurrentUserToken(registration.token);
 					setToken(registration.token);
 				}
@@ -70,8 +76,10 @@ const Header = ({
 				{      
 					setCurrentUser(login.user);	
 					storeCurrentUser(login.user);
+					setUser(login.user);
 					setToken(login.token);
 					storeCurrentUserToken(login.token);
+					login.user.isAdmin ? setIsAdmin(true) : setIsAdmin(false);
 				}
             }
         } catch (error) {
@@ -96,9 +104,9 @@ const Header = ({
 				<NavLink to='/products' activeClassName='current'>
 					Products
 				</NavLink>
-				<NavLink to='/orders' activeClassName='current'>
+				{user.isAdmin ? <NavLink to='/orders' activeClassName='current'>
 					MyOrders
-				</NavLink>
+				</NavLink> : ""}
 				<NavLink to='/cart' activeClassName='current'>
 					<i class="material-icons">shopping_cart</i>
 				</NavLink>

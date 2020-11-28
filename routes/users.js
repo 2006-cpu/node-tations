@@ -1,6 +1,6 @@
 const usersRouter = require('express').Router();
 const { sign } = require('jsonwebtoken');
-const { JWT_SECRET } = process.env;
+// const { JWT_SECRET } = process.env;
 const { createUser, getUserByUsername, getUser } = require('../db/users');
 
 usersRouter.post('/register', async (req, res, next) => {
@@ -33,7 +33,7 @@ usersRouter.post('/register', async (req, res, next) => {
 				user: newUser.username,
 				isAdmin: newUser.isAdmin
 			},
-			JWT_SECRET
+			process.env.JWT_SECRET
 		);
 
 		res.send({ message: 'success', newUser, token });
@@ -55,7 +55,7 @@ usersRouter.post('/login', async (req, res, next) => {
 		if (user) {
 			const token = sign(
 				{ id: user.id, username: user.username, isAdmin: user.isAdmin },
-				JWT_SECRET
+				process.env.JWT_SECRET
 			);
 
 			res.send({ message: 'You are logged in', user, token });

@@ -3,8 +3,10 @@ import { ProductCard } from './ProductCard';
 import { callApi } from '../api';
 import { MyOrders } from './MyOrders';
 
-export const Orders = ({orders, setOrders}) => {
-	
+export const Orders = ({orders, setOrders, user}) => {
+
+    
+	console.log("orders:", orders)
     
 	
 	const fetchOrders = async () => {
@@ -12,12 +14,13 @@ export const Orders = ({orders, setOrders}) => {
 			method: 'GET',
 			path: '/orders'
 		};
-
+        
 		try {
-            const orders = await callApi(config);
             
+            const orders = await callApi(config);
+            setOrders(orders)
             console.log("orders:", orders)
-            // setOrders(orders);
+           
 			
 			
 		} catch (error) {
@@ -28,9 +31,9 @@ export const Orders = ({orders, setOrders}) => {
 	};
 
 	useEffect(() => {
-		fetchOrders().then(setOrders)
+        fetchOrders()
 	}, []);
 
 	
-	return <MyOrders  orders={orders} setOrders={setOrders} />
+	return <MyOrders  user={user} orders={orders} setOrders={setOrders} />
 };

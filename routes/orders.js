@@ -2,10 +2,10 @@ const ordersRouter = require('express').Router();
 const { getAllOrders, getCartByUser, createOrder } = require('../db/orders');
 const { requireUser, requireAdmin } = require('./utils');
 
-ordersRouter.get('/', requireAdmin, async (req, res, next) => {
+ordersRouter.get('/', async (req, res, next) => {
 	try {
 		const orders = await getAllOrders();
-		res.send({ orders });
+		res.send( orders );
 	} catch ({ name, message }) {
 		next({ name, message });
 	}
@@ -16,7 +16,8 @@ ordersRouter.get('/cart', requireUser, async (req, res, next) => {
 	try {
 		const cartOrders = await getCartByUser(id);
 		res.send({ cartOrders });
-	} catch (error) {}
+	} catch ({ name, message }) {
+		next({ name, message }); }
 });
 
 ordersRouter.post('/', async (req, res, next) => {

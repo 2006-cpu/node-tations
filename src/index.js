@@ -4,22 +4,25 @@ import ReactDOM from 'react-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Header, Catalog, SoloCard, MyOrders, Orders, ShoppingCart } from './components';
-import { getCurrentUser, getCurrentUserToken } from './auth';
+import { getCurrentUser, getCurrentUserToken, requireAdmin } from './auth';
+
 
 const App = () => {
 	const [products, setProducts] = useState([]);
-	const [orders, setOrders] = useState([]);
-	console.log("orders:", orders)
 	const [product, setProduct] = useState({});
 	const [token, setToken] = useState(getCurrentUserToken());
+	const [user, setUser] = useState({});
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
+	const [ isAdmin, setIsAdmin ] = useState(Boolean);
+	const [orders, setOrders] = useState([{}]);
+	console.log("isAdmin:", isAdmin)
 	console.log("product:", product)
 	const [productId, setProductId] = useState({});
 	return (
 		<Router>
 			<ChakraProvider>
 				<div className='App'>
-					<Header token={ token } setToken={ setToken } currentUser={ currentUser } setCurrentUser={ setCurrentUser }/>
+					<Header user={user} setUser={setUser} token={ token } setToken={ setToken } currentUser={ currentUser } setCurrentUser={ setCurrentUser } isAdmin={isAdmin} setIsAdmin={setIsAdmin}/>
 					<Switch>
 						<Route path='/home'>
 							<h2 className='Home'>
@@ -27,13 +30,13 @@ const App = () => {
 							</h2>
 						</Route>
 						<Route exact path='/products'>
-							<Catalog orders={orders} setOrders={setOrders} products={products} setProducts={setProducts} product={product} setProduct={setProduct} productId={productId} setProductId={setProductId} />
+							<Catalog products={products} setProducts={setProducts} product={product} setProduct={setProduct} productId={productId} setProductId={setProductId} />
 						</Route>
 						<Route exact path={`/product/${product}`} >
 							<SoloCard productId={productId} product={product} setProduct={setProduct} setProductId={setProductId} products={products} setProducts={setProducts}/>
 						</Route>
 						<Route exact path='/orders' >
-							<Orders orders={orders} setOrders={setOrders} productId={productId} product={product} setProduct={setProduct} setProductId={setProductId} products={products} setProducts={setProducts}/>
+							<Orders  orders={orders} setOrders={setOrders} user={user} setUser={setUser} productId={productId} product={product} setProduct={setProduct} setProductId={setProductId} products={products} setProducts={setProducts}/>
 						</Route>
 						<Route exact path='/cart'>
 						<ShoppingCart/>

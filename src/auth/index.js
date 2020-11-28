@@ -16,6 +16,7 @@ export function storeCurrentUser(user) {
     return token;
   }
   
+  
   export function clearCurrentUser() {
     localStorage.removeItem('currentUser');
   }
@@ -23,3 +24,5 @@ export function storeCurrentUser(user) {
   export function clearCurrentUserToken() {
     localStorage.removeItem('token');
   }
+
+  
