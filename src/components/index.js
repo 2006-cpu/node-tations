@@ -1,7 +1,7 @@
-export { default as Header } from './Header';
-export { ProductCard } from './ProductCard';
+export { Header } from './Header';
+export { ProductPage } from './ProductPage';
 export { Catalog } from './Catalog';
-export { SoloCard } from './SoloCard';
+export { ProductPreviewCard } from './ProductPreviewCard';
 export { MyOrders } from './MyOrders';
 export { Orders } from './Orders';
 export { ShoppingCart } from './Cart';

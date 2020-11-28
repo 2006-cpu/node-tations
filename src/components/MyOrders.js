@@ -2,9 +2,9 @@ import React from 'react';
 import { Grid, Text, Box } from '@chakra-ui/react';
 
 
-export const MyOrders = ({orders, user, isAdmin, currentUser}) => {
+export const MyOrders = ({orders, currentUser}) => {
     console.log(orders)
-    console.log("admin:", user.isAdmin)
+    
 	// setProductId({ productId : id})
 	return (
 		<Box textAlign="center">MyOrders

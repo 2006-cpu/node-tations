@@ -37,6 +37,7 @@ server.use((error, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, async () => {
 	console.log(`Server is running on ${PORT}!`);
+	console.log('Im up');
 
 	try {
 		await client.connect();
