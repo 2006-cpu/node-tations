@@ -79,10 +79,10 @@ const getUserById = async userId => {
 		const {
 			rows: [user]
 		} = await client.query(
-			`select username, id, "isAdmin" from users where id = $1`,
+			`select * from users where id = $1`,
 			[userId]
 		);
-
+		delete user.password;
 		return user;
 	} catch (error) {
 		throw error;

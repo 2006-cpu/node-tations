@@ -23,7 +23,7 @@ import {
 	TabPanels,
 	TabPanel
 } from '@chakra-ui/react';
-import { MdShoppingCart } from 'react-icons/md';
+import { MdShoppingCart, MdAccountBox } from 'react-icons/md';
 import { FaSearch } from 'react-icons/fa';
 
 import {
@@ -128,6 +128,15 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 				Login
 			</Button>
 			}
+			{token && currentUser ?
+			<Link to='/account'>
+			<IconButton
+				variant='outline'
+				icon={<MdAccountBox />}
+				maxWidth='30px'
+			/>
+			</Link> : null
+			}
 			<IconButton
 				variant='outline'
 				icon={<MdShoppingCart />}
@@ -143,6 +152,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 						</TabList>
 						<TabPanels>
 							<TabPanel>
+							<form onSubmit={handleRegisterSubmit}>
 								<FormControl
 									isRequired
 									onSubmit={handleRegisterSubmit}
@@ -197,6 +207,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 										Submit
 									</Button>
 								</FormControl>
+							</form>
 							</TabPanel>
 							<TabPanel>
 								<form onSubmit={handleSubmitLogin}>
