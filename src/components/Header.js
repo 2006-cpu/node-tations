@@ -140,7 +140,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 			/>
 			</Link> : null
 			}
-			{currentUser && currentUser.isAdmin ? <NavLink to='/orders' activeClassName='current'>
+			{currentUser && token ? <NavLink to='/orders' activeClassName='current'>
 					MyOrders
 				</NavLink> : ""}
 			
