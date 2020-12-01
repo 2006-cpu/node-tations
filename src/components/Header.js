@@ -41,7 +41,6 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [ loggedIn, setLoggedIn ] = useState(Boolean)
 
 	const handleChange = async event => {
 		setSearchQuery(event.target.value);
@@ -52,6 +51,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 	};
 
 	const handleRegisterSubmit = async event => {
+		event.preventDefault();
 		try {
 			const registration = await callApi(
 				{ method: 'post', path: '/users/register' },
@@ -69,7 +69,6 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 				setCurrentUser(registration.newUser);
 				storeCurrentUserToken(registration.token);
 				setToken(registration.token);
-				setLoggedIn(true)
 			}
 		} catch (error) {
 			console.log(error);
@@ -90,7 +89,6 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 				setCurrentUser(login.user);
 				storeCurrentUser(login.user);
 				setToken(login.token);
-				setLoggedIn(true)
 				storeCurrentUserToken(login.token);
 			}
 		} catch (error) {
@@ -103,8 +101,6 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 		clearCurrentUserToken();
 		setCurrentUser(null);
 		setToken(null);
-		localStorage.clear();
-		setLoggedIn(false);
 	};
 
 	return (
@@ -144,7 +140,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 			/>
 			</Link> : null
 			}
-			{currentUser && currentUser.isAdmin && loggedIn === true ? <NavLink to='/orders' activeClassName='current'>
+			{currentUser && currentUser.isAdmin ? <NavLink to='/orders' activeClassName='current'>
 					MyOrders
 				</NavLink> : ""}
 			
@@ -164,12 +160,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 						<TabPanels>
 							<TabPanel>
 							<form onSubmit={handleRegisterSubmit}>
-								<FormControl
-									isRequired
-									onSubmit={handleRegisterSubmit}
-									// gridTemplateRows = ''
-								>
-									<FormLabel>Username</FormLabel>
+								<FormLabel>Username</FormLabel>
 									<Input
 										type='text'
 										placeholder='enter username'
@@ -217,7 +208,6 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 									<Button type='submit' onClick={onClose}>
 										Submit
 									</Button>
-								</FormControl>
 							</form>
 							</TabPanel>
 							<TabPanel>
