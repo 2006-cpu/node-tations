@@ -23,7 +23,7 @@ import {
 	TabPanels,
 	TabPanel
 } from '@chakra-ui/react';
-import { MdShoppingCart } from 'react-icons/md';
+import { MdShoppingCart, MdAccountBox } from 'react-icons/md';
 import { FaSearch } from 'react-icons/fa';
 
 import {
@@ -33,7 +33,7 @@ import {
 	clearCurrentUserToken
 } from '../auth';
 
-export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmin, setUser, user }) => {
+export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmin }) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -69,8 +69,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 				setCurrentUser(registration.newUser);
 				storeCurrentUserToken(registration.token);
 				setToken(registration.token);
-				
-				
+				setLoggedIn(true)
 			}
 		} catch (error) {
 			console.log(error);
@@ -92,9 +91,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 				storeCurrentUser(login.user);
 				setToken(login.token);
 				setLoggedIn(true)
-				setUser(login.user)
 				storeCurrentUserToken(login.token);
-				login.user.isAdmin ? setIsAdmin(true) : setIsAdmin(false)
 			}
 		} catch (error) {
 			console.error(error);
@@ -138,7 +135,16 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 				Login
 			</Button>
 			}
-			{user.isAdmin && loggedIn === true ? <NavLink to='/orders' activeClassName='current'>
+			{token && currentUser ?
+			<Link to='/account'>
+			<IconButton
+				variant='outline'
+				icon={<MdAccountBox />}
+				maxWidth='30px'
+			/>
+			</Link> : null
+			}
+			{currentUser && currentUser.isAdmin && loggedIn === true ? <NavLink to='/orders' activeClassName='current'>
 					MyOrders
 				</NavLink> : ""}
 			
@@ -157,6 +163,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 						</TabList>
 						<TabPanels>
 							<TabPanel>
+							<form onSubmit={handleRegisterSubmit}>
 								<FormControl
 									isRequired
 									onSubmit={handleRegisterSubmit}
@@ -211,6 +218,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 										Submit
 									</Button>
 								</FormControl>
+							</form>
 							</TabPanel>
 							<TabPanel>
 								<form onSubmit={handleSubmitLogin}>

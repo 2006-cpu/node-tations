@@ -3,7 +3,7 @@ const { getAllOrders, getCartByUser, createOrder } = require('../db/orders');
 const { getOrderProductById, addProductToOrder, updateOrderProduct } = require('../db/order_products');
 const { requireUser, requireAdmin } = require('./utils');
 
-ordersRouter.get('/', async (req, res, next) => {
+ordersRouter.get('/', requireAdmin, async (req, res, next) => {
 	try {
 		const orders = await getAllOrders();
 		res.send( orders );

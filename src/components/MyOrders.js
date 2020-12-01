@@ -5,7 +5,6 @@ import { Grid, Text, Box } from '@chakra-ui/react';
 export const MyOrders = ({orders, currentUser}) => {
     console.log(orders)
     
-	// setProductId({ productId : id})
 	return (
 		<Box textAlign="center">MyOrders
 		<Grid templateColumns="repeat(3, 1fr)">
