@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { callApi } from '../api';
 import { MyOrders } from './MyOrders';
 
-export const Orders = ({orders, currentUser, setOrders}) => {
+export const Orders = ({orders, currentUser, setOrders, token}) => {
 
     
 	console.log("orders:", orders)
@@ -11,7 +11,8 @@ export const Orders = ({orders, currentUser, setOrders}) => {
 	const fetchOrders = async () => {
 		const config = {
 			method: 'GET',
-			path: '/orders'
+			path: '/orders',
+			token: token
 		};
         
 		try {

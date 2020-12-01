@@ -92,7 +92,6 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 				setToken(login.token);
 				setLoggedIn(true)
 				storeCurrentUserToken(login.token);
-				login.user.isAdmin ? setIsAdmin(true) : setIsAdmin(false)
 			}
 		} catch (error) {
 			console.error(error);
@@ -145,7 +144,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 			/>
 			</Link> : null
 			}
-			{user.isAdmin && loggedIn === true ? <NavLink to='/orders' activeClassName='current'>
+			{currentUser && currentUser.isAdmin && loggedIn === true ? <NavLink to='/orders' activeClassName='current'>
 					MyOrders
 				</NavLink> : ""}
 			

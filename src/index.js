@@ -3,12 +3,11 @@ import ReactDOM from 'react-dom';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Header, Catalog, ProductPage, Account } from './components';
+import { Header, Catalog, ProductPage, Account, Orders, ShoppingCart } from './components';
 import { getCurrentUser, getCurrentUserToken } from './auth';
 
 const App = () => {
-	const [token, setToken] = useSta
-	te(getCurrentUserToken());
+	const [token, setToken] = useState(getCurrentUserToken());
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
 	const [orders, setOrders] = useState([{}]);
 	

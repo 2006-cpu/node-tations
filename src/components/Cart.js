@@ -4,7 +4,6 @@ import { Grid, Image, Text, Box } from '@chakra-ui/react';
 
 export const ShoppingCart = () => {
 	
-	// setProductId({ productId : id})
 	return (
 		<Box textAlign="center">CHECKOUT : Your items listed below!
 		<Grid templateColumns="repeat(3, 1fr)">
