@@ -21,7 +21,7 @@ const getAllOrders = async () => {
 		const { rows: orders } = await client.query(`select * from orders`);
 
 		const ordersWithProducts = await Promise.all(
-			orders.map(async order => {
+			orders.map(async (order) => {
 				order.products = await getProductsforOrders(order.id);
 				return order;
 			})
