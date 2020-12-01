@@ -3,35 +3,42 @@ import ReactDOM from 'react-dom';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Header, Catalog, SoloCard, ProductCard } from './components';
+import { Header, Catalog, ProductPage, Account, Orders, ShoppingCart } from './components';
 import { getCurrentUser, getCurrentUserToken } from './auth';
 
 const App = () => {
-	const [products, setProducts] = useState([]);
-	const [product, setProduct] = useState({});
 	const [token, setToken] = useState(getCurrentUserToken());
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
-	console.log("product:", product)
-	const [productId, setProductId] = useState({});
+	const [orders, setOrders] = useState([{}]);
+	
 	return (
 		<Router>
 			<ChakraProvider>
 				<div className='App'>
-					<Header token={ token } setToken={ setToken } currentUser={ currentUser } setCurrentUser={ setCurrentUser }/>
+					<Header
+						token={token}
+						setToken={setToken}
+						currentUser={currentUser}
+						setCurrentUser={setCurrentUser}
+					/>
 					<Switch>
-						<Route path='/home'>
-							<h2 className='Home'>
-								Welcome to Title of Website
-							</h2>
+						<Route path='/store'>
+							<Catalog />
 						</Route>
-						<Route exact path='/products'>
-							<Catalog products={products} setProducts={setProducts} product={product} setProduct={setProduct} productId={productId} setProductId={setProductId} />
+						<Route path={'/products/:productId'}>
+							<ProductPage />
 						</Route>
-						<Route exact path={`/product/${product}`} >
-							<SoloCard productId={productId} product={product} setProduct={setProduct} setProductId={setProductId} products={products} setProducts={setProducts}/>
+						<Route path={'/account'}>
+							<Account currentUser={ currentUser } token={ token }/>
 						</Route>
-						
-						
+					</Switch>
+					<Switch>
+					<Route exact path='/orders' >
+							<Orders  currentUser={currentUser} orders={orders} setOrders={setOrders} />
+						</Route>
+						<Route exact path='/cart'>
+						<ShoppingCart/>
+					</Route>
 					</Switch>
 				</div>
 			</ChakraProvider>

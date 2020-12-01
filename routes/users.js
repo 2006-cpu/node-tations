@@ -1,7 +1,8 @@
 const usersRouter = require('express').Router();
 const { sign } = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
-const { createUser, getUserByUsername, getUser } = require('../db/users');
+const { createUser, getUserByUsername, getUser, getUserById } = require('../db/users');
+const { requireUser } = require('./utils');
 
 usersRouter.post('/register', async (req, res, next) => {
 	const userFields = [
@@ -65,18 +66,14 @@ usersRouter.post('/login', async (req, res, next) => {
 	}
 });
 
-usersRouter.get('/me', async (req, res, next) => {
-	const { username } = req.body;
-	const { token } = req.headers;
+usersRouter.get('/me', requireUser, async (req, res, next) => {
+	const { id } = req.user;
 
 	try {
-		const user = await usersMe(username, token);
-
-		if (user) localStorage.setItem('token', JSON.stringify(user));
-		console.log('products:', products);
-		res.send({
-			user: user
-		});
+		const user = await getUserById(id);
+		res.send(
+			user
+		);
 	} catch ({ name, message }) {
 		res.send({ name, message });
 	}

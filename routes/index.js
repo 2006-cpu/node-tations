@@ -4,6 +4,7 @@ const apiRouter = require('express').Router();
 const { productsRouter } = require('./products');
 const { usersRouter } = require('./users');
 const { ordersRouter } = require('./orders');
+const { orderProductsRouter } = require('./order_products');
 
 //Auth utils
 const { verify } = require('jsonwebtoken');
@@ -34,5 +35,7 @@ apiRouter.use('/', async (req, res, next) => {
 apiRouter.use('/products', productsRouter);
 apiRouter.use('/users', usersRouter);
 apiRouter.use('/orders', ordersRouter);
+apiRouter.use('/order_products', orderProductsRouter);
+
 
 module.exports = { apiRouter };

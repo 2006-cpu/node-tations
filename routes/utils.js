@@ -12,6 +12,7 @@ const requireUser = (req, res, next) => {
 
 const requireAdmin = (req, res, next) => {
 	console.log(req.user);
+
 	if (!req.user) {
 		return next({
 			name: 'Not authorized',
