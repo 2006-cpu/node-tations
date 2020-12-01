@@ -8,10 +8,10 @@ export const Orders = ({orders, currentUser, setOrders, token}) => {
 	console.log("orders:", orders)
     
 	
-	const fetchOrders = async () => {
+	const fetchMyOrders = async () => {
 		const config = {
 			method: 'GET',
-			path: '/orders',
+			path: `/orders/users/${ currentUser.id }/orders`,
 			token: token
 		};
         
@@ -31,7 +31,10 @@ export const Orders = ({orders, currentUser, setOrders, token}) => {
 	};
 
 	useEffect(() => {
-        fetchOrders()
+		if(currentUser)
+		{
+			fetchMyOrders()
+		}
 	}, []);
 
 	

@@ -34,7 +34,7 @@ const App = () => {
 					</Switch>
 					<Switch>
 					<Route exact path='/orders' >
-							<Orders  currentUser={currentUser} orders={orders} setOrders={setOrders} />
+							<Orders  currentUser={currentUser} orders={orders} setOrders={setOrders} token={ token } />
 						</Route>
 						<Route exact path='/cart'>
 						<ShoppingCart/>
