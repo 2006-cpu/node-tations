@@ -7,7 +7,8 @@ import { Header, Catalog, ProductPage, Account } from './components';
 import { getCurrentUser, getCurrentUserToken } from './auth';
 
 const App = () => {
-	const [token, setToken] = useState(getCurrentUserToken());
+	const [token, setToken] = useSta
+	te(getCurrentUserToken());
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
 	const [orders, setOrders] = useState([{}]);
 	
@@ -20,8 +21,6 @@ const App = () => {
 						setToken={setToken}
 						currentUser={currentUser}
 						setCurrentUser={setCurrentUser}
-						setUser={setUser}
-						user={user}
 					/>
 					<Switch>
 						<Route path='/store'>
@@ -36,7 +35,7 @@ const App = () => {
 					</Switch>
 					<Switch>
 					<Route exact path='/orders' >
-							<Orders  currentUser={currentUser} orders={orders} setOrders={setOrders} user={user} setUser={setUser} />
+							<Orders  currentUser={currentUser} orders={orders} setOrders={setOrders} />
 						</Route>
 						<Route exact path='/cart'>
 						<ShoppingCart/>
