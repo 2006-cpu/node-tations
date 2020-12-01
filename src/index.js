@@ -9,7 +9,8 @@ import { getCurrentUser, getCurrentUserToken } from './auth';
 const App = () => {
 	const [token, setToken] = useState(getCurrentUserToken());
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
-
+	const [orders, setOrders] = useState([{}]);
+	
 	return (
 		<Router>
 			<ChakraProvider>
@@ -19,6 +20,8 @@ const App = () => {
 						setToken={setToken}
 						currentUser={currentUser}
 						setCurrentUser={setCurrentUser}
+						setUser={setUser}
+						user={user}
 					/>
 					<Switch>
 						<Route path='/store'>
@@ -30,6 +33,14 @@ const App = () => {
 						<Route path={'/account'}>
 							<Account currentUser={ currentUser } token={ token }/>
 						</Route>
+					</Switch>
+					<Switch>
+					<Route exact path='/orders' >
+							<Orders  currentUser={currentUser} orders={orders} setOrders={setOrders} user={user} setUser={setUser} />
+						</Route>
+						<Route exact path='/cart'>
+						<ShoppingCart/>
+					</Route>
 					</Switch>
 				</div>
 			</ChakraProvider>

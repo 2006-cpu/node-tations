@@ -19,6 +19,7 @@ export const Catalog = () => {
 			console.error(error);
 		}
 	};
+	
 
 	useEffect(() => {
 		fetchProducts();

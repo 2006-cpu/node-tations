@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, Redirect } from 'react-router-dom';
 import { callApi } from '../api';
 import {
 	Grid,
@@ -33,7 +33,7 @@ import {
 	clearCurrentUserToken
 } from '../auth';
 
-export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
+export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmin }) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -41,6 +41,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [ loggedIn, setLoggedIn ] = useState(Boolean)
 
 	const handleChange = async event => {
 		setSearchQuery(event.target.value);
@@ -68,6 +69,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 				setCurrentUser(registration.newUser);
 				storeCurrentUserToken(registration.token);
 				setToken(registration.token);
+				setLoggedIn(true)
 			}
 		} catch (error) {
 			console.log(error);
@@ -88,7 +90,9 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 				setCurrentUser(login.user);
 				storeCurrentUser(login.user);
 				setToken(login.token);
+				setLoggedIn(true)
 				storeCurrentUserToken(login.token);
+				login.user.isAdmin ? setIsAdmin(true) : setIsAdmin(false)
 			}
 		} catch (error) {
 			console.error(error);
@@ -100,6 +104,8 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 		clearCurrentUserToken();
 		setCurrentUser(null);
 		setToken(null);
+		localStorage.clear();
+		setLoggedIn(false);
 	};
 
 	return (
@@ -121,9 +127,11 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 				</InputRightAddon>
 			</InputGroup>
 			{token && currentUser ?
+			<Link to="/store">
 			<Button variant='outline' onClick={handleUserLogout}>
 				Logout
-			</Button>:
+			</ Button>
+			</Link>:
 			<Button variant='outline' onClick={onOpen}>
 				Login
 			</Button>
@@ -137,6 +145,10 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 			/>
 			</Link> : null
 			}
+			{user.isAdmin && loggedIn === true ? <NavLink to='/orders' activeClassName='current'>
+					MyOrders
+				</NavLink> : ""}
+			
 			<IconButton
 				variant='outline'
 				icon={<MdShoppingCart />}
