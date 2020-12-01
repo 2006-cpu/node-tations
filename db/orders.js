@@ -134,11 +134,67 @@ const createOrder = async ({status, id}) => {
 	}
 };
 
+const updateOrder = async ({id, status, userId}) => {
+	try {
+		const {
+			rows: updatedOrders
+		} = await client.query(
+			`UPDATE orders 
+			WHERE id = $1
+			RETURNING $2, $3`,
+			[id, status, userId]
+		);
+		return updatedOrders;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
+
+const completeOrder = async ({id, status}) => {
+
+	try {
+		const {
+			rows: completedOrder
+		} = await client.query(
+			`UPDATE orders 
+			WHERE id = $1
+			RETURNING ${status === 'complete'}`,
+			[id]
+		);
+		return completedOrder;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
+
+const cancelOrder = async ({id, status}) => {
+
+	try {
+		const {
+			rows: cancelledOrder
+		} = await client.query(
+			`UPDATE orders 
+			WHERE id = $1
+			RETURNING ${status === 'cancelled'}`,
+			[id]
+		);
+		return cancelledOrder;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
+
 module.exports = {
 	getAllOrders,
 	getOrderById,
 	getOrderByUsername,
 	getOrderByProduct,
 	getCartByUser,
-	createOrder
+	createOrder,
+	updateOrder,
+	completeOrder,
+	cancelOrder
 };
