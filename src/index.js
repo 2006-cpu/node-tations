@@ -3,14 +3,21 @@ import ReactDOM from 'react-dom';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Header, Catalog, ProductPage, Account, Orders, ShoppingCart } from './components';
+import {
+	Header,
+	Catalog,
+	ProductPage,
+	Account,
+	Orders,
+	ShoppingCart
+} from './components';
 import { getCurrentUser, getCurrentUserToken } from './auth';
 
 const App = () => {
 	const [token, setToken] = useState(getCurrentUserToken());
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
 	const [orders, setOrders] = useState([{}]);
-	
+
 	return (
 		<Router>
 			<ChakraProvider>
@@ -26,19 +33,27 @@ const App = () => {
 							<Catalog />
 						</Route>
 						<Route path={'/products/:productId'}>
-							<ProductPage />
+							<ProductPage
+								token={token}
+								currentUser={currentUser}
+							/>
 						</Route>
 						<Route path={'/account'}>
-							<Account currentUser={ currentUser } token={ token }/>
+							<Account currentUser={currentUser} token={token} />
 						</Route>
 					</Switch>
 					<Switch>
-					<Route exact path='/orders' >
-							<Orders  currentUser={currentUser} orders={orders} setOrders={setOrders} token={ token } />
+						<Route exact path='/orders'>
+							<Orders
+								currentUser={currentUser}
+								orders={orders}
+								setOrders={setOrders}
+								token={token}
+							/>
 						</Route>
 						<Route exact path='/cart'>
-						<ShoppingCart/>
-					</Route>
+							<ShoppingCart />
+						</Route>
 					</Switch>
 				</div>
 			</ChakraProvider>
