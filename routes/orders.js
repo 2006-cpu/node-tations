@@ -6,10 +6,10 @@ const { requireUser, requireAdmin } = require('./utils');
 
 ordersRouter.get('/', requireAdmin, async (req, res, next) => {
 	try {
-        if (req.user){
+        
             const orders = await getAllOrders();
             res.send( orders );
-        }
+        
 		
 	} catch ({ name, message }) {
 		next({ name, message });

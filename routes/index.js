@@ -22,12 +22,12 @@ apiRouter.use('/', async (req, res, next) => {
 		const token = auth.slice('Bearer '.length);
 		
 
-		const { id, user, isAdmin } = verify(token, JWT_SECRET);
+		const { id } = verify(token, JWT_SECRET);
 
 		if (id) {
-			console.log("user", user);
+			
 			req.user = await getUserById(id);
-			return next({ name: 'user ser', message: 'thank you for logging in!' })
+			return next()
 			
 		}
 	} else {

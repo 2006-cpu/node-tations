@@ -16,7 +16,7 @@ const createUser = async ({
 		const {
 			rows: [newUser]
 		} = await client.query(
-			`insert into users(firstname, lastname, email, "imageURL", username, password, "isAdmin") values($1, $2, $3, $4, $5, $6, $7) returning *`,
+			`insert into users(firstname, lastname, email, imageURL, username, password, "isAdmin") values($1, $2, $3, $4, $5, $6, $7) returning *`,
 			[
 				firstName,
 				lastName,
