@@ -1,8 +1,8 @@
 const usersRouter = require('express').Router();
 const { sign } = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
-const { createUser, getUserByUsername, getUser, getUserById } = require('../db/users');
-const { requireUser } = require('./utils');
+const { createUser, getUserByUsername, getUser, getUserById, getAllUsers } = require('../db/users');
+const { requireUser, requireAdmin } = require('./utils');
 
 usersRouter.post('/register', async (req, res, next) => {
 	const userFields = [
@@ -76,7 +76,33 @@ usersRouter.get('/me', requireUser, async (req, res, next) => {
 		);
 	} catch ({ name, message }) {
 		res.send({ name, message });
-	}
+	};
+});
+
+usersRouter.get('/', requireAdmin, async (req, res, next) => {
+
+	try {
+		const user = await getAllUsers();
+		res.send(
+			user
+		);
+	} catch ({ name, message }) {
+		res.send({ name, message });
+	};
+});
+
+usersRouter.patch('/:userId', requireAdmin, async (req, res, next) => {
+	const { userId } = req.params;
+	const id = Number(userId);
+
+	try {
+		const user = await updateUser(id, req.body);
+		res.send(
+			user
+		);
+	} catch ({ name, message }) {
+		res.send({ name, message });
+	};
 });
 
 module.exports = { usersRouter };
