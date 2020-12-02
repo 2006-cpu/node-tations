@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Header, Catalog, ProductPage, Account, Orders, ShoppingCart } from './components';
+import { Header, Catalog, ProductPage, Account, Orders, ShoppingCart, Users, AddUser } from './components';
 import { getCurrentUser, getCurrentUserToken } from './auth';
 
 const App = () => {
@@ -28,7 +28,7 @@ const App = () => {
 						<Route path={'/products/:productId'}>
 							<ProductPage />
 						</Route>
-						<Route path={'/account'}>
+						<Route path='/account'>
 							<Account currentUser={ currentUser } token={ token }/>
 						</Route>
 					</Switch>
@@ -38,6 +38,12 @@ const App = () => {
 						</Route>
 						<Route exact path='/cart'>
 						<ShoppingCart/>
+					</Route>
+					<Route exact path='/users'>
+						<Users currentUser={ currentUser } token={ token }/>
+					</Route>
+					<Route path='/users/add'>
+						<AddUser currentUser={ currentUser }/>
 					</Route>
 					</Switch>
 				</div>

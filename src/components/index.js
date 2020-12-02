@@ -6,3 +6,5 @@ export { Account } from './Account';
 export { MyOrders } from './MyOrders';
 export { Orders } from './Orders';
 export { ShoppingCart } from './Cart';
+export { Users } from './Users';
+export { AddUser } from './AddUser';
