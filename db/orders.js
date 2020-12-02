@@ -6,7 +6,7 @@ const getProductsforOrders = async id => {
 			`select products.*, order_products.price, order_products.quantity from products
             JOIN order_products ON products.id = order_products."productId"
             JOIN orders ON order_products."orderId" = orders.id 
-            where products.id = $1`,
+            where orders.id = $1`,
 			[id]
 		);
 		return products;
@@ -35,10 +35,9 @@ const getAllOrders = async () => {
 
 const getOrderById = async ({ id }) => {
 	try {
-		const { rows: orders } = await client.query(
-			`select * from orders where id = $1`,
-			[id]
-		);
+		const {
+			rows: orders
+		} = await client.query(`select * from orders where id = $1`, [id]);
 
 		const ordersWithProducts = await Promise.all(
 			orders.map(async order => {
@@ -55,7 +54,6 @@ const getOrderById = async ({ id }) => {
 
 const getOrderByUsername = async ({ username }) => {
 	try {
-
 		const { rows: orders } = await client.query(
 			`select orders.* from orders 
             JOIN users on orders."userId" = users.id
@@ -98,7 +96,7 @@ const getOrderByProduct = async ({ id }) => {
 	}
 };
 
-const getCartByUser = async ({ id }) => {
+const getCartByUser = async id => {
 	try {
 		const { rows: orders } = await client.query(
 			`select * from orders 
@@ -120,10 +118,10 @@ const getCartByUser = async ({ id }) => {
 	}
 };
 
-const createOrder = async ({status, id}) => {
+const createOrder = async (status, id) => {
 	try {
 		const {
-			rows: orders
+			rows: [orders]
 		} = await client.query(
 			`insert into orders(status, "userId") values($1, $2) RETURNING *;`,
 			[status, id]
