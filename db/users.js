@@ -123,4 +123,16 @@ async function updateUser(id, fields = {}) {
     };
 };
 
-module.exports = { createUser, getUser, getUserById, getUserByUsername, updateUser };
+const getAllUsers = async () => {
+	try {
+		const { rows: users } = await client.query(`select * from users`);
+		return users;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
+
+
+
+module.exports = { createUser, getUser, getUserById, getUserByUsername, updateUser, getAllUsers };
