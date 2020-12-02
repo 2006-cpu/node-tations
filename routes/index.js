@@ -20,12 +20,15 @@ apiRouter.use('/', async (req, res, next) => {
 
 	if (auth.startsWith('Bearer ')) {
 		const token = auth.slice('Bearer '.length);
+		
 
-		const { id } = verify(token, JWT_SECRET);
+		const { id, user, isAdmin } = verify(token, JWT_SECRET);
 
 		if (id) {
+			console.log("user", user);
 			req.user = await getUserById(id);
-			return next();
+			return next({ name: 'user ser', message: 'thank you for logging in!' })
+			
 		}
 	} else {
 		next({ name: 'Auth error', message: 'Error in auth format' });

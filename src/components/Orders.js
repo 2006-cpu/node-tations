@@ -2,16 +2,17 @@ import React, { useEffect } from 'react';
 import { callApi } from '../api';
 import { MyOrders } from './MyOrders';
 
-export const Orders = ({orders, currentUser, setOrders, user}) => {
+export const Orders = ({orders, currentUser, setOrders, token}) => {
 
     
 	console.log("orders:", orders)
     
 	
-	const fetchOrders = async () => {
+	const fetchMyOrders = async () => {
 		const config = {
 			method: 'GET',
-			path: '/orders'
+			path: `/orders/users/${ currentUser.id }/orders`,
+			token: token
 		};
         
 		try {
@@ -30,9 +31,12 @@ export const Orders = ({orders, currentUser, setOrders, user}) => {
 	};
 
 	useEffect(() => {
-        fetchOrders()
+		if(currentUser)
+		{
+			fetchMyOrders()
+		}
 	}, []);
 
 	
-	return <MyOrders currentUser={currentUser} user={user} orders={orders} setOrders={setOrders} />
+	return <MyOrders currentUser={currentUser} orders={orders} setOrders={setOrders} />
 };

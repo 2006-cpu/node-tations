@@ -25,7 +25,7 @@ orderProductsRouter.patch('/:orderProductId', requireUser, async (req, res) => {
         {
           next({
             name: 'Incorrect User',
-            message: 'You need to be the creator of the routine'
+            message: 'You need to be the creator of the order'
           });
         };
 
@@ -53,7 +53,7 @@ orderProductsRouter.delete('/:orderProductId', requireUser, async (req, res) => 
         {
           next({
             name: 'Incorrect User',
-            message: 'You need to be the creator of the routine'
+            message: 'You need to be the creator of the order'
           });
         };
     } catch({name, message})

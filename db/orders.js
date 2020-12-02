@@ -21,7 +21,7 @@ const getAllOrders = async () => {
 		const { rows: orders } = await client.query(`select * from orders`);
 
 		const ordersWithProducts = await Promise.all(
-			orders.map(async order => {
+			orders.map(async (order) => {
 				order.products = await getProductsforOrders(order.id);
 				return order;
 			})
@@ -37,7 +37,7 @@ const getOrderById = async ({ id }) => {
 	try {
 		const { rows: orders } = await client.query(
 			`select * from orders where id = $1`,
-			id
+			[id]
 		);
 
 		const ordersWithProducts = await Promise.all(
@@ -55,11 +55,12 @@ const getOrderById = async ({ id }) => {
 
 const getOrderByUsername = async ({ username }) => {
 	try {
+
 		const { rows: orders } = await client.query(
 			`select orders.* from orders 
             JOIN users on orders."userId" = users.id
             where username = $1`,
-			username
+			[username]
 		);
 
 		const ordersWithProducts = await Promise.all(
@@ -81,7 +82,7 @@ const getOrderByProduct = async ({ id }) => {
 			`select orders.* from orders 
             JOIN order_products on orders.id = order_products."orderId"
             where "productId" = $1`,
-			id
+			[id]
 		);
 
 		const ordersWithProducts = await Promise.all(

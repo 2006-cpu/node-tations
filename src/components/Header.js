@@ -23,7 +23,7 @@ import {
 	TabPanels,
 	TabPanel
 } from '@chakra-ui/react';
-import { MdShoppingCart } from 'react-icons/md';
+import { MdShoppingCart, MdAccountBox } from 'react-icons/md';
 import { FaSearch } from 'react-icons/fa';
 
 import {
@@ -33,7 +33,7 @@ import {
 	clearCurrentUserToken
 } from '../auth';
 
-export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmin, setUser, user }) => {
+export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmin }) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -41,7 +41,6 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [ loggedIn, setLoggedIn ] = useState(Boolean)
 
 	const handleChange = async event => {
 		setSearchQuery(event.target.value);
@@ -52,6 +51,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 	};
 
 	const handleRegisterSubmit = async event => {
+		event.preventDefault();
 		try {
 			const registration = await callApi(
 				{ method: 'post', path: '/users/register' },
@@ -69,8 +69,6 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 				setCurrentUser(registration.newUser);
 				storeCurrentUserToken(registration.token);
 				setToken(registration.token);
-				
-				
 			}
 		} catch (error) {
 			console.log(error);
@@ -91,10 +89,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 				setCurrentUser(login.user);
 				storeCurrentUser(login.user);
 				setToken(login.token);
-				setLoggedIn(true)
-				setUser(login.user)
 				storeCurrentUserToken(login.token);
-				login.user.isAdmin ? setIsAdmin(true) : setIsAdmin(false)
 			}
 		} catch (error) {
 			console.error(error);
@@ -106,8 +101,6 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 		clearCurrentUserToken();
 		setCurrentUser(null);
 		setToken(null);
-		localStorage.clear();
-		setLoggedIn(false);
 	};
 
 	return (
@@ -138,7 +131,16 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 				Login
 			</Button>
 			}
-			{user.isAdmin && loggedIn === true ? <NavLink to='/orders' activeClassName='current'>
+			{token && currentUser ?
+			<Link to='/account'>
+			<IconButton
+				variant='outline'
+				icon={<MdAccountBox />}
+				maxWidth='30px'
+			/>
+			</Link> : null
+			}
+			{currentUser && token ? <NavLink to='/orders' activeClassName='current'>
 					MyOrders
 				</NavLink> : ""}
 			
@@ -157,12 +159,8 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 						</TabList>
 						<TabPanels>
 							<TabPanel>
-								<FormControl
-									isRequired
-									onSubmit={handleRegisterSubmit}
-									// gridTemplateRows = ''
-								>
-									<FormLabel>Username</FormLabel>
+							<form onSubmit={handleRegisterSubmit}>
+								<FormLabel>Username</FormLabel>
 									<Input
 										type='text'
 										placeholder='enter username'
@@ -210,7 +208,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 									<Button type='submit' onClick={onClose}>
 										Submit
 									</Button>
-								</FormControl>
+							</form>
 							</TabPanel>
 							<TabPanel>
 								<form onSubmit={handleSubmitLogin}>

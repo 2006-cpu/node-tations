@@ -44,8 +44,66 @@ const createProducts = async product => {
 	}
 };
 
+const deleteProduct = async ({ id }) => {
+	{   
+		try{
+			const {rows: order_products} = await client.query(`
+			DELETE FROM order_products
+			JOIN orders ON order_products."orderId" = orders.id
+			WHERE "productId" = $1
+			AND status <> 'completed'
+		  `, [id]);
+			console.log(order_products)
+		  	const {rows: product} = await client.query(`
+		  	DELETE FROM products
+		  	WHERE id = $1
+			`, [id]);
+	
+			return product
+		}
+		catch (error) 
+		{
+			console.error(error);
+			throw error;
+		};
+	};
+};	
+
+async function updateProduct(id, fields = {}) {
+	// build the set string
+	const setString = Object.keys(fields).map(
+	  (key, index) => `"${ key }"=$${ index + 1 }`
+	).join(', ');
+
+	// return early if this is called without fields
+	if (setString.length === 0) {
+		return;
+		};
+
+	try {
+        const {
+			rows: product
+		} = await client.query(
+            `UPDATE products
+            SET ${ setString }
+            WHERE id ${ id }
+            RETURNING *;`,
+			Object.values(fields)
+		);
+		return product;
+        
+    } catch (error) {
+        console.error(error);
+		throw error;    
+    };
+};
+
+
+
 module.exports = {
 	getProductById,
 	getAllProducts,
-	createProducts
+	createProducts,
+	deleteProduct,
+	updateProduct
 };

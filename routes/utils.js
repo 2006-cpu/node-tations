@@ -23,9 +23,12 @@ const requireAdmin = (req, res, next) => {
 			name: 'Not authorized',
 			message: 'User must be an admin to perform this action'
 		});
-	} else {
+	} else if (req.user.isAdmin) {
 		console.log('User is authorized');
-		return next();
+		return next({
+			name: 'Admin Set',
+			message: `Welcome back ${req.user.username}`
+		});
 	}
 };
 

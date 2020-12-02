@@ -1,7 +1,8 @@
 const usersRouter = require('express').Router();
 const { sign } = require('jsonwebtoken');
-// const { JWT_SECRET } = process.env;
-const { createUser, getUserByUsername, getUser } = require('../db/users');
+const { JWT_SECRET } = process.env;
+const { createUser, getUserByUsername, getUser, getUserById } = require('../db/users');
+const { requireUser } = require('./utils');
 
 usersRouter.post('/register', async (req, res, next) => {
 	const userFields = [
@@ -33,7 +34,7 @@ usersRouter.post('/register', async (req, res, next) => {
 				user: newUser.username,
 				isAdmin: newUser.isAdmin
 			},
-			process.env.JWT_SECRET
+			JWT_SECRET
 		);
 
 		res.send({ message: 'success', newUser, token });
@@ -55,7 +56,7 @@ usersRouter.post('/login', async (req, res, next) => {
 		if (user) {
 			const token = sign(
 				{ id: user.id, username: user.username, isAdmin: user.isAdmin },
-				process.env.JWT_SECRET
+				JWT_SECRET
 			);
 
 			res.send({ message: 'You are logged in', user, token });
@@ -65,18 +66,14 @@ usersRouter.post('/login', async (req, res, next) => {
 	}
 });
 
-usersRouter.get('/me', async (req, res, next) => {
-	const { username } = req.body;
-	const { token } = req.headers;
+usersRouter.get('/me', requireUser, async (req, res, next) => {
+	const { id } = req.user;
 
 	try {
-		const user = await usersMe(username, token);
-
-		if (user) localStorage.setItem('token', JSON.stringify(user));
-		console.log('products:', products);
-		res.send({
-			user: user
-		});
+		const user = await getUserById(id);
+		res.send(
+			user
+		);
 	} catch ({ name, message }) {
 		res.send({ name, message });
 	}

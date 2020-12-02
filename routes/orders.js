@@ -1,12 +1,16 @@
 const ordersRouter = require('express').Router();
-const { getAllOrders, getCartByUser, createOrder } = require('../db/orders');
+const { getAllOrders, getCartByUser, createOrder, getOrderByUsername } = require('../db/orders');
 const { getOrderProductById, addProductToOrder, updateOrderProduct } = require('../db/order_products');
+const { getUserById } = require('../db/users')
 const { requireUser, requireAdmin } = require('./utils');
 
-ordersRouter.get('/', async (req, res, next) => {
+ordersRouter.get('/', requireAdmin, async (req, res, next) => {
 	try {
-		const orders = await getAllOrders();
-		res.send( orders );
+        if (req.user){
+            const orders = await getAllOrders();
+            res.send( orders );
+        }
+		
 	} catch ({ name, message }) {
 		next({ name, message });
 	}
@@ -33,17 +37,22 @@ ordersRouter.post('/', async (req, res, next) => {
 	}
 });
 
-ordersRouter.get('/users/:userId/orders', async (req, res, next) => {
+ordersRouter.get('/users/:userId/orders', requireUser, async (req, res, next) => {
 	const { userId } = req.params;
 	try {
-		const cartToCheckout = await getPendingOrdersByUser(userId);
 
-		console.log('newlyAddedProduct:', newProduct);
-		req.user
-			? res.send({
-					cartToCheckout: cartToCheckout
-			  })
-			: null;
+		const user = await getUserById(userId)
+
+		if(user)
+		{
+			console.log(user.username)
+			const cartToCheckout = await getOrderByUsername({username: user.username});
+
+			res.send(
+				cartToCheckout
+				 )
+		}
+
 	} catch (error) {}
 });
 
