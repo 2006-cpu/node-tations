@@ -54,8 +54,10 @@ productsRouter.patch('/:productId', requireAdmin, async (req, res, next) => {
 	const { productId } = req.params;
 	const id = Number(productId);
 
+
 	try {
 		const user = await updateProduct(id, req.body);
+
 		res.send(
 			user
 		);

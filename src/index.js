@@ -14,7 +14,10 @@ import {
 	Users, 
 	AddUser,
 	UserPage,
-	AdminOrders
+	AdminOrders,
+	AdminProducts,
+	AddProduct,
+	AdminProductPage
 } from './components';
 
 import { getCurrentUser, getCurrentUserToken } from './auth';
@@ -55,13 +58,15 @@ const App = () => {
 								orders={orders}
 								setOrders={setOrders}
 								token={token}
-							/> : <Orders
-							currentUser={currentUser}
-							orders={orders}
-							setOrders={setOrders}
-							token={token}
-						/>}
-							
+							/> : null}				
+						</Route>
+						<Route exact path='/Myorders'>
+							<Orders
+								currentUser={currentUser}
+								orders={orders}
+								setOrders={setOrders}
+								token={token}
+							/>
 						</Route>
 						<Route exact path='/cart'>
 							<ShoppingCart token={token} />
@@ -75,7 +80,15 @@ const App = () => {
 					<Route path={`/users/:userId`}>
 						<UserPage currentUser={ currentUser } token={ token }/>
 					</Route>
-					
+					<Route exact path='/adminproduct'>
+						<AdminProducts currentUser={ currentUser } token={ token }/>
+					</Route>
+					<Route exact path='/adminproduct/add'>
+						<AddProduct currentUser={ currentUser } token={ token }/>
+					</Route>
+					<Route path={`/adminproduct/:productId`}>
+						<AdminProductPage currentUser={ currentUser } token={ token }/>
+					</Route>
 					</Switch>
 				</div>
 			</ChakraProvider>

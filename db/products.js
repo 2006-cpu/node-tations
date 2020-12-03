@@ -86,10 +86,11 @@ async function updateProduct(id, fields = {}) {
 		} = await client.query(
             `UPDATE products
             SET ${ setString }
-            WHERE id ${ id }
+            WHERE id = ${ id }
             RETURNING *;`,
 			Object.values(fields)
 		);
+
 		return product;
         
     } catch (error) {
