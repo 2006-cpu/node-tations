@@ -6,11 +6,12 @@ export const MyOrders = ({orders, currentUser}) => {
     console.log(orders)
     
 	return (
-		<Box textAlign="center">myOrders
+		<Box textAlign="center" >myOrders
 		<Grid templateColumns="repeat(3, 1fr)" margin='25px'
 				justifyItems='center'
 				boxShadow='xs'
-				rounded='md'>
+				rounded='md'
+                >
                 {orders.map(({id, status, userId, datePlaced, products}) =>
                 
 				

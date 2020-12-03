@@ -1,5 +1,5 @@
 const ordersRouter = require('express').Router();
-const { getAllOrders, getCartByUser, createOrder, getOrderByUsername } = require('../db/orders');
+const { getAllOrders, getCartByUser, createOrder, getOrderByUsername, updateOrder } = require('../db/orders');
 const { getOrderProductById, addProductToOrder, updateOrderProduct } = require('../db/order_products');
 const { getUserById } = require('../db/users')
 const { requireUser, requireAdmin } = require('./utils');
@@ -78,11 +78,11 @@ ordersRouter.post('/:orderId/products', requireUser, async (req, res, next) => {
 	}
 });
 
-ordersRouter.patch('/orders/:orderId', requireUser, async (req, res, next) => {
+ordersRouter.patch('/:orderId', requireUser, async (req, res, next) => {
     const { orderId } = req.params;
-    const { status, userId } = req.body;
+    const { status} = req.body;
 	try {
-		const updatedOrder = await updateOrder(orderId, status);
+		const updatedOrder = await updateOrder(orderId, {status})
 
 		
 		res.send({
@@ -93,11 +93,11 @@ ordersRouter.patch('/orders/:orderId', requireUser, async (req, res, next) => {
     }
 });
 
-ordersRouter.delete('/orders/:orderId', requireUser, async (req, res, next) => {
+ordersRouter.delete('/:orderId', requireUser, async (req, res, next) => {
     const { orderId } = req.params;
-    const { status, userId } = req.body;
+    const { status } = req.body;
 	try {
-		const updatedOrder = await updateOrder(orderId, status);
+		const updatedOrder = await updateOrder(orderId, {status});
 
 		
 		res.send({

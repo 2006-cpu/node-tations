@@ -135,17 +135,28 @@ const createOrder = async ({status, id}) => {
 	}
 };
 
-const updateOrder = async ({id, status, userId}) => {
+const updateOrder = async (id, fields = {}) => {
+
+	const setString = Object.keys(fields).map(
+		(key, index) => `"${ key }"=$${ index + 1 }`
+	  ).join(', ');
+
+	  if (setString.length === 0) {
+		return;
+		};
+
 	try {
+		
 		const {
-			rows: updatedOrders
+			rows: [updatedOrder] 
 		} = await client.query(
 			`UPDATE orders 
-			WHERE id = $1
-			RETURNING $2, $3`,
-			[id, status, userId]
+			SET ${setString}
+			WHERE id = ${id}
+			RETURNING *`,
+			Object.values(fields)
 		);
-		return updatedOrders;
+		return updatedOrder;
 	} catch (error) {
 		console.error(error);
 		throw error;
