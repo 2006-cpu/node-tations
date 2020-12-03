@@ -13,6 +13,7 @@ import {
 	ShoppingCart,
 	Users, 
 	AddUser,
+	UserPage,
 	AdminOrders
 } from './components';
 
@@ -68,9 +69,13 @@ const App = () => {
 					<Route exact path='/users'>
 						<Users currentUser={ currentUser } token={ token }/>
 					</Route>
-					<Route path='/users/add'>
+					<Route exact path='/users/add'>
 						<AddUser currentUser={ currentUser }/>
 					</Route>
+					<Route path={`/users/:userId`}>
+						<UserPage currentUser={ currentUser } token={ token }/>
+					</Route>
+					
 					</Switch>
 				</div>
 			</ChakraProvider>
