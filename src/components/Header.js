@@ -31,7 +31,13 @@ import {
 	clearCurrentUserToken
 } from '../auth';
 
-export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmin }) => {
+export const Header = ({
+	token,
+	setToken,
+	currentUser,
+	setCurrentUser,
+	setIsAdmin
+}) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -119,26 +125,28 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 					<IconButton icon={<FaSearch />} />
 				</InputRightAddon>
 			</InputGroup>
-			{token && currentUser ?
-			<Link to="/store">
-			<Button variant='outline' onClick={handleUserLogout}>
-				Logout
-			</ Button>
-			</Link>:
-			<Button variant='outline' onClick={onOpen}>
-				Login
-			</Button>
-			}
-			{token && currentUser ?
-			<Link to='/account'>
-			<IconButton
-				variant='outline'
-				icon={<MdAccountBox />}
-				maxWidth='30px'
-			/>
-			</Link> : null
-			}
-			{currentUser && token ? <NavLink to='/orders' activeClassName='current'>
+			{token && currentUser ? (
+				<Link to='/store'>
+					<Button variant='outline' onClick={handleUserLogout}>
+						Logout
+					</Button>
+				</Link>
+			) : (
+				<Button variant='outline' onClick={onOpen}>
+					Login
+				</Button>
+			)}
+			{token && currentUser ? (
+				<Link to='/account'>
+					<IconButton
+						variant='outline'
+						icon={<MdAccountBox />}
+						maxWidth='30px'
+					/>
+				</Link>
+			) : null}
+			{currentUser && token ? 
+				<NavLink to='/orders' activeClassName='current'>
 					MyOrders
 				</NavLink> : ""}
 			{currentUser && currentUser.isAdmin && token ? <NavLink to='/orders' activeClassName='current'>
@@ -147,12 +155,13 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 			{currentUser && token && currentUser.isAdmin ? <NavLink to='/users' activeClassName='current'>
 					Users
 			</NavLink> : ""}
-			
-			<IconButton
-				variant='outline'
-				icon={<MdShoppingCart />}
-				maxWidth='30px'
-			/>
+			<Link to='/cart'>
+				<IconButton
+					variant='outline'
+					icon={<MdShoppingCart />}
+					maxWidth='30px'
+				/>
+			</Link>
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>
@@ -163,8 +172,8 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 						</TabList>
 						<TabPanels>
 							<TabPanel>
-							<form onSubmit={handleRegisterSubmit}>
-								<FormLabel>Username</FormLabel>
+								<form onSubmit={handleRegisterSubmit}>
+									<FormLabel>Username</FormLabel>
 									<Input
 										type='text'
 										placeholder='enter username'
@@ -212,7 +221,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 									<Button type='submit' onClick={onClose}>
 										Submit
 									</Button>
-							</form>
+								</form>
 							</TabPanel>
 							<TabPanel>
 								<form onSubmit={handleSubmitLogin}>

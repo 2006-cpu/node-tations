@@ -25,7 +25,7 @@ apiRouter.use('/', async (req, res, next) => {
 		const { id } = verify(token, JWT_SECRET);
 
 		if (id) {
-			console.log("user", user);
+			
 			req.user = await getUserById(id);
 			return next()
 			

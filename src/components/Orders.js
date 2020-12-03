@@ -18,6 +18,7 @@ export const Orders = ({orders, currentUser, setOrders, token}) => {
 		try {
             
             const orders = await callApi(config);
+            console.log("orders:", orders)
             setOrders(orders)
             console.log("orders:", orders)
            
