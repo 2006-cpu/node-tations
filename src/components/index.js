@@ -8,3 +8,5 @@ export { Orders } from './Orders';
 export { ShoppingCart } from './Cart';
 export { Users } from './Users';
 export { AddUser } from './AddUser';
+export { AdminOrders} from './AdminOrders';
+export { UserOrders} from './UserOrders';
