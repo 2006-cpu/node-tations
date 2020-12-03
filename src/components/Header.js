@@ -145,13 +145,16 @@ export const Header = ({
 					/>
 				</Link>
 			) : null}
-			{currentUser && token ? (
+			{currentUser && token ? 
 				<NavLink to='/orders' activeClassName='current'>
 					MyOrders
-				</NavLink>
-			) : (
-				''
-			)}
+				</NavLink> : ""}
+			{currentUser && currentUser.isAdmin && token ? <NavLink to='/orders' activeClassName='current'>
+					Orders
+				</NavLink> : ""}
+			{currentUser && token && currentUser.isAdmin ? <NavLink to='/users' activeClassName='current'>
+					Users
+			</NavLink> : ""}
 			<Link to='/cart'>
 				<IconButton
 					variant='outline'
@@ -159,9 +162,6 @@ export const Header = ({
 					maxWidth='30px'
 				/>
 			</Link>
-			{currentUser && token && currentUser.isAdmin ? <NavLink to='/users' activeClassName='current'>
-					Users
-			</NavLink> : ""}
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>

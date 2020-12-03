@@ -9,3 +9,5 @@ export { ShoppingCart } from './Cart';
 export { CartProductCard } from './CartProductCard';
 export { Users } from './Users';
 export { AddUser } from './AddUser';
+export { AdminOrders} from './AdminOrders';
+export { UserOrders} from './UserOrders';
