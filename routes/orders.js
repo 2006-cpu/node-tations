@@ -3,7 +3,8 @@ const {
 	getAllOrders,
 	getCartByUser,
 	createOrder,
-	getOrderByUsername
+    getOrderByUsername,
+    updateOrder
 } = require('../db/orders');
 const {
 	getOrderProductById,
@@ -91,6 +92,36 @@ ordersRouter.post('/:orderId/products', requireUser, async (req, res, next) => {
 	} catch ({ name, message }) {
 		next({ name, message });
 	}
+});
+
+ordersRouter.patch('/:orderId', requireUser, async (req, res, next) => {
+    const { orderId } = req.params;
+    const { status} = req.body;
+	try {
+		const updatedOrder = await updateOrder(orderId, {status})
+
+		
+		res.send({
+					updatedOrder : updatedOrder
+			  });
+	} catch ({ name, message }) {
+        next({ name, message });
+    }
+});
+
+ordersRouter.delete('/:orderId', requireUser, async (req, res, next) => {
+    const { orderId } = req.params;
+    const { status } = req.body;
+	try {
+		const updatedOrder = await updateOrder(orderId, {status});
+
+		
+		res.send({
+					updatedOrder : updatedOrder
+			  });
+	} catch ({ name, message }) {
+        next({ name, message });
+    }
 });
 
 module.exports = { ordersRouter };

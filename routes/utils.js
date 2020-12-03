@@ -25,7 +25,7 @@ const requireAdmin = (req, res, next) => {
 		});
 	} else {
 		console.log('User is authorized');
-		return next();
+		return next()
 	}
 };
 

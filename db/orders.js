@@ -21,7 +21,7 @@ const getAllOrders = async () => {
 		const { rows: orders } = await client.query(`select * from orders`);
 
 		const ordersWithProducts = await Promise.all(
-			orders.map(async order => {
+			orders.map(async (order) => {
 				order.products = await getProductsforOrders(order.id);
 				return order;
 			})
@@ -133,11 +133,78 @@ const createOrder = async (status, id) => {
 	}
 };
 
+const updateOrder = async (id, fields = {}) => {
+
+	const setString = Object.keys(fields).map(
+		(key, index) => `"${ key }"=$${ index + 1 }`
+	  ).join(', ');
+
+	  if (setString.length === 0) {
+		return;
+		};
+
+	try {
+		
+		const {
+			rows: [updatedOrder] 
+		} = await client.query(
+			`UPDATE orders 
+			SET ${setString}
+			WHERE id = ${id}
+			RETURNING *`,
+			Object.values(fields)
+		);
+		return updatedOrder;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
+
+const completeOrder = async ({id, status}) => {
+
+	try {
+		const {
+			rows: completedOrder
+		} = await client.query(
+			`UPDATE orders 
+			WHERE id = $1
+			RETURNING ${status === 'complete'}`,
+			[id]
+		);
+		return completedOrder;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
+
+const cancelOrder = async ({id, status}) => {
+
+	try {
+		const {
+			rows: cancelledOrder
+		} = await client.query(
+			`UPDATE orders 
+			WHERE id = $1
+			RETURNING ${status === 'cancelled'}`,
+			[id]
+		);
+		return cancelledOrder;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
+
 module.exports = {
 	getAllOrders,
 	getOrderById,
 	getOrderByUsername,
 	getOrderByProduct,
 	getCartByUser,
-	createOrder
+	createOrder,
+	updateOrder,
+	completeOrder,
+	cancelOrder
 };
