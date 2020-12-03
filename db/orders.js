@@ -3,7 +3,7 @@ const { client } = require('./index');
 const getProductsforOrders = async id => {
 	try {
 		const { rows: products } = await client.query(
-			`select products.*, order_products.price, order_products.quantity from products
+			`select products.*, order_products.price, order_products.id as "orderProductId", order_products.quantity from products
             JOIN order_products ON products.id = order_products."productId"
             JOIN orders ON order_products."orderId" = orders.id 
             where orders.id = $1`,
@@ -23,7 +23,7 @@ const getAllOrders = async () => {
 		join users on orders."userId"=users.id`);
 
 		const ordersWithProducts = await Promise.all(
-			orders.map(async (order) => {
+			orders.map(async order => {
 				order.products = await getProductsforOrders(order.id);
 				return order;
 			})
@@ -136,19 +136,17 @@ const createOrder = async (status, id) => {
 };
 
 const updateOrder = async (id, fields = {}) => {
+	const setString = Object.keys(fields)
+		.map((key, index) => `"${key}"=$${index + 1}`)
+		.join(', ');
 
-	const setString = Object.keys(fields).map(
-		(key, index) => `"${ key }"=$${ index + 1 }`
-	  ).join(', ');
-
-	  if (setString.length === 0) {
+	if (setString.length === 0) {
 		return;
-		};
+	}
 
 	try {
-		
 		const {
-			rows: [updatedOrder] 
+			rows: [updatedOrder]
 		} = await client.query(
 			`UPDATE orders 
 			SET ${setString}
@@ -163,12 +161,9 @@ const updateOrder = async (id, fields = {}) => {
 	}
 };
 
-const completeOrder = async ({id, status}) => {
-
+const completeOrder = async ({ id, status }) => {
 	try {
-		const {
-			rows: completedOrder
-		} = await client.query(
+		const { rows: completedOrder } = await client.query(
 			`UPDATE orders 
 			WHERE id = $1
 			RETURNING ${status === 'complete'}`,
@@ -181,12 +176,9 @@ const completeOrder = async ({id, status}) => {
 	}
 };
 
-const cancelOrder = async ({id, status}) => {
-
+const cancelOrder = async ({ id, status }) => {
 	try {
-		const {
-			rows: cancelledOrder
-		} = await client.query(
+		const { rows: cancelledOrder } = await client.query(
 			`UPDATE orders 
 			WHERE id = $1
 			RETURNING ${status === 'cancelled'}`,
