@@ -56,8 +56,8 @@ const App = () => {
 							/>
 						</Route>
 						<Route exact path='/cart'>
-						<ShoppingCart/>
-					</Route>
+							<ShoppingCart token={token} />
+						</Route>
 					<Route exact path='/users'>
 						<Users currentUser={ currentUser } token={ token }/>
 					</Route>
