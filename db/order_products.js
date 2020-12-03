@@ -15,9 +15,9 @@ const getUserOrderProducts = async ({ id, orderProductId }) => {
 	}
 };
 
-const getOrderProductById = async id => {
+const getOrderProductById = async (id, productId) => {
 	try {
-		const { rows: product_orders } = await client.query(`select * FROM order_products where "orderId" = $1`, [id]);
+		const { rows: product_orders } = await client.query(`select * FROM order_products where "orderId" = $1 and "productId" = $2`, [id, productId]);
         
         return product_orders;
 	} catch (error) {
