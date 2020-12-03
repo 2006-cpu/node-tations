@@ -52,7 +52,7 @@ const App = () => {
 							/>
 						</Route>
 						<Route exact path='/cart'>
-							<ShoppingCart />
+							<ShoppingCart token={token} />
 						</Route>
 					</Switch>
 				</div>
