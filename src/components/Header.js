@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, NavLink, Redirect } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { callApi } from '../api';
 import {
 	Grid,
@@ -9,14 +9,12 @@ import {
 	InputRightAddon,
 	IconButton,
 	Button,
-	FormControl,
 	FormLabel,
 	useDisclosure,
 	ModalCloseButton,
 	Modal,
 	ModalOverlay,
 	ModalContent,
-	ModalHeader,
 	Tabs,
 	Tab,
 	TabList,
@@ -143,6 +141,9 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 			{currentUser && token ? <NavLink to='/orders' activeClassName='current'>
 					MyOrders
 				</NavLink> : ""}
+			{currentUser && token && currentUser.isAdmin ? <NavLink to='/users' activeClassName='current'>
+					Users
+			</NavLink> : ""}
 			
 			<IconButton
 				variant='outline'

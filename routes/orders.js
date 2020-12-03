@@ -70,7 +70,7 @@ ordersRouter.post('/:orderId/products', requireUser, async (req, res, next) => {
 	const { orderId } = req.params;
 
 	try {
-		const existingProductOrder = await getOrderProductById(orderId);
+		const existingProductOrder = await getOrderProductById(orderId, productId);
 
 		if (existingProductOrder.productId !== productId) {
 			const newProductOrder = await addProductToOrder({

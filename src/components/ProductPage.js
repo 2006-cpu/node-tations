@@ -26,7 +26,7 @@ export const ProductPage = ({ token, currentUser }) => {
 
 			const addProductToOrder = await callApi(
 				{
-					path: `/orders/${existingOrder.id}/products`,
+					path: `/orders/${newOrder.id}/products`,
 					method: 'POST',
 					token
 				},
