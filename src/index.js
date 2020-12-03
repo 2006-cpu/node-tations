@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 import { ChakraProvider } from '@chakra-ui/react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 import {
 	Header,
 	Catalog,
 	ProductPage,
 	Account,
 	Orders,
-	ShoppingCart
+	ShoppingCart,
+	Users, 
+	AddUser
 } from './components';
+
 import { getCurrentUser, getCurrentUserToken } from './auth';
 
 const App = () => {
@@ -38,8 +42,8 @@ const App = () => {
 								currentUser={currentUser}
 							/>
 						</Route>
-						<Route path={'/account'}>
-							<Account currentUser={currentUser} token={token} />
+						<Route path='/account'>
+							<Account currentUser={ currentUser } token={ token }/>
 						</Route>
 					</Switch>
 					<Switch>
@@ -54,6 +58,12 @@ const App = () => {
 						<Route exact path='/cart'>
 							<ShoppingCart token={token} />
 						</Route>
+					<Route exact path='/users'>
+						<Users currentUser={ currentUser } token={ token }/>
+					</Route>
+					<Route path='/users/add'>
+						<AddUser currentUser={ currentUser }/>
+					</Route>
 					</Switch>
 				</div>
 			</ChakraProvider>
