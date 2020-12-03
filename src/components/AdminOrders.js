@@ -11,7 +11,7 @@ export const AdminOrders = ({orders, currentUser, setOrders, token}) => {
 	const fetchMyOrders = async () => {
 		const config = {
 			method: 'GET',
-			path: `/orders/users/${ currentUser.id }/orders`,
+			path: `/orders`,
 			token: token
 		};
         
