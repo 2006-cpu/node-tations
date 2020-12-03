@@ -78,10 +78,7 @@ const getUserById = async userId => {
 	try {
 		const {
 			rows: [user]
-		} = await client.query(
-			`select * from users where id = $1`,
-			[userId]
-		);
+		} = await client.query(`select * from users where id = $1`, [userId]);
 		delete user.password;
 		return user;
 	} catch (error) {
@@ -91,37 +88,33 @@ const getUserById = async userId => {
 
 async function updateUser(id, fields = {}) {
 	// build the set string
-	const setString = Object.keys(fields).map(
-	  (key, index) => `"${ key }"=$${ index + 1 }`
-	).join(', ');
-  
+	const setString = Object.keys(fields)
+		.map((key, index) => `"${key}"=$${index + 1}`)
+		.join(', ');
+
 	// return early if this is called without fields
 	if (setString.length === 0) {
-	  return;
-	};
-    try {
+		return;
+	}
+	try {
 		//Hash the password
-		if(fields.password)
-		{
+		if (fields.password) {
 			const hashedPass = await hash(fields.password, 10);
-			fields.password = hashedPass
+			fields.password = hashedPass;
 		}
-        const {
-			rows: user
-		} = await client.query(
-            `UPDATE user
-            SET ${ setString }
-            WHERE id = ${ id }
+		const { rows: user } = await client.query(
+			`UPDATE user
+            SET ${setString}
+            WHERE id = ${id}
             RETURNING *;`,
 			Object.values(fields)
 		);
 		return user;
-        
-    } catch (error) {
-        console.error(error);
-		throw error;    
-    };
-};
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
 
 const getAllUsers = async () => {
 	try {
@@ -133,6 +126,11 @@ const getAllUsers = async () => {
 	}
 };
 
-
-
-module.exports = { createUser, getUser, getUserById, getUserByUsername, updateUser, getAllUsers };
+module.exports = {
+	createUser,
+	getUser,
+	getUserById,
+	getUserByUsername,
+	updateUser,
+	getAllUsers
+};
