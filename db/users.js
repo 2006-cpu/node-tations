@@ -89,9 +89,15 @@ const getUserById = async userId => {
 async function updateUser(id, fields = {}) {
 	// build the set string
 	const setString = Object.keys(fields)
-		.map((key, index) => `"${key}"=$${index + 1}`)
-		.join(', ');
+		.map((key, index) => {if(key === 'imageURL'){
+			return `${key}=$${index + 1}`
+		} else
+		{
+			return `"${key}"=$${index + 1}`
+		};
+	}).join(', ');
 
+		console.log(setString)
 	// return early if this is called without fields
 	if (setString.length === 0) {
 		return;
@@ -102,13 +108,16 @@ async function updateUser(id, fields = {}) {
 			const hashedPass = await hash(fields.password, 10);
 			fields.password = hashedPass;
 		}
+
 		const { rows: user } = await client.query(
-			`UPDATE user
+			`UPDATE users
             SET ${setString}
             WHERE id = ${id}
             RETURNING *;`,
 			Object.values(fields)
 		);
+
+		delete user.password;
 		return user;
 	} catch (error) {
 		console.error(error);

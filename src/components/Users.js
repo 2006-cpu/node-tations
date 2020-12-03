@@ -3,11 +3,12 @@ import {
     Grid, 
     Text, 
     Box, 
-    Image,
-    Link
+    Image
 } from '@chakra-ui/react';
 import { callApi } from '../api';
 import { AddUser } from './AddUser';
+import { Link } from 'react-router-dom';
+
 
 export const Users = ({currentUser, token}) => {
     const [users, setUsers] = useState([]);
@@ -33,8 +34,7 @@ export const Users = ({currentUser, token}) => {
         <Grid templateColumns="repeat(3, 1fr)">
         {users.map(({id, firstname, lastname, email, imageurl, username, isAdmin}) =>
             <Box key={id} className="users" border="1px solid black">
-            <Link to={`/users/${id}`}>
-                <Text>id:  {id} </Text>                
+            <Link to={`/users/${id}`}>              
                 <Text>Username:  {username} </Text>
                 <Text>First Name: {firstname}</Text>
                 <Text>Last Name: {lastname}</Text>

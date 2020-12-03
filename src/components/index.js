@@ -10,3 +10,5 @@ export { CartProductCard } from './CartProductCard';
 export { Users } from './Users';
 export { AddUser } from './AddUser';
 export { UserPage } from './UserPage';
+export { AdminOrders} from './AdminOrders';
+export { UserOrders} from './UserOrders';

@@ -13,7 +13,8 @@ import {
 	ShoppingCart,
 	Users, 
 	AddUser,
-	UserPage
+	UserPage,
+	AdminOrders
 } from './components';
 
 import { getCurrentUser, getCurrentUserToken } from './auth';
@@ -49,12 +50,18 @@ const App = () => {
 					</Switch>
 					<Switch>
 						<Route exact path='/orders'>
-							<Orders
+							{currentUser && currentUser.isAdmin ? <AdminOrders
 								currentUser={currentUser}
 								orders={orders}
 								setOrders={setOrders}
 								token={token}
-							/>
+							/> : <Orders
+							currentUser={currentUser}
+							orders={orders}
+							setOrders={setOrders}
+							token={token}
+						/>}
+							
 						</Route>
 						<Route exact path='/cart'>
 							<ShoppingCart token={token} />
