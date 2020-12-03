@@ -9,3 +9,4 @@ export { ShoppingCart } from './Cart';
 export { CartProductCard } from './CartProductCard';
 export { Users } from './Users';
 export { AddUser } from './AddUser';
+export { UserPage } from './UserPage';

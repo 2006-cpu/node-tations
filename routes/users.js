@@ -105,4 +105,18 @@ usersRouter.patch('/:userId', requireAdmin, async (req, res, next) => {
 	};
 });
 
+usersRouter.get('/:userId', requireUser, async (req, res, next) => {
+	const { userId } = req.params;
+	const id = Number(userId);
+
+	try {
+		const user = await getUserById(id);
+		res.send(
+			user
+		);
+	} catch ({ name, message }) {
+		res.send({ name, message });
+	};
+});
+
 module.exports = { usersRouter };
