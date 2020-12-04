@@ -7,7 +7,7 @@ export const UserOrders = ({orders, currentUser}) => {
     console.log(orders)
     
 	return (
-		<Box textAlign="center">myOrders
+		<Box textAlign="center">
         <Text fontSize='xl'><i><b>Welcome back {currentUser.username}!</b></i></Text>
 		<Grid templateColumns="repeat(3, 1fr)" margin='25px'
 				justifyItems='center'

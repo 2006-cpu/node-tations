@@ -6,11 +6,14 @@ const getUserOrderProducts = async (id, orderProductId) => {
 		const { rows: product_orders } = await client.query(
 			`select order_products.* FROM order_products JOIN
         orders on order_products."orderId" = orders.id
+
         where orders."userId" = $1 and order_products.id = $2`,
 			[id, orderProductId]
 		);
 
 		return product_orders;
+
+
 	} catch (error) {
 		console.error(error);
 		throw error;

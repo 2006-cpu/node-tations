@@ -41,7 +41,7 @@ productsRouter.delete('/:productId', requireAdmin, async (req, res, next) => {
 	const id = Number(productId);
 
 	try {
-		const user = await deleteProduct(id);
+		const user = await deleteProduct({id});
 		res.send(
 			user
 		);
@@ -54,8 +54,10 @@ productsRouter.patch('/:productId', requireAdmin, async (req, res, next) => {
 	const { productId } = req.params;
 	const id = Number(productId);
 
+
 	try {
 		const user = await updateProduct(id, req.body);
+
 		res.send(
 			user
 		);
