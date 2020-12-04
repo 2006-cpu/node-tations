@@ -74,10 +74,7 @@ export const AdminProductPage = ({ token, currentUser }) => {
         <Grid>
 {
     currentUser && currentUser.isAdmin ? <Button variant='outline' onClick={onOpen}>Edit Product</Button> : null
-}  
-{
-    currentUser && currentUser.isAdmin ? <Button variant='outline' onClick={(event) => { handleDeleteProduct(event)}}>Delete Product</Button> : null
-}     
+}      
         <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -143,6 +140,9 @@ export const AdminProductPage = ({ token, currentUser }) => {
 
         </Grid> : null
     }
+    {
+    currentUser && currentUser.isAdmin ? <Button variant='outline' onClick={(event) => { handleDeleteProduct(event)}}>Delete Product</Button> : null
+    }   
     </>
 	);
 };
