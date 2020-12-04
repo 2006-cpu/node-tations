@@ -55,13 +55,29 @@ export const AdminProductPage = ({ token, currentUser }) => {
             console.log(error);
         }
     };
+
+    const handleDeleteProduct = async (event) => {
+        event.preventDefault();
+        try
+        {
+          const deletedProduct = await callApi({ method: 'delete', path: `/products/${product.id}`, token:token})
+          console.log(deletedProduct)
+        }
+        catch(error)
+        {
+          console.error(error);
+        }
+      }
     
     return ( <>
         {currentUser && currentUser.isAdmin ? 
         <Grid>
 {
     currentUser && currentUser.isAdmin ? <Button variant='outline' onClick={onOpen}>Edit Product</Button> : null
-}      
+}  
+{
+    currentUser && currentUser.isAdmin ? <Button variant='outline' onClick={(event) => { handleDeleteProduct(event)}}>Delete Product</Button> : null
+}     
         <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

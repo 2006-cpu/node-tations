@@ -46,12 +46,17 @@ const createProducts = async product => {
 
 const deleteProduct = async ({ id }) => {
 	{   
+		console.log(id)
 		try{
 			const {rows: order_products} = await client.query(`
 			DELETE FROM order_products
-			JOIN orders ON order_products."orderId" = orders.id
 			WHERE "productId" = $1
-			AND status <> 'completed'
+			AND "orderId" NOT IN 
+			(SELECT orders.id FROM orders
+			JOIN order_products ON orders.id = order_products."orderId" 
+			WHERE orders.status = 'complete'
+			and order_products."productId" = ${id})
+			RETURNING *;
 		  `, [id]);
 			console.log(order_products)
 		  	const {rows: product} = await client.query(`

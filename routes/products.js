@@ -41,7 +41,7 @@ productsRouter.delete('/:productId', requireAdmin, async (req, res, next) => {
 	const id = Number(productId);
 
 	try {
-		const user = await deleteProduct(id);
+		const user = await deleteProduct({id});
 		res.send(
 			user
 		);
