@@ -146,7 +146,7 @@ export const Header = ({
 				</Link>
 			) : null}
 			{currentUser && token ? 
-				<NavLink to='/orders' activeClassName='current'>
+				<NavLink to='/Myorders' activeClassName='current'>
 					MyOrders
 				</NavLink> : ""}
 			{currentUser && currentUser.isAdmin && token ? <NavLink to='/orders' activeClassName='current'>
@@ -154,7 +154,10 @@ export const Header = ({
 				</NavLink> : ""}
 			{currentUser && token && currentUser.isAdmin ? <NavLink to='/users' activeClassName='current'>
 					Users
-			</NavLink> : ""}
+			</NavLink> : null}
+			{currentUser && token && currentUser.isAdmin ? <NavLink to='/adminproduct' activeClassName='current'>
+					Admin Products
+			</NavLink> : null}
 			<Link to='/cart'>
 				<IconButton
 					variant='outline'
