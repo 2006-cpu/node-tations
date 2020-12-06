@@ -28,6 +28,7 @@ export const CartProductCard = ({ product, token, setUpdate }) => {
 			<Image src={product.imageurl} />
 			<Text fontSize='md'>{product.description}</Text>
 			<Text fontSize='sm'>${product.price}</Text>
+			<Text fontSize='sm'>Quantity: {product.quantity}</Text>
 			<Button
 				width='50%'
 				justifySelf='center'
