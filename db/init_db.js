@@ -36,7 +36,8 @@ async function buildTables() {
             price NUMERIC(10,2) NOT NULL,
             imageURL VARCHAR(255) DEFAULT 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png',
             "inStock" BOOLEAN DEFAULT false,
-            category VARCHAR(255) NOT NULL
+			category VARCHAR(255) NOT NULL,
+			reviews VARCHAR(255) DEFAULT NULL
             );
 
             CREATE TABLE users(
@@ -62,7 +63,8 @@ async function buildTables() {
             "productId" INTEGER REFERENCES products(id),
             "orderId" INTEGER REFERENCES orders(id),
             price NUMERIC(10,2) NOT NULL,
-            quantity NUMERIC(10,2) DEFAULT 0 NOT NULL
+			quantity NUMERIC(10,2) DEFAULT 0 NOT NULL
+			
             );
         `);
 

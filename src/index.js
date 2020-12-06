@@ -26,6 +26,7 @@ const App = () => {
 	const [token, setToken] = useState(getCurrentUserToken());
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
 	const [orders, setOrders] = useState([{}]);
+	
 
 	return (
 		<Router>
@@ -39,12 +40,22 @@ const App = () => {
 					/>
 					<Switch>
 						<Route path='/store'>
-							<Catalog />
+							<Catalog/>
 						</Route>
 						<Route path={'/products/:productId'}>
-							<ProductPage
+							<ProductPage 
 								token={token}
 								currentUser={currentUser}
+								
+								
+							/>
+						</Route>
+						<Route path={'/reviews/products/:productId'}>
+							<ProductPage 
+								token={token}
+								currentUser={currentUser}
+								
+								
 							/>
 						</Route>
 						<Route path='/account'>

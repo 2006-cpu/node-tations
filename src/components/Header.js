@@ -23,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { MdShoppingCart, MdAccountBox } from 'react-icons/md';
 import { FaSearch } from 'react-icons/fa';
-
+import './header.css'
 import {
 	storeCurrentUser,
 	storeCurrentUserToken,
@@ -108,7 +108,7 @@ export const Header = ({
 	};
 
 	return (
-		<Grid
+		<Grid className="header"
 			templateColumns='15% 60% 15% 10%'
 			justifyItems='center'
 			marginTop='25px'
@@ -117,12 +117,12 @@ export const Header = ({
 			paddingBottom='25px'
 		>
 			<Link to='/store'>
-				<Heading>STORE</Heading>
+				<Heading>cutHub</Heading>
 			</Link>
 			<InputGroup>
 				<Input placeholder='Search'></Input>
-				<InputRightAddon>
-					<IconButton icon={<FaSearch />} />
+				<InputRightAddon >
+					<IconButton icon={<FaSearch />}  />
 				</InputRightAddon>
 			</InputGroup>
 			{token && currentUser ? (
