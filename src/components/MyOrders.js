@@ -1,13 +1,13 @@
 import React from 'react';
 import { Grid, Text, Box, Image } from '@chakra-ui/react';
-
+import './productpreviewcard.css'
 
 export const MyOrders = ({orders, currentUser}) => {
     console.log(orders)
     
 	return (
-		<Box textAlign="center" >myOrders
-		<Grid templateColumns="repeat(3, 1fr)" margin='25px'
+		<Box textAlign="center" className='myorders'>myOrders 
+		<Grid templateColumns="repeat(3, 1fr)" margin='25px' className='orders'
 				justifyItems='center'
 				boxShadow='xs'
 				rounded='md'
@@ -15,7 +15,7 @@ export const MyOrders = ({orders, currentUser}) => {
                 {orders.map(({id, status, userId, datePlaced, products}) =>
                 
 				
-        		<Box key={id} className="Orders" border="1px solid black">
+        		<Box key={id} className="Orders" border="5px groove white" className='products'>
                 <Text fontSize='xl'><b>Order By:  {currentUser.username} </b></Text>
           		<Text>Order Status:  {status} </Text>
             	<Text>Order Date: {datePlaced }</Text>

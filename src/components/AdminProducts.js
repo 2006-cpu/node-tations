@@ -8,7 +8,7 @@ import {
     Image
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-
+import './productpreviewcard.css'
 export const AdminProducts = ({currentUser, token}) => {
 	const [productList, setProductList] = useState([]);
 
@@ -39,9 +39,9 @@ export const AdminProducts = ({currentUser, token}) => {
         <Text>ProductList</Text>
         {
         currentUser && currentUser.isAdmin ? 
-        <Grid templateColumns="repeat(3, 1fr)">
+        <Grid templateColumns="repeat(3, 1fr)" className="orders">
         {productList.map(({id, name, imageurl, description, price, category, inStock}) =>
-            <Box key={id} className="admin_products" border="1px solid black">
+            <Box key={id} className="admin_products" borderRadius="40px" maxW="fit-content" border="5px groove white" className="products">
 		<Link to={`/adminproduct/${id}`}>
 			<Grid
 				margin='25px'

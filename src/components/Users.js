@@ -8,7 +8,7 @@ import {
 import { callApi } from '../api';
 import { AddUser } from './AddUser';
 import { Link } from 'react-router-dom';
-
+import './productpreviewcard.css'
 
 export const Users = ({currentUser, token}) => {
     const [users, setUsers] = useState([]);
@@ -28,12 +28,12 @@ export const Users = ({currentUser, token}) => {
         {
         currentUser && currentUser.isAdmin ? <AddUser currentUser={ currentUser}/> : null
         }
-        <Text>Users</Text>
+        <Text fontSize='xl'><b>&nbsp;&nbsp;Users</b></Text>
         {
         currentUser && currentUser.isAdmin ? 
-        <Grid templateColumns="repeat(3, 1fr)">
+        <Grid templateColumns="repeat(3, 1fr)" className="products">
         {users.map(({id, firstname, lastname, email, imageurl, username, isAdmin}) =>
-            <Box key={id} className="users" border="1px solid black">
+            <Box key={id} className="users" border="5px groove white">
             <Link to={`/users/${id}`}>              
                 <Text>Username:  {username} </Text>
                 <Text>First Name: {firstname}</Text>

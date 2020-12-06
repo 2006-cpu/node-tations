@@ -4,6 +4,7 @@ const apiRouter = require('express').Router();
 const { productsRouter } = require('./products');
 const { usersRouter } = require('./users');
 const { ordersRouter } = require('./orders');
+const { reviewsRouter } = require('./reviews');
 const { orderProductsRouter } = require('./order_products');
 
 //Auth utils
@@ -39,6 +40,7 @@ apiRouter.use('/products', productsRouter);
 apiRouter.use('/users', usersRouter);
 apiRouter.use('/orders', ordersRouter);
 apiRouter.use('/order_products', orderProductsRouter);
+apiRouter.use('/reviews', reviewsRouter);
 
 
 module.exports = { apiRouter };
