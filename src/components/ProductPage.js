@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
 import { useParams } from 'react-router-dom';
-=======
-import { Link, useParams } from 'react-router-dom';
+
 import {
 	Grid,
 	Image,
@@ -12,28 +10,22 @@ import {
 	NumberInputField,
 	NumberInputStepper,
 	NumberIncrementStepper,
-	NumberDecrementStepper
+	NumberDecrementStepper,
+	InputGroup, Box, Input, InputRightAddon, IconButton 
 } from '@chakra-ui/react';
 import { callApi } from '../api';
->>>>>>> dev
 
-import { Grid, Image, Text, Button, InputGroup, Box, Input, InputRightAddon, IconButton } from '@chakra-ui/react';
+import { } from '@chakra-ui/react';
 import { FaComment } from 'react-icons/fa';
-import { callApi } from '../api';
+
 import './productpreviewcard.css'
 import { text, submit, click} from '@chakra-ui/react';
 export const ProductPage = ({ token, currentUser }) => {
 	const { productId } = useParams();
 	const [product, setProduct] = useState({});
-<<<<<<< HEAD
 	const [review, setReview] = useState('');
-	console.log("ohboyreview:", review);
 	const [newReview, setNewReview] = useState(false)
-	console.log(newReview)
-	
-=======
 	const [quantity, setQuantity] = useState(1);
->>>>>>> dev
 
 	const fetchProduct = async () => {
 		const productData = await callApi({ path: `/products/${productId}` });
@@ -106,11 +98,6 @@ export const ProductPage = ({ token, currentUser }) => {
 			<Text>{product.description}</Text>
 			<Text>{product.category}</Text>
 			<Text>{product.price}</Text>
-<<<<<<< HEAD
-			
-			
-			<Button maxW='100px' color="black" onSubmit={e => handleAddToCart(e)}>
-=======
 			<NumberInput
 				width='125px'
 				min={1}
@@ -124,8 +111,7 @@ export const ProductPage = ({ token, currentUser }) => {
 					<NumberDecrementStepper />
 				</NumberInputStepper>
 			</NumberInput>
-			<Button maxW='100px' onClick={e => handleAddToCart(e)}>
->>>>>>> dev
+			<Button maxW='100px' color={'black'} onClick={e => handleAddToCart(e)}>
 				Add to Cart
 			</Button>
 			<InputGroup >
@@ -142,7 +128,7 @@ export const ProductPage = ({ token, currentUser }) => {
 					}} />
 				</InputRightAddon>
 			</InputGroup>
-			{newReview ? <Box border="5px groove white" borderRadius={'20px'}><Text>{review}</Text></Box> : ""}
+			{newReview ? <Box letterSpacing={'1.5px'} padding={'8px'} border="5px groove white" borderRadius={'20px'}><Text>{ currentUser.username } : { review.toUpperCase()}</Text></Box> : ""}
 		</Grid>
 	);
 };

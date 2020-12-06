@@ -38,11 +38,8 @@ apiRouter.use('/products', productsRouter);
 apiRouter.use('/users', usersRouter);
 apiRouter.use('/orders', ordersRouter);
 apiRouter.use('/order_products', orderProductsRouter);
-<<<<<<< HEAD
 apiRouter.use('/reviews', reviewsRouter);
 
-=======
 apiRouter.use('/stripe', stripeRouter);
->>>>>>> dev
 
 module.exports = { apiRouter };
