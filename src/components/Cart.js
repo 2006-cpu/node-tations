@@ -3,6 +3,12 @@ import { CartProductCard, Checkout } from '../components';
 import { Grid, Image, Text, Box, Button } from '@chakra-ui/react';
 import { callApi } from '../api';
 
+//Stripe
+import { loadStripe } from '@stripe/stripe-js';
+const stripePromise = loadStripe(
+	'pk_test_51Hv5dPAJufyTIvrkuzYxDGPBwmCxhlQXMeEv1FRigHCopVezl1re7DJePj5SDz4WljqK6CL14GCStyp1ZnLl2TVm00TOQiWdT0'
+);
+
 export const ShoppingCart = ({ token }) => {
 	const [cart, setCart] = useState({});
 	const [cartProducts, setCartProducts] = useState([0]);
@@ -30,6 +36,33 @@ export const ShoppingCart = ({ token }) => {
 		}
 	};
 
+	const handleCheckout = async e => {
+		e.preventDefault();
+
+		const stripe = await stripePromise;
+
+		const session = await callApi(
+			{
+				path: '/stripe/create-session',
+				method: 'POST',
+				token
+			},
+			{
+				total: cartTotal
+			}
+		);
+
+		const result = await stripe.redirectToCheckout({
+			sessionId: session.id
+		});
+
+		if (result.error) {
+			//render error message
+		}
+
+		console.log(session.id);
+	};
+
 	useEffect(() => {
 		fetchCartData();
 	}, [update]);
@@ -49,7 +82,7 @@ export const ShoppingCart = ({ token }) => {
 				return (
 					<CartProductCard
 						product={product}
-						key={product.id + i}
+						key={product.name + i}
 						token={token}
 						setUpdate={setUpdate}
 					/>
@@ -60,12 +93,12 @@ export const ShoppingCart = ({ token }) => {
 			<Button
 				width='300px'
 				justifySelf='center'
-				onClick={() => setViewCheckout(!viewCheckout)}
+				onClick={e => handleCheckout(e)}
 			>
 				Proceed to Checkout
 			</Button>
 
-			{viewCheckout ? <Checkout /> : ''}
+			{/* {viewCheckout ? <Checkout /> : ''} */}
 		</Grid>
 	);
 };
