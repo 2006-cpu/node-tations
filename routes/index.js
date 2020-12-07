@@ -39,7 +39,6 @@ apiRouter.use('/users', usersRouter);
 apiRouter.use('/orders', ordersRouter);
 apiRouter.use('/order_products', orderProductsRouter);
 apiRouter.use('/reviews', reviewsRouter);
-
 apiRouter.use('/stripe', stripeRouter);
 
 module.exports = { apiRouter };

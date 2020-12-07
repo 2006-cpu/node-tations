@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CartProductCard } from '../components';
-import { Grid, Text, Button } from '@chakra-ui/react';
+import { Grid, Text, Button, useToast } from '@chakra-ui/react';
 import { callApi } from '../api';
-
 
 //Stripe
 import { loadStripe } from '@stripe/stripe-js';
@@ -15,6 +14,7 @@ export const ShoppingCart = ({ token }) => {
 	const [cartProducts, setCartProducts] = useState([0]);
 	const [cartTotal, setCartTotal] = useState(0);
 	const [update, setUpdate] = useState(false);
+	const toast = useToast();
 
 	const fetchCartData = async () => {
 		if (token) {
@@ -45,31 +45,84 @@ export const ShoppingCart = ({ token }) => {
 		}
 	};
 
+	const convertToCents = total => {
+		let cents = total * 100;
+		Math.trunc(cents);
+		return cents;
+	};
+
+	const buildLineItems = async () => {
+		let stripeItems = [];
+
+		cartProducts.forEach(product => {
+			stripeItems.push({
+				price_data: {
+					currency: 'usd',
+					product_data: {
+						name: product.name,
+						images: [product.imageurl]
+					},
+					unit_amount: convertToCents(product.price)
+				},
+				quantity: Math.trunc(product.quantity)
+			});
+		});
+
+		return stripeItems;
+	};
+
 	const handleCheckout = async e => {
 		e.preventDefault();
 
-		const stripe = await stripePromise;
+		if (token) {
+			const stripe = await stripePromise;
 
-		const session = await callApi(
-			{
+			const session = await callApi({
 				path: '/stripe/create-session',
 				method: 'POST',
 				token
-			},
-			{
-				total: cartTotal
+			});
+
+			const result = await stripe.redirectToCheckout({
+				sessionId: session.id
+			});
+
+			if (result.error) {
+				toast({
+					title: 'Checkout error, please try again',
+					status: 'error',
+					duration: '5000',
+					isClosable: 'true',
+					position: 'top'
+				});
 			}
-		);
+		} else {
+			const stripe = await stripePromise;
 
-		const result = await stripe.redirectToCheckout({
-			sessionId: session.id
-		});
+			const session = await callApi(
+				{
+					path: '/stripe/create-session',
+					method: 'POST'
+				},
+				{
+					line_items: await buildLineItems()
+				}
+			);
 
-		if (result.error) {
-			//render error message
+			const result = await stripe.redirectToCheckout({
+				sessionId: session.id
+			});
+
+			if (result.error) {
+				toast({
+					title: 'Checkout error, please try again',
+					status: 'error',
+					duration: '5000',
+					isClosable: 'true',
+					position: 'top'
+				});
+			}
 		}
-
-		console.log(session.id);
 	};
 
 	useEffect(() => {
@@ -87,19 +140,19 @@ export const ShoppingCart = ({ token }) => {
 					? 'Your cart is empty!'
 					: `You have ${cartProducts.length} items in your cart!`}
 			</Text>
-			<Grid templateColumns="repeat(3, 1fr)">
-			{!cart
-				? null
-				: cartProducts.map((product, i) => {
-						return (
-							<CartProductCard
-								product={product}
-								key={product.name + i}
-								token={token}
-								setUpdate={setUpdate}
-							/>
-						);
-				  })}
+			<Grid templateColumns='repeat(3, 1fr)'>
+				{!cart
+					? null
+					: cartProducts.map((product, i) => {
+							return (
+								<CartProductCard
+									product={product}
+									key={product.name + i}
+									token={token}
+									setUpdate={setUpdate}
+								/>
+							);
+					  })}
 			</Grid>
 			{!cart ? null : <Text>Your total is ${cartTotal}</Text>}
 

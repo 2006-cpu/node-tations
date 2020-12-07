@@ -11,7 +11,7 @@ import {
 	Account,
 	Orders,
 	ShoppingCart,
-	Users, 
+	Users,
 	AddUser,
 	UserPage,
 	AdminOrders,
@@ -26,7 +26,6 @@ const App = () => {
 	const [token, setToken] = useState(getCurrentUserToken());
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
 	const [orders, setOrders] = useState([{}]);
-	
 
 	return (
 		<Router>
@@ -40,38 +39,36 @@ const App = () => {
 					/>
 					<Switch>
 						<Route path='/store'>
-							<Catalog/>
+							<Catalog />
 						</Route>
 						<Route path={'/products/:productId'}>
-							<ProductPage 
+							<ProductPage
 								token={token}
 								currentUser={currentUser}
-								
-								
 							/>
 						</Route>
 						<Route path={'/reviews/products/:productId'}>
-							<ProductPage 
+							<ProductPage
 								token={token}
 								currentUser={currentUser}
-								
-								
 							/>
 						</Route>
 						<Route path='/account'>
-							<Account currentUser={ currentUser } token={ token }/>
+							<Account currentUser={currentUser} token={token} />
 						</Route>
 					</Switch>
 					<Switch>
 						<Route exact path='/orders'>
-							{currentUser && currentUser.isAdmin ? <AdminOrders
-								currentUser={currentUser}
-								orders={orders}
-								setOrders={setOrders}
-								token={token}
-							/> : null}				
+							{currentUser && currentUser.isAdmin ? (
+								<AdminOrders
+									currentUser={currentUser}
+									orders={orders}
+									setOrders={setOrders}
+									token={token}
+								/>
+							) : null}
 						</Route>
-						<Route exact path='/Myorders'>
+						<Route exact path='/myorders'>
 							<Orders
 								currentUser={currentUser}
 								orders={orders}
@@ -82,24 +79,33 @@ const App = () => {
 						<Route exact path='/cart'>
 							<ShoppingCart token={token} />
 						</Route>
-					<Route exact path='/users'>
-						<Users currentUser={ currentUser } token={ token }/>
-					</Route>
-					<Route exact path='/users/add'>
-						<AddUser currentUser={ currentUser }/>
-					</Route>
-					<Route path={`/users/:userId`}>
-						<UserPage currentUser={ currentUser } token={ token }/>
-					</Route>
-					<Route exact path='/adminproduct'>
-						<AdminProducts currentUser={ currentUser } token={ token }/>
-					</Route>
-					<Route exact path='/adminproduct/add'>
-						<AddProduct currentUser={ currentUser } token={ token }/>
-					</Route>
-					<Route path={`/adminproduct/:productId`}>
-						<AdminProductPage currentUser={ currentUser } token={ token }/>
-					</Route>
+						<Route exact path='/users'>
+							<Users currentUser={currentUser} token={token} />
+						</Route>
+						<Route exact path='/users/add'>
+							<AddUser currentUser={currentUser} />
+						</Route>
+						<Route path={`/users/:userId`}>
+							<UserPage currentUser={currentUser} token={token} />
+						</Route>
+						<Route exact path='/adminproduct'>
+							<AdminProducts
+								currentUser={currentUser}
+								token={token}
+							/>
+						</Route>
+						<Route exact path='/adminproduct/add'>
+							<AddProduct
+								currentUser={currentUser}
+								token={token}
+							/>
+						</Route>
+						<Route path={`/adminproduct/:productId`}>
+							<AdminProductPage
+								currentUser={currentUser}
+								token={token}
+							/>
+						</Route>
 					</Switch>
 				</div>
 			</ChakraProvider>
