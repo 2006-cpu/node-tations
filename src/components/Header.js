@@ -32,12 +32,7 @@ import {
 	clearCurrentUserToken
 } from '../auth';
 
-export const Header = ({
-	token,
-	setToken,
-	currentUser,
-	setCurrentUser
-}) => {
+export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -175,7 +170,7 @@ export const Header = ({
 				</Link>
 			) : null}
 			{currentUser && token ? (
-				<NavLink to='/Myorders' activeClassName='current'>
+				<NavLink to='/myorders' activeClassName='current'>
 					MyOrders
 				</NavLink>
 			) : (
