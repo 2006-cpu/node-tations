@@ -9,8 +9,7 @@ const stripePromise = loadStripe(
 	'pk_test_51Hv5dPAJufyTIvrkuzYxDGPBwmCxhlQXMeEv1FRigHCopVezl1re7DJePj5SDz4WljqK6CL14GCStyp1ZnLl2TVm00TOQiWdT0'
 );
 
-export const ShoppingCart = ({ token }) => {
-	const [cart, setCart] = useState(null);
+export const ShoppingCart = ({ token, cart, setCart }) => {
 	const [cartProducts, setCartProducts] = useState([0]);
 	const [cartTotal, setCartTotal] = useState(0);
 	const [update, setUpdate] = useState(false);
@@ -28,6 +27,11 @@ export const ShoppingCart = ({ token }) => {
 				setCartProducts(cartData.products);
 				setUpdate(false);
 			}
+		} else if (cart)
+		{
+			console.log(cart)
+			setCartProducts(cart);
+			setUpdate(false);
 		}
 	};
 
@@ -140,23 +144,25 @@ export const ShoppingCart = ({ token }) => {
 					? 'Your cart is empty!'
 					: `You have ${cartProducts.length} items in your cart!`}
 			</Text>
-			<Grid templateColumns='repeat(3, 1fr)'>
-				{!cart
-					? null
-					: cartProducts.map((product, i) => {
-							return (
-								<CartProductCard
-									product={product}
-									key={product.name + i}
-									token={token}
-									setUpdate={setUpdate}
-								/>
-							);
-					  })}
+			<Grid templateColumns="repeat(3, 1fr)">
+			{!cart
+				? null
+				: cartProducts.map((product, i) => {
+						return (
+							<CartProductCard
+								product={product}
+								key={product.name + i}
+								token={token}
+								setUpdate={setUpdate}
+								cart={cart}
+								setCart={setCart}
+							/>
+						);
+				  })}
 			</Grid>
 			{!cart ? null : <Text>Your total is ${cartTotal}</Text>}
 
-			{cartProducts.length === 0 || !token ? null : (
+			{!cart ? null : (
 				<Button
 					width='300px'
 					justifySelf='center'

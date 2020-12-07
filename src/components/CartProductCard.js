@@ -12,37 +12,53 @@ import {
 	useToast
 } from '@chakra-ui/react';
 import { callApi } from '../api';
+import { clearCart, storeCart } from '../auth';
 
-export const CartProductCard = ({ product, token, setUpdate }) => {
+export const CartProductCard = ({ cart, setCart, product, token, setUpdate }) => {
 	const [quantity, setQuantity] = useState(1);
 	const toast = useToast();
 
-	const handleRemoveFromCart = async e => {
+	const handleRemoveFromCart = async (e, id) => {
 		e.preventDefault();
-
-		const deletedOrderProduct = await callApi({
-			path: `/order_products/${product.orderProductId}`,
-			method: 'DELETE',
-			token
-		});
-
-		if (deletedOrderProduct.success) {
-			toast({
-				title: deletedOrderProduct.message,
-				status: 'success',
-				duration: '5000',
-				isClosable: 'true',
-				position: 'top'
+		if(!token)
+		{
+			cart.splice(id, 1)
+			setCart(cart);
+			clearCart();
+			storeCart(cart);
+		} 
+		else
+		{
+			const deletedOrderProduct = await callApi({
+				path: `/order_products/${product.orderProductId}`,
+				method: 'DELETE',
+				token
 			});
+	
+			if (deletedOrderProduct.success) {
+				toast({
+					title: deletedOrderProduct.message,
+					status: 'success',
+					duration: '5000',
+					isClosable: 'true',
+					position: 'top'
+				});
+			}
+	
+			console.log(deletedOrderProduct);
+			setUpdate(true);
 		}
-
-		console.log(deletedOrderProduct);
-		setUpdate(true);
 	};
 
-	const handleUpdateQuantity = async e => {
+	const handleUpdateQuantity = async (e, id) => {
 		e.preventDefault();
-
+		if(!token)
+		{
+			cart[id].quantity = quantity
+			setCart(cart);
+			clearCart();
+			storeCart(cart);
+		} 
 		const editOrderProduct = await callApi(
 			{
 				path: `/order_products/${product.orderProductId}`,
@@ -83,13 +99,13 @@ export const CartProductCard = ({ product, token, setUpdate }) => {
 			<Button
 				color={'black'}
 				justifySelf='center'
-				onClick={e => handleUpdateQuantity(e)}
+				onClick={e => handleUpdateQuantity(e, cart.indexOf(product))}
 			>
 				Update Quantity
 			</Button>
 			<Button
 				justifySelf='center'
-				onClick={e => handleRemoveFromCart(e)}
+				onClick={e => handleRemoveFromCart(e, cart.indexOf(product))}
 			>
 				Remove from cart
 			</Button>

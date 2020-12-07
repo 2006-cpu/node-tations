@@ -20,12 +20,13 @@ import {
 	AdminProductPage
 } from './components';
 
-import { getCurrentUser, getCurrentUserToken } from './auth';
+import { getCurrentUser, getCurrentUserToken, getCart } from './auth';
 
 const App = () => {
-	const [token, setToken] = useState(getCurrentUserToken());
+	const [token, setToken] = useState(getCurrentUserToken(), []);
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
 	const [orders, setOrders] = useState([{}]);
+	const [cart, setCart] = useState(getCart());
 
 	return (
 		<Router>
@@ -45,6 +46,8 @@ const App = () => {
 							<ProductPage
 								token={token}
 								currentUser={currentUser}
+								setCart={setCart}
+								cart={cart}
 							/>
 						</Route>
 						<Route path={'/reviews/products/:productId'}>
@@ -77,7 +80,11 @@ const App = () => {
 							/>
 						</Route>
 						<Route exact path='/cart'>
-							<ShoppingCart token={token} />
+							<ShoppingCart 
+								token={token}
+								setCart={setCart}
+								cart={cart}
+							/>
 						</Route>
 						<Route exact path='/users'>
 							<Users currentUser={currentUser} token={token} />
