@@ -27,9 +27,8 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 				setCartProducts(cartData.products);
 				setUpdate(false);
 			}
-		} else if (cart)
-		{
-			console.log(cart)
+		} else if (cart) {
+			console.log(cart);
 			setCartProducts(cart);
 			setUpdate(false);
 		}
@@ -130,6 +129,20 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 	};
 
 	useEffect(() => {
+		const query = new URLSearchParams(window.location.search);
+
+		if (query.get('canceled')) {
+			toast({
+				title: 'Purchase canceled',
+				status: 'error',
+				duration: '5000',
+				isClosable: 'true',
+				position: 'top'
+			});
+		}
+	}, []);
+
+	useEffect(() => {
 		fetchCartData();
 	}, [update]);
 
@@ -144,21 +157,21 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 					? 'Your cart is empty!'
 					: `You have ${cartProducts.length} items in your cart!`}
 			</Text>
-			<Grid templateColumns="repeat(3, 1fr)">
-			{!cart
-				? null
-				: cartProducts.map((product, i) => {
-						return (
-							<CartProductCard
-								product={product}
-								key={product.name + i}
-								token={token}
-								setUpdate={setUpdate}
-								cart={cart}
-								setCart={setCart}
-							/>
-						);
-				  })}
+			<Grid templateColumns='repeat(3, 1fr)'>
+				{!cart
+					? null
+					: cartProducts.map((product, i) => {
+							return (
+								<CartProductCard
+									product={product}
+									key={product.name + i}
+									token={token}
+									setUpdate={setUpdate}
+									cart={cart}
+									setCart={setCart}
+								/>
+							);
+					  })}
 			</Grid>
 			{!cart ? null : <Text>Your total is ${cartTotal}</Text>}
 
