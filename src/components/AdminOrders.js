@@ -35,7 +35,7 @@ export const AdminOrders = ({orders, currentUser, setOrders, token}) => {
 		{
 			fetchMyOrders()
 		}
-	}, []);
+	}, [currentUser]);
 
 	
 	return <UserOrders currentUser={currentUser} orders={orders} setOrders={setOrders} />

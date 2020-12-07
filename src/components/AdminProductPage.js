@@ -73,7 +73,7 @@ export const AdminProductPage = ({ token, currentUser }) => {
         {currentUser && currentUser.isAdmin ? 
         <Grid>
 {
-    currentUser && currentUser.isAdmin ? <Button variant='outline' onClick={onOpen}>Edit Product</Button> : null
+    currentUser && currentUser.isAdmin ? <Button variant='outline' width="100px" justifySelf='left' onClick={onOpen}>Edit Product</Button> : null
 }      
         <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

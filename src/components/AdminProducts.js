@@ -39,7 +39,7 @@ export const AdminProducts = ({currentUser, token}) => {
         <Text>ProductList</Text>
         {
         currentUser && currentUser.isAdmin ? 
-        <Grid templateColumns="repeat(3, 1fr)" className="orders">
+        <Grid templateColumns="repeat(3, 1fr)" className="products">
         {productList.map(({id, name, imageurl, description, price, category, inStock}) =>
             <Box key={id} className="admin_products" borderRadius="40px" maxW="fit-content" border="5px groove white" className="products">
 		<Link to={`/adminproduct/${id}`}>

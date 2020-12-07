@@ -62,7 +62,7 @@ export const UserPage = ({ token, currentUser }) => {
         {currentUser && currentUser.isAdmin ? 
         <Grid>
             {
-                currentUser && currentUser.isAdmin ? <Button variant='outline' onClick={onOpen}>Edit Users</Button> : null
+                currentUser && currentUser.isAdmin ? <Button variant='outline' width="100px" justifySelf='left' onClick={onOpen}>Edit Users</Button> : null
             }      
             <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />

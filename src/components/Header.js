@@ -36,8 +36,7 @@ export const Header = ({
 	token,
 	setToken,
 	currentUser,
-	setCurrentUser,
-	setIsAdmin
+	setCurrentUser
 }) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');

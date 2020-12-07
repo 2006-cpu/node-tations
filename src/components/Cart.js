@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { CartProductCard, Checkout } from '../components';
-import { Grid, Image, Text, Box, Button } from '@chakra-ui/react';
+import { CartProductCard } from '../components';
+import { Grid, Text, Button } from '@chakra-ui/react';
 import { callApi } from '../api';
+
 
 //Stripe
 import { loadStripe } from '@stripe/stripe-js';
@@ -14,7 +15,6 @@ export const ShoppingCart = ({ token }) => {
 	const [cartProducts, setCartProducts] = useState([0]);
 	const [cartTotal, setCartTotal] = useState(0);
 	const [update, setUpdate] = useState(false);
-	const [viewCheckout, setViewCheckout] = useState(false);
 
 	const fetchCartData = async () => {
 		if (token) {
@@ -87,6 +87,7 @@ export const ShoppingCart = ({ token }) => {
 					? 'Your cart is empty!'
 					: `You have ${cartProducts.length} items in your cart!`}
 			</Text>
+			<Grid templateColumns="repeat(3, 1fr)">
 			{!cart
 				? null
 				: cartProducts.map((product, i) => {
@@ -99,6 +100,7 @@ export const ShoppingCart = ({ token }) => {
 							/>
 						);
 				  })}
+			</Grid>
 			{!cart ? null : <Text>Your total is ${cartTotal}</Text>}
 
 			{cartProducts.length === 0 || !token ? null : (
