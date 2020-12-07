@@ -19,13 +19,15 @@ import {
 	useToast
 } from '@chakra-ui/react';
 import { callApi } from '../api';
+import { storeCart } from '../auth';
+
 
 import {} from '@chakra-ui/react';
 import { FaComment } from 'react-icons/fa';
 
 import './productpreviewcard.css'
 
-export const ProductPage = ({ token, currentUser }) => {
+export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 	const { productId } = useParams();
 	const [product, setProduct] = useState({});
 	const [review, setReview] = useState('');
@@ -56,66 +58,73 @@ export const ProductPage = ({ token, currentUser }) => {
 	const handleAddToCart = async e => {
 		e.preventDefault();
 
-		if (!token) {
-			toast({
-				title: 'Please login to checkout',
-				status: 'warning',
-				duration: '5000',
-				isClosable: 'true',
-				position: 'top'
-			});
 
-			return;
+
+		if(!cart && !token)
+		{
+			product.quantity = quantity
+			let carts = [product]
+			setCart(carts)
+			storeCart(carts)
+		} else if (cart && !token)
+		{
+			product.quantity = quantity
+			cart.push(product)
+			setCart(cart)
+			storeCart(cart)
+		} else
+		{
+			const [existingOrder] = await callApi({ path: '/orders/cart', token });
+
+			if (!existingOrder) {
+				const newOrder = await callApi(
+					{ path: '/orders', method: 'POST', token },
+					{ status: 'created' }
+				);
+				console.log(newOrder);
+	
+				const addProductToOrder = await callApi(
+					{
+						path: `/orders/${newOrder.id}/products`,
+						method: 'POST',
+						token
+					},
+					{ productId, price: product.price, quantity }
+				);
+				if (addProductToOrder.success) {
+					toast({
+						title: addProductToOrder.message,
+						status: 'success',
+						duration: '5000',
+						isClosable: 'true',
+						position: 'top'
+					});
+				}
+			} else {
+				console.log('user has existing orders');
+	
+				const addProductToOrder = await callApi(
+					{
+						path: `/orders/${existingOrder.id}/products`,
+						method: 'POST',
+						token
+					},
+					{ productId, price: product.price, quantity }
+				);
+				if (addProductToOrder.success) {
+					toast({
+						title: addProductToOrder.message,
+						status: 'success',
+						duration: '5000',
+						isClosable: 'true',
+						position: 'top'
+					});
+				}
+			}
+		};
 		}
 
-		const [existingOrder] = await callApi({ path: '/orders/cart', token });
 
-		if (!existingOrder) {
-			const newOrder = await callApi(
-				{ path: '/orders', method: 'POST', token },
-				{ status: 'created' }
-			);
-			console.log(newOrder);
-
-			const addProductToOrder = await callApi(
-				{
-					path: `/orders/${newOrder.id}/products`,
-					method: 'POST',
-					token
-				},
-				{ productId, price: product.price, quantity }
-			);
-			if (addProductToOrder.success) {
-				toast({
-					title: addProductToOrder.message,
-					status: 'success',
-					duration: '5000',
-					isClosable: 'true',
-					position: 'top'
-				});
-			}
-		} else {
-			console.log('user has existing orders');
-
-			const addProductToOrder = await callApi(
-				{
-					path: `/orders/${existingOrder.id}/products`,
-					method: 'POST',
-					token
-				},
-				{ productId, price: product.price, quantity }
-			);
-			if (addProductToOrder.success) {
-				toast({
-					title: addProductToOrder.message,
-					status: 'success',
-					duration: '5000',
-					isClosable: 'true',
-					position: 'top'
-				});
-			}
-		}
-	};
 
 	useEffect(() => {
 		fetchProduct();
