@@ -23,7 +23,7 @@ stripeRouter.post('/create-session', async (req, res, next) => {
 			payment_method_types: ['card'],
 			line_items: line_items,
 			mode: 'payment',
-			success_url: `${LOCAL_URL + '/myorders?success=true'}`,
+			success_url: `${LOCAL_URL + '/store?success=true'}`,
 			cancel_url: `${LOCAL_URL + '/cart?canceled=true'}`
 		});
 
