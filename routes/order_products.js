@@ -16,19 +16,19 @@ orderProductsRouter.patch('/:orderProductId', requireUser, async (req, res) => {
 	const { id } = req.user;
 
 	orderProductId = Number(orderProductId);
-	console.log(orderProductId, price, quantity, id)
+	console.log(orderProductId, price, quantity, id);
 	try {
 		const orderProducts = await getUserOrderProducts(id, orderProductId);
-		console.log(orderProducts)
+		console.log(orderProducts);
 		const order_products = await updateOrderProduct({
 			id: orderProductId,
 			price: price,
 			quantity: quantity
 		});
-		console.log(order_products)
+		console.log(order_products);
 
-		if(order_products) {
-		res.send(order_products);
+		if (order_products) {
+			res.send(order_products);
 		} else {
 			next({
 				name: 'Incorrect User',
@@ -60,7 +60,11 @@ orderProductsRouter.delete(
 					orderProductId
 				);
 
-				res.send(order_products);
+				res.send({
+					success: true,
+					message: 'Item removed successfully!',
+					order_products
+				});
 			} else {
 				next({
 					name: 'Incorrect User',

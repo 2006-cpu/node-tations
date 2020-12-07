@@ -17,11 +17,12 @@ export const ShoppingCart = ({ token }) => {
 	const [update, setUpdate] = useState(false);
 
 	const fetchCartData = async () => {
-		if(token)
-		{
-			const [cartData] = await callApi({ path: '/orders/cart', token: token });
-			if(cartData)
-			{
+		if (token) {
+			const [cartData] = await callApi({
+				path: '/orders/cart',
+				token: token
+			});
+			if (cartData) {
 				console.log(cartData);
 				setCart(cartData);
 				setCartProducts(cartData.products);
@@ -33,7 +34,9 @@ export const ShoppingCart = ({ token }) => {
 	const calculateCartTotal = () => {
 		if (cartProducts.length !== 0) {
 			let prices = [];
-			cartProducts.forEach(product => prices.push(Number(product.price * product.quantity)));
+			cartProducts.forEach(product =>
+				prices.push(Number(product.price * product.quantity))
+			);
 			let total = prices.reduce((total, price) => total + price);
 			total = Math.round(total * 100) / 100;
 			setCartTotal(total);
@@ -85,26 +88,30 @@ export const ShoppingCart = ({ token }) => {
 					: `You have ${cartProducts.length} items in your cart!`}
 			</Text>
 			<Grid templateColumns="repeat(3, 1fr)">
-			{!cart ? null : cartProducts.map((product, i) => {
-				return (
-					<CartProductCard
-						product={product}
-						key={product.name + i}
-						token={token}
-						setUpdate={setUpdate}
-					/>
-				);
-			})}
+			{!cart
+				? null
+				: cartProducts.map((product, i) => {
+						return (
+							<CartProductCard
+								product={product}
+								key={product.name + i}
+								token={token}
+								setUpdate={setUpdate}
+							/>
+						);
+				  })}
 			</Grid>
 			{!cart ? null : <Text>Your total is ${cartTotal}</Text>}
 
-			{!cart ? null : <Button
-				width='300px'
-				justifySelf='center'
-				onClick={e => handleCheckout(e)}
-			>
-				Proceed to Checkout
-			</Button>}
+			{cartProducts.length === 0 || !token ? null : (
+				<Button
+					width='300px'
+					justifySelf='center'
+					onClick={e => handleCheckout(e)}
+				>
+					Proceed to Checkout
+				</Button>
+			)}
 
 			{/* {viewCheckout ? <Checkout /> : ''} */}
 		</Grid>

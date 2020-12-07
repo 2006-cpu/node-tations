@@ -8,12 +8,14 @@ import {
 	NumberInputField,
 	NumberInputStepper,
 	NumberIncrementStepper,
-	NumberDecrementStepper
+	NumberDecrementStepper,
+	useToast
 } from '@chakra-ui/react';
 import { callApi } from '../api';
 
 export const CartProductCard = ({ product, token, setUpdate }) => {
 	const [quantity, setQuantity] = useState(1);
+	const toast = useToast();
 
 	const handleRemoveFromCart = async e => {
 		e.preventDefault();
@@ -24,19 +26,32 @@ export const CartProductCard = ({ product, token, setUpdate }) => {
 			token
 		});
 
+		if (deletedOrderProduct.success) {
+			toast({
+				title: deletedOrderProduct.message,
+				status: 'success',
+				duration: '5000',
+				isClosable: 'true',
+				position: 'top'
+			});
+		}
+
 		console.log(deletedOrderProduct);
 		setUpdate(true);
 	};
 
 	const handleUpdateQuantity = async e => {
 		e.preventDefault();
-	
-		const editOrderProduct = await callApi({
-			path: `/order_products/${product.orderProductId}`,
-			method: 'PATCH',
-			token
-		}, {quantity: quantity, price: product.price});
-	
+
+		const editOrderProduct = await callApi(
+			{
+				path: `/order_products/${product.orderProductId}`,
+				method: 'PATCH',
+				token
+			},
+			{ quantity: quantity, price: product.price }
+		);
+
 		console.log(editOrderProduct);
 		setUpdate(true);
 	};
@@ -65,7 +80,11 @@ export const CartProductCard = ({ product, token, setUpdate }) => {
 					<NumberDecrementStepper />
 				</NumberInputStepper>
 			</NumberInput>
-			<Button color={'black'} justifySelf='center' onClick={e => handleUpdateQuantity(e)}>
+			<Button
+				color={'black'}
+				justifySelf='center'
+				onClick={e => handleUpdateQuantity(e)}
+			>
 				Update Quantity
 			</Button>
 			<Button
