@@ -19,7 +19,6 @@ import { } from '@chakra-ui/react';
 import { FaComment } from 'react-icons/fa';
 
 import './productpreviewcard.css'
-import { text, submit, click} from '@chakra-ui/react';
 export const ProductPage = ({ token, currentUser }) => {
 	const { productId } = useParams();
 	const [product, setProduct] = useState({});
@@ -69,6 +68,7 @@ export const ProductPage = ({ token, currentUser }) => {
 				},
 				{ productId, price: product.price, quantity }
 			);
+			console.log(addProductToOrder)
 		} else {
 			console.log('user has existing orders');
 
@@ -80,6 +80,7 @@ export const ProductPage = ({ token, currentUser }) => {
 				},
 				{ productId, price: product.price, quantity }
 			);
+			console.log(addProductToOrder)
 		}
 	};
 
@@ -93,12 +94,12 @@ export const ProductPage = ({ token, currentUser }) => {
 
 	return (
 		<Grid className='products' maxW="fit-content"  >
-			<Text>{product.name}</Text>
+			<Text>Name: {product.name}</Text>
 			<Image src={product.imageurl}></Image>
-			<Text>{product.description}</Text>
-			<Text>{product.category}</Text>
-			<Text>{product.price}</Text>
-			<Text>{product.review}</Text>
+			<Text>Description: {product.description}</Text>
+			<Text>Price: ${product.price}</Text>
+			<Text>Category: {product.category}</Text>
+            <Text>inStock: {product.inStock ? 'True': 'False'}</Text>
 			<NumberInput
 				width='125px'
 				min={1}

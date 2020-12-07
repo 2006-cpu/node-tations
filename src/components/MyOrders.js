@@ -12,10 +12,10 @@ export const MyOrders = ({orders, currentUser}) => {
 				boxShadow='xs'
 				rounded='md'
                 >
-                {orders.map(({id, status, userId, datePlaced, products}) =>
+                {orders.map(({id, status, datePlaced, products}) =>
                 
 				
-        		<Box key={id} className="Orders" border="5px groove white" className='products'>
+        		<Box key={id} className="products" border="5px groove white">
                 <Text fontSize='xl'><b>Order By:  {currentUser.username} </b></Text>
           		<Text>Order Status:  {status} </Text>
             	<Text>Order Date: {datePlaced }</Text>

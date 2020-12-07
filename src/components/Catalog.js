@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ProductPreviewCard } from '../components';
 import { callApi } from '../api';
-import { Grid, text } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 
 export const Catalog = () => {
 	const [productList, setProductList] = useState([]);

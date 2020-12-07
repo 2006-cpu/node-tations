@@ -36,7 +36,7 @@ export const Orders = ({orders, currentUser, setOrders, token}) => {
 		{
 			fetchMyOrders()
 		}
-	}, []);
+	}, [currentUser]);
 
 	
 	return <MyOrders currentUser={currentUser} orders={orders} setOrders={setOrders} />

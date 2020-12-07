@@ -47,7 +47,6 @@ export const CartProductCard = ({ product, token, setUpdate }) => {
 			margin='5px'
 			padding='5px'
 			justifySelf='left'
-			width='33%'
 		>
 			<Text fontSize='xl'>{product.name}</Text>
 			<Image src={product.imageurl} />
@@ -55,7 +54,6 @@ export const CartProductCard = ({ product, token, setUpdate }) => {
 			<Text fontSize='sm'>${product.price}</Text>
 			<Text fontSize='sm'>Quantity: {product.quantity}</Text>
 			<NumberInput
-				width='125px'
 				min={1}
 				max={10}
 				value={quantity}
@@ -67,11 +65,10 @@ export const CartProductCard = ({ product, token, setUpdate }) => {
 					<NumberDecrementStepper />
 				</NumberInputStepper>
 			</NumberInput>
-			<Button maxW='100px' color={'black'} onClick={e => handleUpdateQuantity(e)}>
+			<Button color={'black'} justifySelf='center' onClick={e => handleUpdateQuantity(e)}>
 				Update Quantity
 			</Button>
 			<Button
-				width='50%'
 				justifySelf='center'
 				onClick={e => handleRemoveFromCart(e)}
 			>
