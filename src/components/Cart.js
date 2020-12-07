@@ -10,24 +10,30 @@ const stripePromise = loadStripe(
 );
 
 export const ShoppingCart = ({ token }) => {
-	const [cart, setCart] = useState({});
+	const [cart, setCart] = useState(null);
 	const [cartProducts, setCartProducts] = useState([0]);
 	const [cartTotal, setCartTotal] = useState(0);
 	const [update, setUpdate] = useState(false);
 	const [viewCheckout, setViewCheckout] = useState(false);
 
 	const fetchCartData = async () => {
-		const [cartData] = await callApi({ path: '/orders/cart', token });
-		console.log(cartData);
-		setCart(cartData);
-		setCartProducts(cartData.products);
-		setUpdate(false);
+		if(token)
+		{
+			const [cartData] = await callApi({ path: '/orders/cart', token: token });
+			if(cartData)
+			{
+				console.log(cartData);
+				setCart(cartData);
+				setCartProducts(cartData.products);
+				setUpdate(false);
+			}
+		}
 	};
 
 	const calculateCartTotal = () => {
 		if (cartProducts.length !== 0) {
 			let prices = [];
-			cartProducts.forEach(product => prices.push(Number(product.price)));
+			cartProducts.forEach(product => prices.push(Number(product.price * product.quantity)));
 			let total = prices.reduce((total, price) => total + price);
 			total = Math.round(total * 100) / 100;
 			setCartTotal(total);
@@ -78,7 +84,7 @@ export const ShoppingCart = ({ token }) => {
 					? 'Your cart is empty!'
 					: `You have ${cartProducts.length} items in your cart!`}
 			</Text>
-			{cartProducts.map((product, i) => {
+			{!cart ? null : cartProducts.map((product, i) => {
 				return (
 					<CartProductCard
 						product={product}
@@ -88,15 +94,15 @@ export const ShoppingCart = ({ token }) => {
 					/>
 				);
 			})}
-			{cart ? <Text>Your total is ${cartTotal}</Text> : ''}
+			{!cart ? null : <Text>Your total is ${cartTotal}</Text>}
 
-			<Button
+			{!cart ? null : <Button
 				width='300px'
 				justifySelf='center'
 				onClick={e => handleCheckout(e)}
 			>
 				Proceed to Checkout
-			</Button>
+			</Button>}
 
 			{/* {viewCheckout ? <Checkout /> : ''} */}
 		</Grid>

@@ -98,6 +98,7 @@ export const ProductPage = ({ token, currentUser }) => {
 			<Text>{product.description}</Text>
 			<Text>{product.category}</Text>
 			<Text>{product.price}</Text>
+			<Text>{product.review}</Text>
 			<NumberInput
 				width='125px'
 				min={1}
