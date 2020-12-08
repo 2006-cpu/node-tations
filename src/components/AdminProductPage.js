@@ -71,7 +71,7 @@ export const AdminProductPage = ({ token, currentUser }) => {
     
     return ( <>
         {currentUser && currentUser.isAdmin ? 
-        <Grid>
+        <Grid maxW="33%" textAlign="center" className="products">
 {
     currentUser && currentUser.isAdmin ? <Button variant='outline' width="100px" justifySelf='left' onClick={onOpen}>Edit Product</Button> : null
 }      

@@ -78,6 +78,7 @@ export const CartProductCard = ({ cart, setCart, product, token, setUpdate }) =>
 			margin='5px'
 			padding='5px'
 			justifySelf='left'
+			className="products"
 		>
 			<Text fontSize='xl'>{product.name}</Text>
 			<Image src={product.imageurl} />
@@ -104,6 +105,7 @@ export const CartProductCard = ({ cart, setCart, product, token, setUpdate }) =>
 				Update Quantity
 			</Button>
 			<Button
+				color={'black'}
 				justifySelf='center'
 				onClick={e => handleRemoveFromCart(e, cart.indexOf(product))}
 			>

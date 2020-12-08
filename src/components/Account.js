@@ -17,7 +17,7 @@ export const Account = ({currentUser, token}) => {
 
 return 	<>
         <Text>Account Information</Text>
-            <Grid>
+            <Grid maxW="33%" className="account">
                 <Text>First Name: {account.firstname}</Text>
                 <Text>Last Name: {account.lastname}</Text>
                 <Text>Email: {account.email}</Text>

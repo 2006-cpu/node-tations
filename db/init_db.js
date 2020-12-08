@@ -154,18 +154,18 @@ async function createInitialUsers() {
 async function createInitialOrders() {
 	console.log('Starting to create orders...');
 	try {
-		const pending = await createOrder({
-			status: 'Pending',
-			id: 1
-		});
-		const delivered = await createOrder({
-			status: 'Delivered',
-			id: 3
-		});
-		const returnOrder = await createOrder({
-			status: 'return',
-			id: 2
-		});
+		const pending = await createOrder(
+			'Pending',
+			1
+		);
+		const delivered = await createOrder(
+			'Delivered',
+			3
+		);
+		const returnOrder = await createOrder(
+			'return',
+			2
+		);
 		console.log(pending, delivered, returnOrder )
 		console.log('Orders created:');
 		console.log('Finished creating Orders!');

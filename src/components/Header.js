@@ -144,9 +144,9 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 				<Heading>cutHub</Heading>
 			</Link>
 			<InputGroup>
-				<Input placeholder='Search'></Input>
+				<Input placeholder='Search' value={searchQuery} onChange={handleChange}></Input>
 				<InputRightAddon>
-					<IconButton icon={<FaSearch />} />
+					<IconButton icon={<FaSearch />} onClick={handleSubmit} />
 				</InputRightAddon>
 			</InputGroup>
 			{token && currentUser ? (
