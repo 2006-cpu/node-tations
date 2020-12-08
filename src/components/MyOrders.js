@@ -6,7 +6,7 @@ export const MyOrders = ({orders, currentUser}) => {
     console.log(orders)
     
 	return (
-		<Box textAlign="center" className='myorders'>myOrders 
+		<Box textAlign="center" textColor="white" className='myorders'>myOrders 
 		<Grid templateColumns="repeat(3, 1fr)" margin='25px' className='orders'
 				justifyItems='center'
 				boxShadow='xs'

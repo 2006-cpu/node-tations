@@ -41,7 +41,7 @@ export const AdminProducts = ({currentUser, token}) => {
         currentUser && currentUser.isAdmin ? 
         <Grid templateColumns="repeat(3, 1fr)" className="products">
         {productList.map(({id, name, imageurl, description, price, category, inStock}) =>
-            <Box key={id} className="admin_products" borderRadius="40px" maxW="fit-content" border="5px groove white">
+            <Box key={id} borderRadius="40px" border="5px groove white">
 		<Link to={`/adminproduct/${id}`}>
 			<Grid
 				margin='25px'
