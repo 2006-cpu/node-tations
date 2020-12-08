@@ -6,6 +6,7 @@ const {
 
 const { createProducts } = require('./products');
 const { createUser } = require('./users');
+const { addReview, createReview } = require('./reviews');
 const { createOrder } = require('./orders');
 const { addProductToOrder } = require('./order_products');
 
@@ -17,10 +18,12 @@ async function buildTables() {
 		console.log('Dropping All Tables...');
 
 		await client.query(`
+			DROP TABLE IF EXISTS reviews;
             DROP TABLE IF EXISTS order_products;
             DROP TABLE IF EXISTS orders;
             DROP TABLE IF EXISTS users;
-            DROP TABLE IF EXISTS products;
+			DROP TABLE IF EXISTS products;
+			
             `);
 
 		console.log('Finished dropping tables!');
@@ -65,7 +68,14 @@ async function buildTables() {
             price NUMERIC(10,2) NOT NULL,
 			quantity NUMERIC(10,2) DEFAULT 0 NOT NULL
 			
-            );
+			);
+			
+			CREATE TABLE reviews(
+				id SERIAL PRIMARY KEY,
+				content VARCHAR(255) DEFAULT null, 
+				"userId" INTEGER REFERENCES users(id),
+				"productId" INTEGER references products(id)
+			);
         `);
 
 		console.log('Finished constructing tables!');
@@ -112,6 +122,23 @@ async function createInitialProducts() {
 	}
 }
 
+async function createInitialReviews() {
+	console.log('Starting to create Reviews...');
+	try {
+		const newReview = await createReview({ productId : 1, content : "My family can't get enough" , userId : 2})
+		// const newReview2 = await createReview( 3, { content : "my new favorite"})
+	
+		
+
+		console.log('Review created:');
+		console.log(newReview);
+		console.log('Finished creating Reviews!');
+	} catch (error) {
+		console.error('Error creating Reviews!');
+		throw error;
+	}
+}
+
 async function createInitialUsers() {
 	console.log('Starting to create users...');
 	try {
@@ -154,18 +181,18 @@ async function createInitialUsers() {
 async function createInitialOrders() {
 	console.log('Starting to create orders...');
 	try {
-		const pending = await createOrder({
-			status: 'Pending',
-			id: 1
-		});
-		const delivered = await createOrder({
-			status: 'Delivered',
-			id: 3
-		});
-		const returnOrder = await createOrder({
-			status: 'return',
-			id: 2
-		});
+		const pending = await createOrder(
+			'Pending',
+			 1
+		);
+		const delivered = await createOrder(
+			'Delivered',
+			 3
+		);
+		const returnOrder = await createOrder(
+			'return',
+			2
+		);
 		console.log(pending, delivered, returnOrder )
 		console.log('Orders created:');
 		console.log('Finished creating Orders!');
@@ -211,6 +238,7 @@ async function populateInitialData() {
 		await createInitialUsers();
 		await createInitialOrders();
 		await createInitialOrderProducts();
+		await createInitialReviews();
 		// create useful starting data
 	} catch (error) {
 		throw error;

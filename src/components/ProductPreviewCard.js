@@ -20,7 +20,8 @@ export const ProductPreviewCard = ({ product }) => {
 				<Text fontSize='xl'>{product.name}</Text>
 				<Image src={product.imageurl} />
 				<Text fontSize='md'>{product.description}</Text>
-				<Text fontSize='sm'>${product.price}</Text>
+				<Text fontSize='sm'>{product.price}</Text>
+				
 				
 			</Grid>
 			</Box>
