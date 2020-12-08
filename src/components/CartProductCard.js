@@ -14,7 +14,7 @@ import {
 import { callApi } from '../api';
 import { clearCart, storeCart } from '../auth';
 
-export const CartProductCard = ({ cart, setCart, product, token, setUpdate }) => {
+export const CartProductCard = ({ cart, setCart, product, token, setUpdate, cartProducts }) => {
 	const [quantity, setQuantity] = useState(1);
 	const toast = useToast();
 
@@ -98,16 +98,15 @@ export const CartProductCard = ({ cart, setCart, product, token, setUpdate }) =>
 				</NumberInputStepper>
 			</NumberInput>
 			<Button
-				color={'black'}
 				justifySelf='center'
-				onClick={e => handleUpdateQuantity(e, cart.indexOf(product))}
+				onClick={e => handleUpdateQuantity(e, cartProducts.indexOf(product))}
 			>
 				Update Quantity
 			</Button>
 			<Button
 				color={'black'}
 				justifySelf='center'
-				onClick={e => handleRemoveFromCart(e, cart.indexOf(product))}
+				onClick={e => handleRemoveFromCart(e, cartProducts.indexOf(product))}
 			>
 				Remove from cart
 			</Button>

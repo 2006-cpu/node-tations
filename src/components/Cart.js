@@ -22,7 +22,7 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 				token: token
 			});
 			if (cartData) {
-				console.log(cartData);
+				console.log('cart', cartData);
 				setCart(cartData);
 				setCartProducts(cartData.products);
 				setUpdate(false);
@@ -169,6 +169,7 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 									setUpdate={setUpdate}
 									cart={cart}
 									setCart={setCart}
+									cartProducts={cartProducts}
 								/>
 							);
 					  })}
