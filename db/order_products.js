@@ -59,7 +59,8 @@ const updateOrderProduct = async ({ id, price, quantity }) => {
             WHERE id = $1
             RETURNING *;`,
 			[id, price, quantity]
-		);
+        );
+        console.log(product_orders)
 		return product_orders;
 	} catch (error) {
 		console.error(error);

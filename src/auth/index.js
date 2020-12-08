@@ -7,6 +7,10 @@ export const getCurrentUser = () => {
 	return user;
 };
 
+export const clearCurrentUser = () => {
+	localStorage.removeItem('currentUser');
+};
+
 export const storeCurrentUserToken = token => {
 	localStorage.setItem('token', JSON.stringify(token));
 };
@@ -16,10 +20,19 @@ export const getCurrentUserToken = () => {
 	return token;
 };
 
-export const clearCurrentUser = () => {
-	localStorage.removeItem('currentUser');
-};
-
 export const clearCurrentUserToken = () => {
 	localStorage.removeItem('token');
+};
+
+export const storeCart = cart => {
+	localStorage.setItem('cart', JSON.stringify(cart));
+};
+
+export const getCart = () => {
+	const token = JSON.parse(localStorage.getItem('cart'));
+	return token;
+};
+
+export const clearCart = () => {
+	localStorage.removeItem('cart');
 };

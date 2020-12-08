@@ -44,7 +44,7 @@ const handleAddProductSubmit = async event => {
 return (
 <>
 {
-    currentUser && currentUser.isAdmin ? <Button variant='outline' onClick={onOpen}>Add Product</Button> : null
+    currentUser && currentUser.isAdmin ? <Button width="100px" textAlign='center' variant='outline' onClick={onOpen}>Add Product</Button> : null
 }      
         <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

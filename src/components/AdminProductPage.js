@@ -71,9 +71,9 @@ export const AdminProductPage = ({ token, currentUser }) => {
     
     return ( <>
         {currentUser && currentUser.isAdmin ? 
-        <Grid>
+        <Grid maxW="33%" className="products">
 {
-    currentUser && currentUser.isAdmin ? <Button variant='outline' onClick={onOpen}>Edit Product</Button> : null
+    currentUser && currentUser.isAdmin ? <Button variant='outline' width="125px" justifySelf='left' onClick={onOpen}>Edit Product</Button> : null
 }      
         <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -128,8 +128,6 @@ export const AdminProductPage = ({ token, currentUser }) => {
         </Modal>
                 <Text>Name:  {product.name} </Text>
                 <Image
-                    borderRadius="full"
-                    boxSize="150px"
                     src={product.imageurl}
                     alt={product.name}
                 /> 
@@ -137,12 +135,11 @@ export const AdminProductPage = ({ token, currentUser }) => {
                 <Text>Price: {product.price}</Text>
                 <Text>Category: {product.category}</Text>
                 <Text>inStock: {product.inStock ? 'True': 'False'}</Text>
-
+                {
+                    currentUser && currentUser.isAdmin ? <Button variant='outline' width="125px" justifySelf='left' onClick={(event) => { handleDeleteProduct(event)}}>Delete Product</Button> : null
+                }  
         </Grid> : null
-    }
-    {
-    currentUser && currentUser.isAdmin ? <Button variant='outline' onClick={(event) => { handleDeleteProduct(event)}}>Delete Product</Button> : null
-    }   
+    } 
     </>
 	);
 };

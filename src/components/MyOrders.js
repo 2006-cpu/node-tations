@@ -6,16 +6,17 @@ export const MyOrders = ({orders, currentUser}) => {
     console.log(orders)
     
 	return (
-		<Box textAlign="center" className='myorders'>myOrders 
+		<Box textAlign="center" textColor="white" className="myorders">
+            <Box fontWeight="bold" fontSize="xx-large">My Orders</Box>
 		<Grid templateColumns="repeat(3, 1fr)" margin='25px' className='orders'
 				justifyItems='center'
 				boxShadow='xs'
 				rounded='md'
                 >
-                {orders.map(({id, status, userId, datePlaced, products}) =>
+                {orders.map(({id, status, datePlaced, products}) =>
                 
 				
-        		<Box key={id} className="Orders" border="5px groove white" className='products'>
+        		<Box key={id} className="products" border="5px groove white">
                 <Text fontSize='xl'><b>Order By:  {currentUser.username} </b></Text>
           		<Text>Order Status:  {status} </Text>
             	<Text>Order Date: {datePlaced }</Text>

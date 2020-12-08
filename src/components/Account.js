@@ -13,21 +13,21 @@ export const Account = ({currentUser, token}) => {
 	useEffect(() => {    
         if(currentUser)
         {fetchAccount()};
-        }, []);
+        }, [currentUser]);
 
 return 	<>
-        <Text>Account Information</Text>
-            <Grid>
-                <Text>{account.firstname}</Text>
-                <Text>{account.lastname}</Text>
-                <Text>{account.email}</Text>
+        <Text fontWeight="bold" fontSize="xx-large">Account Information</Text>
+            <Grid maxW="33%" className="account">
+                <Text>First Name: {account.firstname}</Text>
+                <Text>Last Name: {account.lastname}</Text>
+                <Text>Email: {account.email}</Text>
                 <Image 
                     borderRadius="full"
                     boxSize="150px"
                     src={account.imageurl}
                     alt={account.username}
                 />
-                <Text>{account.username}</Text>
+                <Text>Username: {account.username}</Text>
                 </Grid>
         </>
 }

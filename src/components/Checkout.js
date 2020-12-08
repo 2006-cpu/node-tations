@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export const Checkout = () => {
-	return <div>Checkout bitchh</div>;
+	return <div>Checkout</div>;
 };

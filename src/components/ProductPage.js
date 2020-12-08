@@ -11,11 +11,18 @@ import {
 	NumberInputStepper,
 	NumberIncrementStepper,
 	NumberDecrementStepper,
-	InputGroup, Box, Input, InputRightAddon, IconButton 
+	InputGroup,
+	Box,
+	Input,
+	InputRightAddon,
+	IconButton,
+	useToast
 } from '@chakra-ui/react';
 import { callApi } from '../api';
+import { storeCart } from '../auth';
 
-import { } from '@chakra-ui/react';
+
+import {} from '@chakra-ui/react';
 import { FaComment } from 'react-icons/fa';
 
 import './productpreviewcard.css'
@@ -27,6 +34,8 @@ export const ProductPage = ({ token, currentUser }) => {
 	const { productId } = useParams();
 	const [product, setProduct] = useState({});
 	const [review, setReview] = useState('');
+
+	const [cart , setCart] = useState([{}]);
 	const [user , setUser] = useState({});
 	console.log("user;", user)
 	const [reviews, setReviews] = useState([]);
@@ -35,6 +44,7 @@ export const ProductPage = ({ token, currentUser }) => {
 	console.log("testreview:", reviews)
 	const [newReview, setNewReview] = useState(false)
 	const [quantity, setQuantity] = useState(1);
+	const toast = useToast();
 
 	const fetchProduct = async () => {
 		try {
@@ -111,40 +121,79 @@ export const ProductPage = ({ token, currentUser }) => {
 	const handleAddToCart = async e => {
 		e.preventDefault();
 		try {
+			
+
+
+		if(!cart && !token)
+		{
+			product.quantity = quantity
+			let carts = [product]
+			setCart(carts)
+			storeCart(carts)
+		} else if (cart && !token)
+		{
+			product.quantity = quantity
+			cart.push(product)
+			setCart(cart)
+			storeCart(cart)
+		} else
+		{
 			const [existingOrder] = await callApi({ path: '/orders/cart', token });
 
 			if (!existingOrder) {
-			const newOrder = await callApi(
-				{ path: '/orders', method: 'POST', token },
-				{ status: 'created' }
-			);
-			console.log(newOrder);
-
-			const addProductToOrder = await callApi(
-				{
-					path: `/orders/${newOrder.id}/products`,
-					method: 'POST',
-					token
-				},
-				{ productId, price: product.price, quantity }
-			);
-		} else {
-			console.log('user has existing orders');
-
-			const addProductToOrder = await callApi(
-				{
-					path: `/orders/${existingOrder.id}/products`,
-					method: 'POST',
-					token
-				},
-				{ productId, price: product.price, quantity }
-			);
-		}
+				const newOrder = await callApi(
+					{ path: '/orders', method: 'POST', token },
+					{ status: 'created' }
+				);
+				console.log(newOrder);
+	
+				const addProductToOrder = await callApi(
+					{
+						path: `/orders/${newOrder.id}/products`,
+						method: 'POST',
+						token
+					},
+					{ productId, price: product.price, quantity }
+				);
+				if (addProductToOrder.success) {
+					toast({
+						title: addProductToOrder.message,
+						status: 'success',
+						duration: '5000',
+						isClosable: 'true',
+						position: 'top'
+					});
+				}
+			} else {
+				console.log('user has existing orders');
+	
+				const addProductToOrder = await callApi(
+					{
+						path: `/orders/${existingOrder.id}/products`,
+						method: 'POST',
+						token
+					},
+					{ productId, price: product.price, quantity }
+				);
+				if (addProductToOrder.success) {
+					toast({
+						title: addProductToOrder.message,
+						status: 'success',
+						duration: '5000',
+						isClosable: 'true',
+						position: 'top'
+					});
+				}
+			}
+		};
+		
 		} catch (error) {
 			
 		}
 		
 	};
+
+
 
 	useEffect(() => {
 		fetchProduct();
@@ -152,6 +201,7 @@ export const ProductPage = ({ token, currentUser }) => {
 
 	useEffect(() => {
 		fetchReviews().then(setNewReview(false));
+		
 		
 	}, [newReview === true]);
 
@@ -161,12 +211,13 @@ export const ProductPage = ({ token, currentUser }) => {
 	// }, []);
 
 	return (
-		<Grid className='products' maxW="fit-content"  >
-			<Text>{product.name}</Text>
+		<Grid maxW="50%" className='products'>
+			<Text>Name: {product.name}</Text>
 			<Image src={product.imageurl}></Image>
-			<Text>{product.description}</Text>
-			<Text>{product.category}</Text>
-			<Text>{product.price}</Text>
+			<Text>Description: {product.description}</Text>
+			<Text>Price: ${product.price}</Text>
+			<Text>Category: {product.category}</Text>
+            <Text>inStock: {product.inStock ? 'True': 'False'}</Text>
 			<NumberInput
 				width='125px'
 				min={1}
@@ -180,7 +231,11 @@ export const ProductPage = ({ token, currentUser }) => {
 					<NumberDecrementStepper />
 				</NumberInputStepper>
 			</NumberInput>
-			<Button maxW='100px' color={'black'} onClick={e => handleAddToCart(e)}>
+			<Button
+				maxW='100px'
+				color={'black'}
+				onClick={e => handleAddToCart(e)}
+			>
 				Add to Cart
 			</Button>
 			<InputGroup onChange={(e)=>{

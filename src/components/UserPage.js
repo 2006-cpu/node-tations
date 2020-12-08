@@ -60,9 +60,9 @@ export const UserPage = ({ token, currentUser }) => {
     
     return ( <>
         {currentUser && currentUser.isAdmin ? 
-        <Grid>
+        <Grid maxW="33%" className="user">
             {
-                currentUser && currentUser.isAdmin ? <Button variant='outline' onClick={onOpen}>Edit Users</Button> : null
+                currentUser && currentUser.isAdmin ? <Button variant='outline' width="100px" justifySelf='left' onClick={onOpen}>Edit Users</Button> : null
             }      
             <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />

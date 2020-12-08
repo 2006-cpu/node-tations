@@ -19,11 +19,12 @@ import {
 	Tab,
 	TabList,
 	TabPanels,
-	TabPanel
+	TabPanel,
+	useToast
 } from '@chakra-ui/react';
 import { MdShoppingCart, MdAccountBox } from 'react-icons/md';
 import { FaSearch } from 'react-icons/fa';
-import './header.css'
+import './header.css';
 import {
 	storeCurrentUser,
 	storeCurrentUserToken,
@@ -31,13 +32,7 @@ import {
 	clearCurrentUserToken
 } from '../auth';
 
-export const Header = ({
-	token,
-	setToken,
-	currentUser,
-	setCurrentUser,
-	setIsAdmin
-}) => {
+export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -45,6 +40,7 @@ export const Header = ({
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const toast = useToast();
 
 	const handleChange = async event => {
 		setSearchQuery(event.target.value);
@@ -67,6 +63,16 @@ export const Header = ({
 					password: password
 				}
 			);
+
+			if (!registration.success) {
+				toast({
+					title: registration.message,
+					status: 'error',
+					duration: '5000',
+					isClosable: 'true',
+					position: 'top'
+				});
+			}
 			console.log(registration);
 			if (registration.newUser && registration.token) {
 				storeCurrentUser(registration.newUser);
@@ -88,12 +94,29 @@ export const Header = ({
 				{ method: 'post', path: '/users/login' },
 				{ username: username, password: password }
 			);
-			console.log(login);
+
+			if (!login.success) {
+				toast({
+					title: login.message,
+					status: 'error',
+					duration: '5000',
+					isClosable: 'true',
+					position: 'top'
+				});
+			}
 			if (login.token && login.user) {
 				setCurrentUser(login.user);
 				storeCurrentUser(login.user);
 				setToken(login.token);
 				storeCurrentUserToken(login.token);
+
+				toast({
+					title: login.message,
+					status: 'success',
+					duration: '5000',
+					isClosable: 'true',
+					position: 'top'
+				});
 			}
 		} catch (error) {
 			console.error(error);
@@ -108,7 +131,8 @@ export const Header = ({
 	};
 
 	return (
-		<Grid className="header"
+		<Grid
+			className='header'
 			templateColumns='15% 60% 15% 10%'
 			justifyItems='center'
 			marginTop='25px'
@@ -120,9 +144,9 @@ export const Header = ({
 				<Heading>cutHub</Heading>
 			</Link>
 			<InputGroup>
-				<Input placeholder='Search'></Input>
-				<InputRightAddon >
-					<IconButton icon={<FaSearch />}  />
+				<Input placeholder='Search' value={searchQuery} onChange={handleChange}></Input>
+				<InputRightAddon>
+					<IconButton icon={<FaSearch />} onClick={handleSubmit} />
 				</InputRightAddon>
 			</InputGroup>
 			{token && currentUser ? (
@@ -145,19 +169,30 @@ export const Header = ({
 					/>
 				</Link>
 			) : null}
-			{currentUser && token ? 
-				<NavLink to='/Myorders' activeClassName='current'>
+			{currentUser && token ? (
+				<NavLink to='/myorders' activeClassName='current'>
 					MyOrders
-				</NavLink> : ""}
-			{currentUser && currentUser.isAdmin && token ? <NavLink to='/orders' activeClassName='current'>
+				</NavLink>
+			) : (
+				''
+			)}
+			{currentUser && currentUser.isAdmin && token ? (
+				<NavLink to='/orders' activeClassName='current'>
 					Orders
-				</NavLink> : ""}
-			{currentUser && token && currentUser.isAdmin ? <NavLink to='/users' activeClassName='current'>
+				</NavLink>
+			) : (
+				''
+			)}
+			{currentUser && token && currentUser.isAdmin ? (
+				<NavLink to='/users' activeClassName='current'>
 					Users
-			</NavLink> : null}
-			{currentUser && token && currentUser.isAdmin ? <NavLink to='/adminproduct' activeClassName='current'>
+				</NavLink>
+			) : null}
+			{currentUser && token && currentUser.isAdmin ? (
+				<NavLink to='/adminproduct' activeClassName='current'>
 					Admin Products
-			</NavLink> : null}
+				</NavLink>
+			) : null}
 			<Link to='/cart'>
 				<IconButton
 					variant='outline'

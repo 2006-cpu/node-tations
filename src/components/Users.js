@@ -21,17 +21,19 @@ export const Users = ({currentUser, token}) => {
 	useEffect(() => {
     if(currentUser)
     {fetchUsers()};
-    }, []);
+    }, [currentUser]);
     
     return 	(
         <>
+        <Box textAlign="center">
         {
         currentUser && currentUser.isAdmin ? <AddUser currentUser={ currentUser}/> : null
         }
-        <Text fontSize='xl'><b>&nbsp;&nbsp;Users</b></Text>
+        </Box>
+        <Text textAlign="center" fontWeight="bold" fontSize="xx-large">Users</Text>
         {
         currentUser && currentUser.isAdmin ? 
-        <Grid templateColumns="repeat(3, 1fr)" className="products">
+        <Grid templateColumns="repeat(3, 1fr)" className="user">
         {users.map(({id, firstname, lastname, email, imageurl, username, isAdmin}) =>
             <Box key={id} className="users" border="5px groove white">
             <Link to={`/users/${id}`}>              

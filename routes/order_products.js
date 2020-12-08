@@ -11,18 +11,23 @@ const { requireUser } = require('./utils');
 //Update the quantity or price on the order product
 
 orderProductsRouter.patch('/:orderProductId', requireUser, async (req, res) => {
-	const { orderProductId } = req.params;
+	let { orderProductId } = req.params;
 	const { price, quantity } = req.body;
 	const { id } = req.user;
+
+	orderProductId = Number(orderProductId);
+	console.log(orderProductId, price, quantity, id);
 	try {
 		const orderProducts = await getUserOrderProducts(id, orderProductId);
-		if (orderProducts.id === orderProductId) {
-			const order_products = await updateOrderProduct({
-				id: orderProductId,
-				price: price,
-				quantity: quantity
-			});
+		console.log(orderProducts);
+		const order_products = await updateOrderProduct({
+			id: orderProductId,
+			price: price,
+			quantity: quantity
+		});
+		console.log(order_products);
 
+		if (order_products) {
 			res.send(order_products);
 		} else {
 			next({
@@ -55,7 +60,11 @@ orderProductsRouter.delete(
 					orderProductId
 				);
 
-				res.send(order_products);
+				res.send({
+					success: true,
+					message: 'Item removed successfully!',
+					order_products
+				});
 			} else {
 				next({
 					name: 'Incorrect User',
