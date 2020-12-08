@@ -10,7 +10,7 @@ export const ProductPreviewCard = ({ product }) => {
 
 	return (
 		<Link to={`/products/${product.id}`}>
-			<Box className="products">
+			<Box  borderRadius="40px" border="5px groove white">
 			<Grid 
 				margin='25px'
 				justifyItems='center'

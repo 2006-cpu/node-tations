@@ -46,7 +46,7 @@ const handleAddUserSubmit = async event => {
 return (
 <>
 {
-    currentUser && currentUser.isAdmin ? <Button width="100px" justifySelf='left' variant='outline' onClick={onOpen}>Add Users</Button> : null
+    currentUser && currentUser.isAdmin ? <Button width="100px" textAlign='center' variant='outline' onClick={onOpen}>Add Users</Button> : null
 }      
         <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

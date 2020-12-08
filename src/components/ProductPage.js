@@ -135,7 +135,7 @@ export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 	}, [review]);
 
 	return (
-		<Grid className='products' maxW="fit-content"  >
+		<Grid maxW="50%" className='products'>
 			<Text>Name: {product.name}</Text>
 			<Image src={product.imageurl}></Image>
 			<Text>Description: {product.description}</Text>

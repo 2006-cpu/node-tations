@@ -79,10 +79,10 @@ async function createInitialProducts() {
 	console.log('Starting to create products...');
 	try {
 		const beef = await createProducts({
-			name: 'ground beef',
-			description: '85% lean, 15% fat all natural ground beef',
+			name: 'Steak',
+			description: 'Great Marbling',
 			price: '8.99',
-			imageurl: 'null',
+			imageurl: 'https://i.ytimg.com/vi/GI4iAcTA9KY/maxresdefault.jpg',
 			inStock: true,
 			category: 'beef'
 		});
@@ -90,7 +90,7 @@ async function createInitialProducts() {
 			name: 'chicken breast',
 			description: '100% organic chicken breast',
 			price: '5.99',
-			imageurl: 'null',
+			imageurl: 'https://cdn.mos.cms.futurecdn.net/gfSKxAQ8ZCoknoctJgFDZa.jpg',
 			inStock: true,
 			category: 'poultry'
 		});
@@ -98,7 +98,7 @@ async function createInitialProducts() {
 			name: 'pork chops',
 			description: 'Bone in pork chop',
 			price: '4.99',
-			imageurl: 'null',
+			imageurl: 'https://porterandyork.com/wp-content/uploads/Pork-Chop-e1540411361635.jpg',
 			inStock: true,
 			category: 'pork'
 		});

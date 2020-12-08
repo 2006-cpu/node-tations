@@ -16,7 +16,7 @@ export const Account = ({currentUser, token}) => {
         }, [currentUser]);
 
 return 	<>
-        <Text>Account Information</Text>
+        <Text fontWeight="bold" fontSize="xx-large">Account Information</Text>
             <Grid maxW="33%" className="account">
                 <Text>First Name: {account.firstname}</Text>
                 <Text>Last Name: {account.lastname}</Text>

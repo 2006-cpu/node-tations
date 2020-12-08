@@ -25,10 +25,12 @@ export const Users = ({currentUser, token}) => {
     
     return 	(
         <>
+        <Box textAlign="center">
         {
         currentUser && currentUser.isAdmin ? <AddUser currentUser={ currentUser}/> : null
         }
-        <Text fontSize='xl'><b>&nbsp;&nbsp;Users</b></Text>
+        </Box>
+        <Text textAlign="center" fontWeight="bold" fontSize="xx-large">Users</Text>
         {
         currentUser && currentUser.isAdmin ? 
         <Grid templateColumns="repeat(3, 1fr)" className="user">
