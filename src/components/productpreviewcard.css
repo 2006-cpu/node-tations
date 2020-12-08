@@ -1,0 +1,32 @@
+.products {
+    background-image: url(https://coolwallpapers.me/picsup/2391201-dark-brown-scratched-wooden-cutting-board-wood-texture-background.jpg);
+    border : 20px solid black;
+    color:  white;
+    padding: 10px;
+}
+
+.orders {
+    background-image: url(https://media.istockphoto.com/photos/void-wooden-background-with-spices-top-view-picture-id516549898?k=6&m=516549898&s=612x612&w=0&h=DlXCHpDvRWo8V95r0n_4kx1CSVCHtbeeeO94XXTjqTQ=);
+    letter-spacing : 1.5px;
+    border : 10px double white;
+}
+
+.account {
+    background-image: url(https://coolwallpapers.me/picsup/2391201-dark-brown-scratched-wooden-cutting-board-wood-texture-background.jpg);
+    border : 20px solid black;
+    color:  white;
+    padding: 10px;
+}
+
+.user {
+    background-image: url(https://coolwallpapers.me/picsup/2391201-dark-brown-scratched-wooden-cutting-board-wood-texture-background.jpg);
+    border : 20px solid black;
+    color:  white;
+    padding: 10px;
+}
+
+.myorders {
+    background-image: url(https://media.istockphoto.com/photos/void-wooden-background-with-spices-top-view-picture-id516549898?k=6&m=516549898&s=612x612&w=0&h=DlXCHpDvRWo8V95r0n_4kx1CSVCHtbeeeO94XXTjqTQ=);
+    border : 10px solid black;
+    
+}

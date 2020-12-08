@@ -1,8 +1,15 @@
 const usersRouter = require('express').Router();
 const { sign } = require('jsonwebtoken');
 const { JWT_SECRET } = process.env;
-const { createUser, getUserByUsername, getUser, getUserById } = require('../db/users');
-const { requireUser } = require('./utils');
+const {
+	createUser,
+	getUserByUsername,
+	getUser,
+	getUserById,
+	getAllUsers,
+	updateUser
+} = require('../db/users');
+const { requireUser, requireAdmin } = require('./utils');
 
 usersRouter.post('/register', async (req, res, next) => {
 	const userFields = [
@@ -12,6 +19,10 @@ usersRouter.post('/register', async (req, res, next) => {
 		'username',
 		'password'
 	];
+
+	if (req.body.password.length < 8) {
+		return res.send({ success: false, message: 'Password is too short!' });
+	}
 
 	try {
 		userFields.map(key => {
@@ -23,7 +34,10 @@ usersRouter.post('/register', async (req, res, next) => {
 		const checkUsername = await getUserByUsername(req.body.username);
 
 		if (checkUsername) {
-			throw Error('Username is not available');
+			return res.send({
+				success: false,
+				message: 'Username already exists!'
+			});
 		}
 
 		const newUser = await createUser(req.body);
@@ -48,7 +62,10 @@ usersRouter.post('/login', async (req, res, next) => {
 
 	try {
 		if (!username || !password) {
-			throw Error('Missing fields');
+			return res.send({
+				success: false,
+				message: 'Missing username or password!'
+			});
 		}
 
 		const user = await getUser(req.body);
@@ -59,7 +76,12 @@ usersRouter.post('/login', async (req, res, next) => {
 				JWT_SECRET
 			);
 
-			res.send({ message: 'You are logged in', user, token });
+			res.send({
+				success: true,
+				message: 'You are logged in!',
+				user,
+				token
+			});
 		}
 	} catch ({ name, message }) {
 		res.send({ name, message });
@@ -71,9 +93,41 @@ usersRouter.get('/me', requireUser, async (req, res, next) => {
 
 	try {
 		const user = await getUserById(id);
-		res.send(
-			user
-		);
+		res.send(user);
+	} catch ({ name, message }) {
+		res.send({ name, message });
+	}
+});
+
+usersRouter.get('/', requireAdmin, async (req, res, next) => {
+	try {
+		const user = await getAllUsers();
+		res.send(user);
+	} catch ({ name, message }) {
+		res.send({ name, message });
+	}
+});
+
+usersRouter.patch('/:userId', requireAdmin, async (req, res, next) => {
+	const { userId } = req.params;
+	const id = Number(userId);
+
+	try {
+		const user = await updateUser(id, req.body);
+
+		res.send(user);
+	} catch ({ name, message }) {
+		res.send({ name, message });
+	}
+});
+
+usersRouter.get('/:userId', requireUser, async (req, res, next) => {
+	const { userId } = req.params;
+	const id = Number(userId);
+
+	try {
+		const user = await getUserById(id);
+		res.send(user);
 	} catch ({ name, message }) {
 		res.send({ name, message });
 	}

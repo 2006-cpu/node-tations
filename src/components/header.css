@@ -1,0 +1,11 @@
+.header {
+    background-image: url(https://cdn.wallpapersafari.com/58/25/j9Zye2.jpg);
+    background-position: bottom;
+    color : white;
+    letter-spacing : 1.5px;
+    border : 10px double black;
+    height : 140px;
+    border-bottom : 10px solid black;
+    border-left-color: white;
+    border-right-color: white;
+}

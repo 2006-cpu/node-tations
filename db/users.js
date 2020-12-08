@@ -57,7 +57,7 @@ const getUser = async ({ username, password }) => {
 		const user = await getUserByUsername(username);
 
 		if (!user) {
-			throw Error('A user by that username does not exist');
+			throw Error('Wrong credentials');
 		}
 
 		const hashedPass = user.password;
@@ -67,7 +67,7 @@ const getUser = async ({ username, password }) => {
 			delete user.password;
 			return user;
 		} else {
-			throw Error('Wrong password');
+			throw Error('Wrong credentials');
 		}
 	} catch (error) {
 		throw error;
@@ -78,10 +78,7 @@ const getUserById = async userId => {
 	try {
 		const {
 			rows: [user]
-		} = await client.query(
-			`select * from users where id = $1`,
-			[userId]
-		);
+		} = await client.query(`select * from users where id = $1`, [userId]);
 		delete user.password;
 		return user;
 	} catch (error) {
@@ -89,4 +86,61 @@ const getUserById = async userId => {
 	}
 };
 
-module.exports = { createUser, getUser, getUserById, getUserByUsername };
+async function updateUser(id, fields = {}) {
+	// build the set string
+	const setString = Object.keys(fields)
+		.map((key, index) => {
+			if (key === 'imageURL') {
+				return `${key}=$${index + 1}`;
+			} else {
+				return `"${key}"=$${index + 1}`;
+			}
+		})
+		.join(', ');
+
+	console.log(setString);
+	// return early if this is called without fields
+	if (setString.length === 0) {
+		return;
+	}
+	try {
+		//Hash the password
+		if (fields.password) {
+			const hashedPass = await hash(fields.password, 10);
+			fields.password = hashedPass;
+		}
+
+		const { rows: user } = await client.query(
+			`UPDATE users
+            SET ${setString}
+            WHERE id = ${id}
+            RETURNING *;`,
+			Object.values(fields)
+		);
+
+		delete user.password;
+		return user;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+}
+
+const getAllUsers = async () => {
+	try {
+		const { rows: users } = await client.query(`select * from users`);
+		return users;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
+};
+
+module.exports = {
+	createUser,
+	getUser,
+	getUserById,
+	getUserByUsername,
+	updateUser,
+	getAllUsers
+};

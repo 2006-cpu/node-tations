@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Text } from '@chakra-ui/react';
+import { Grid, Text, Image } from '@chakra-ui/react';
 import { callApi } from '../api';
 
 export const Account = ({currentUser, token}) => {
@@ -10,16 +10,24 @@ export const Account = ({currentUser, token}) => {
         setAccount(accountData);
     };
     
-	useEffect(() => {
-    if(currentUser)
-    {fetchAccount();}
-	}, []);
+	useEffect(() => {    
+        if(currentUser)
+        {fetchAccount()};
+        }, [currentUser]);
 
-return 	<Grid>
-<Text>{account.firstname}</Text>
-<Text>{account.lastname}</Text>
-<Text>{account.email}</Text>
-<Text>{account.imageurl}</Text>
-<Text>{account.username}</Text>
-</Grid>
+return 	<>
+        <Text>Account Information</Text>
+            <Grid maxW="33%" className="account">
+                <Text>First Name: {account.firstname}</Text>
+                <Text>Last Name: {account.lastname}</Text>
+                <Text>Email: {account.email}</Text>
+                <Image 
+                    borderRadius="full"
+                    boxSize="150px"
+                    src={account.imageurl}
+                    alt={account.username}
+                />
+                <Text>Username: {account.username}</Text>
+                </Grid>
+        </>
 }

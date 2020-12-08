@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, NavLink, Redirect } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { callApi } from '../api';
 import {
 	Grid,
@@ -9,23 +9,22 @@ import {
 	InputRightAddon,
 	IconButton,
 	Button,
-	FormControl,
 	FormLabel,
 	useDisclosure,
 	ModalCloseButton,
 	Modal,
 	ModalOverlay,
 	ModalContent,
-	ModalHeader,
 	Tabs,
 	Tab,
 	TabList,
 	TabPanels,
-	TabPanel
+	TabPanel,
+	useToast
 } from '@chakra-ui/react';
 import { MdShoppingCart, MdAccountBox } from 'react-icons/md';
 import { FaSearch } from 'react-icons/fa';
-
+import './header.css';
 import {
 	storeCurrentUser,
 	storeCurrentUserToken,
@@ -33,7 +32,7 @@ import {
 	clearCurrentUserToken
 } from '../auth';
 
-export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmin }) => {
+export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -41,7 +40,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [ loggedIn, setLoggedIn ] = useState(Boolean)
+	const toast = useToast();
 
 	const handleChange = async event => {
 		setSearchQuery(event.target.value);
@@ -52,6 +51,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 	};
 
 	const handleRegisterSubmit = async event => {
+		event.preventDefault();
 		try {
 			const registration = await callApi(
 				{ method: 'post', path: '/users/register' },
@@ -63,13 +63,22 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 					password: password
 				}
 			);
+
+			if (!registration.success) {
+				toast({
+					title: registration.message,
+					status: 'error',
+					duration: '5000',
+					isClosable: 'true',
+					position: 'top'
+				});
+			}
 			console.log(registration);
 			if (registration.newUser && registration.token) {
 				storeCurrentUser(registration.newUser);
 				setCurrentUser(registration.newUser);
 				storeCurrentUserToken(registration.token);
 				setToken(registration.token);
-				setLoggedIn(true)
 			}
 		} catch (error) {
 			console.log(error);
@@ -85,13 +94,29 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 				{ method: 'post', path: '/users/login' },
 				{ username: username, password: password }
 			);
-			console.log(login);
+
+			if (!login.success) {
+				toast({
+					title: login.message,
+					status: 'error',
+					duration: '5000',
+					isClosable: 'true',
+					position: 'top'
+				});
+			}
 			if (login.token && login.user) {
 				setCurrentUser(login.user);
 				storeCurrentUser(login.user);
 				setToken(login.token);
-				setLoggedIn(true)
 				storeCurrentUserToken(login.token);
+
+				toast({
+					title: login.message,
+					status: 'success',
+					duration: '5000',
+					isClosable: 'true',
+					position: 'top'
+				});
 			}
 		} catch (error) {
 			console.error(error);
@@ -103,12 +128,11 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 		clearCurrentUserToken();
 		setCurrentUser(null);
 		setToken(null);
-		localStorage.clear();
-		setLoggedIn(false);
 	};
 
 	return (
 		<Grid
+			className='header'
 			templateColumns='15% 60% 15% 10%'
 			justifyItems='center'
 			marginTop='25px'
@@ -117,42 +141,65 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 			paddingBottom='25px'
 		>
 			<Link to='/store'>
-				<Heading>STORE</Heading>
+				<Heading>cutHub</Heading>
 			</Link>
 			<InputGroup>
-				<Input placeholder='Search'></Input>
+				<Input placeholder='Search' value={searchQuery} onChange={handleChange}></Input>
 				<InputRightAddon>
-					<IconButton icon={<FaSearch />} />
+					<IconButton icon={<FaSearch />} onClick={handleSubmit} />
 				</InputRightAddon>
 			</InputGroup>
-			{token && currentUser ?
-			<Link to="/store">
-			<Button variant='outline' onClick={handleUserLogout}>
-				Logout
-			</ Button>
-			</Link>:
-			<Button variant='outline' onClick={onOpen}>
-				Login
-			</Button>
-			}
-			{token && currentUser ?
-			<Link to='/account'>
-			<IconButton
-				variant='outline'
-				icon={<MdAccountBox />}
-				maxWidth='30px'
-			/>
-			</Link> : null
-			}
-			{currentUser && currentUser.isAdmin && loggedIn === true ? <NavLink to='/orders' activeClassName='current'>
+			{token && currentUser ? (
+				<Link to='/store'>
+					<Button variant='outline' onClick={handleUserLogout}>
+						Logout
+					</Button>
+				</Link>
+			) : (
+				<Button variant='outline' onClick={onOpen}>
+					Login
+				</Button>
+			)}
+			{token && currentUser ? (
+				<Link to='/account'>
+					<IconButton
+						variant='outline'
+						icon={<MdAccountBox />}
+						maxWidth='30px'
+					/>
+				</Link>
+			) : null}
+			{currentUser && token ? (
+				<NavLink to='/myorders' activeClassName='current'>
 					MyOrders
-				</NavLink> : ""}
-			
-			<IconButton
-				variant='outline'
-				icon={<MdShoppingCart />}
-				maxWidth='30px'
-			/>
+				</NavLink>
+			) : (
+				''
+			)}
+			{currentUser && currentUser.isAdmin && token ? (
+				<NavLink to='/orders' activeClassName='current'>
+					Orders
+				</NavLink>
+			) : (
+				''
+			)}
+			{currentUser && token && currentUser.isAdmin ? (
+				<NavLink to='/users' activeClassName='current'>
+					Users
+				</NavLink>
+			) : null}
+			{currentUser && token && currentUser.isAdmin ? (
+				<NavLink to='/adminproduct' activeClassName='current'>
+					Admin Products
+				</NavLink>
+			) : null}
+			<Link to='/cart'>
+				<IconButton
+					variant='outline'
+					icon={<MdShoppingCart />}
+					maxWidth='30px'
+				/>
+			</Link>
 			<Modal isOpen={isOpen} onClose={onClose}>
 				<ModalOverlay />
 				<ModalContent>
@@ -163,12 +210,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 						</TabList>
 						<TabPanels>
 							<TabPanel>
-							<form onSubmit={handleRegisterSubmit}>
-								<FormControl
-									isRequired
-									onSubmit={handleRegisterSubmit}
-									// gridTemplateRows = ''
-								>
+								<form onSubmit={handleRegisterSubmit}>
 									<FormLabel>Username</FormLabel>
 									<Input
 										type='text'
@@ -217,8 +259,7 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser, setIsAdmi
 									<Button type='submit' onClick={onClose}>
 										Submit
 									</Button>
-								</FormControl>
-							</form>
+								</form>
 							</TabPanel>
 							<TabPanel>
 								<form onSubmit={handleSubmitLogin}>

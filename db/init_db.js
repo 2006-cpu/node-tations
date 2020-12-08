@@ -34,9 +34,10 @@ async function buildTables() {
             name varchar(255) UNIQUE NOT NULL,
             description VARCHAR(255) NOT NULL,
             price NUMERIC(10,2) NOT NULL,
-            imageURL VARCHAR(255) DEFAULT 'no image',
+            imageURL VARCHAR(255) DEFAULT 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png',
             "inStock" BOOLEAN DEFAULT false,
-            category VARCHAR(255) NOT NULL
+			category VARCHAR(255) NOT NULL,
+			reviews VARCHAR(255) DEFAULT NULL
             );
 
             CREATE TABLE users(
@@ -44,7 +45,7 @@ async function buildTables() {
             firstName VARCHAR(255) NOT NULL,
             lastName VARCHAR(255) NOT NULL,
             email VARCHAR(255) UNIQUE NOT NULL,
-            imageURL VARCHAR(255) DEFAULT 'no image',
+            imageURL VARCHAR(255) DEFAULT 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/600px-No_image_available.svg.png',
             username VARCHAR(255) UNIQUE NOT NULL,
             password VARCHAR(255) UNIQUE NOT NULL,
             "isAdmin" BOOLEAN DEFAULT false
@@ -62,7 +63,8 @@ async function buildTables() {
             "productId" INTEGER REFERENCES products(id),
             "orderId" INTEGER REFERENCES orders(id),
             price NUMERIC(10,2) NOT NULL,
-            quantity NUMERIC(10,2) DEFAULT 0 NOT NULL
+			quantity NUMERIC(10,2) DEFAULT 0 NOT NULL
+			
             );
         `);
 
@@ -152,18 +154,18 @@ async function createInitialUsers() {
 async function createInitialOrders() {
 	console.log('Starting to create orders...');
 	try {
-		const pending = await createOrder({
-			status: 'Pending',
-			id: 1
-		});
-		const delivered = await createOrder({
-			status: 'Delivered',
-			id: 3
-		});
-		const returnOrder = await createOrder({
-			status: 'return',
-			id: 2
-		});
+		const pending = await createOrder(
+			'Pending',
+			1
+		);
+		const delivered = await createOrder(
+			'Delivered',
+			3
+		);
+		const returnOrder = await createOrder(
+			'return',
+			2
+		);
 		console.log(pending, delivered, returnOrder )
 		console.log('Orders created:');
 		console.log('Finished creating Orders!');
