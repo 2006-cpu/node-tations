@@ -33,10 +33,12 @@ export const AdminProducts = ({currentUser, token}) => {
 
 	return (
         <>
+        <Box textAlign="center">
         {
         currentUser && currentUser.isAdmin ? <AddProduct currentUser={ currentUser} token={ token }/> : null
         }
-        <Text>ProductList</Text>
+        </Box>
+        <Text textAlign="center" fontWeight="bold" fontSize="xx-large">ProductList</Text>
         {
         currentUser && currentUser.isAdmin ? 
         <Grid templateColumns="repeat(3, 1fr)" className="products">
@@ -51,8 +53,6 @@ export const AdminProducts = ({currentUser, token}) => {
 			>
                 <Text>Name:  {name} </Text>
                 <Image
-                    borderRadius="full"
-                    boxSize="150px"
                     src={imageurl}
                     alt={name}
                 /> 

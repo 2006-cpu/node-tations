@@ -98,6 +98,7 @@ export const CartProductCard = ({ cart, setCart, product, token, setUpdate, cart
 				</NumberInputStepper>
 			</NumberInput>
 			<Button
+				color={'black'}
 				justifySelf='center'
 				onClick={e => handleUpdateQuantity(e, cartProducts.indexOf(product))}
 			>

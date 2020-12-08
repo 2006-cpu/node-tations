@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ProductPreviewCard } from '../components';
 import { callApi } from '../api';
-import { Grid, useToast } from '@chakra-ui/react';
+import { Grid, useToast, Box } from '@chakra-ui/react';
 
 export const Catalog = () => {
 	const [productList, setProductList] = useState([]);
@@ -40,12 +40,14 @@ export const Catalog = () => {
 	}, []);
 
 	return (
-		<Grid templateColumns='33% 33% 33%' justifyItems='center'>
+		<Box>
+		<Grid templateColumns='33% 33% 33%' justifyItems='center' className="products">
 			{productList.map(product => {
 				return (
 					<ProductPreviewCard product={product} key={product.id} />
 				);
 			})}
 		</Grid>
+		</Box>
 	);
 };
