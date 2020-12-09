@@ -27,6 +27,7 @@ const App = () => {
 	const [currentUser, setCurrentUser] = useState(getCurrentUser());
 	const [orders, setOrders] = useState([{}]);
 	const [cart, setCart] = useState(getCart());
+	const [filterValue, setFilterValue] = useState('');
 
 	return (
 		<Router>
@@ -37,10 +38,12 @@ const App = () => {
 						setToken={setToken}
 						currentUser={currentUser}
 						setCurrentUser={setCurrentUser}
+						setFilterValue={setFilterValue}
+						filterValue={filterValue}
 					/>
 					<Switch>
 						<Route path='/store'>
-							<Catalog cart={cart} setCart={setCart}/>
+							<Catalog filterValue={filterValue} />
 						</Route>
 						<Route path={'/products/:productId'}>
 							<ProductPage
@@ -80,7 +83,7 @@ const App = () => {
 							/>
 						</Route>
 						<Route exact path='/cart'>
-							<ShoppingCart 
+							<ShoppingCart
 								token={token}
 								setCart={setCart}
 								cart={cart}
