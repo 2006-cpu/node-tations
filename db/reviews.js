@@ -2,8 +2,9 @@ const { client } = require('./index');
 
 const getAllReviews = async () => {
 	try {
-		const { rows: reviews } = await client.query(`select *
+		const { rows: reviews } = await client.query(`select reviews.*, users.username
 		from reviews
+		JOIN users on users.id = reviews."userId"
 		`);
 
 		
@@ -39,29 +40,16 @@ const addReview = async ({productId}, fields = {}) => {
 };
 
 const createReview = async ({content , userId, productId }) => {
-    // const setString = Object.keys(fields).map(
-    //     (key, index) => `"${ key }"=$${ index + 1 }`
-    //   ).join(', ');
-    
-    // if (Object.keys(fields).length !== 2) {
-	// 	throw Error('Missing fields');
-	// }
-    // if (setString.length === 0) {
-	// 	return;
-	
     
 	try {
         const { rows: [newReview] } = await client.query(`insert into reviews (content, "userId", "productId" ) VALUES($1, $2, $3)
-        
-        
         RETURNING *;
 		`, [content, userId, productId,]);
             
         const { rows : [user]} = await client.query(`SELECT reviews.* , users.username AS creatorName 
         FROM users
         JOIN reviews on reviews."userId"=users.id
-        WHERE reviews."userId"=${userId}
-        RETURNING *;`)
+        WHERE reviews."userId"=${userId}`)
 		console.log(user)
 		return user;
 	} catch (error) {
