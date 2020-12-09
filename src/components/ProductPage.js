@@ -79,7 +79,6 @@ export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 		{
 			product.quantity = quantity
 			let carts = [product]
-			console.log(carts)
 			setCart(carts)
 			storeCart(carts)
 		} else if (cart && !token)
