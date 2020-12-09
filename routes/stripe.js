@@ -5,6 +5,9 @@ const stripe = require('stripe')(STRIPE_KEY);
 const { getCartByUser } = require('../db/orders');
 
 stripeRouter.post('/create-session', async (req, res, next) => {
+	const { cartId } = req.body;
+
+	console.log(cartId);
 	if (req.user) {
 		const { id } = req.user;
 
@@ -12,9 +15,11 @@ stripeRouter.post('/create-session', async (req, res, next) => {
 			payment_method_types: ['card'],
 			line_items: await buildLineItems(id),
 			mode: 'payment',
-			success_url: `${LOCAL_URL + '/myorders?success=true'}`,
-			cancel_url: `${LOCAL_URL + '/cart?canceled=true'}`
+			success_url: `${LOCAL_URL}/myorders?success=true&cartId=${cartId}`,
+			cancel_url: `${LOCAL_URL}/cart?canceled=true`
 		});
+
+		console.log(session);
 
 		res.send({ id: session.id });
 	} else {
@@ -29,8 +34,6 @@ stripeRouter.post('/create-session', async (req, res, next) => {
 
 		res.send({ id: session.id });
 	}
-
-	console.log(session);
 });
 
 const convertToCents = total => {

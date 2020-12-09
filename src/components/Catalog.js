@@ -3,7 +3,7 @@ import { ProductPreviewCard } from '../components';
 import { callApi } from '../api';
 import { Grid, useToast, Box } from '@chakra-ui/react';
 
-export const Catalog = () => {
+export const Catalog = ({ filterValue }) => {
 	const [productList, setProductList] = useState([]);
 	const toast = useToast();
 
@@ -16,14 +16,32 @@ export const Catalog = () => {
 		try {
 			const products = await callApi(config);
 			setProductList(products);
+			return products;
 		} catch (error) {
 			console.error(error);
+		}
+	};
+
+	const filterProductList = () => {
+		let filteredProducts = productList.filter(product => {
+			return product.name.includes(filterValue);
+		});
+
+		if (filteredProducts.length !== 0) {
+			setProductList(filteredProducts);
 		}
 	};
 
 	useEffect(() => {
 		fetchProducts();
 	}, []);
+
+	useEffect(() => {
+		if (filterValue === '') {
+			fetchProducts();
+		}
+		filterProductList();
+	}, [filterValue]);
 
 	useEffect(() => {
 		const query = new URLSearchParams(window.location.search);
@@ -41,13 +59,20 @@ export const Catalog = () => {
 
 	return (
 		<Box>
-		<Grid templateColumns='33% 33% 33%' justifyItems='center' className="products">
-			{productList.map(product => {
-				return (
-					<ProductPreviewCard product={product} key={product.id} />
-				);
-			})}
-		</Grid>
+			<Grid
+				templateColumns='33% 33% 33%'
+				justifyItems='center'
+				className='products'
+			>
+				{productList.map(product => {
+					return (
+						<ProductPreviewCard
+							product={product}
+							key={product.id}
+						/>
+					);
+				})}
+			</Grid>
 		</Box>
 	);
 };

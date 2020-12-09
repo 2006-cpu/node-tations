@@ -13,6 +13,7 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 	const [cartProducts, setCartProducts] = useState([0]);
 	const [cartTotal, setCartTotal] = useState(0);
 	const [update, setUpdate] = useState(false);
+	const [cartId, setCartId] = useState('');
 	const toast = useToast();
 
 	const fetchCartData = async () => {
@@ -26,6 +27,7 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 				setCart(cartData);
 				setCartProducts(cartData.products);
 				setUpdate(false);
+				setCartId(cartData.id);
 			}
 		} else if (cart) {
 			console.log(cart);
@@ -80,11 +82,14 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 		if (token) {
 			const stripe = await stripePromise;
 
-			const session = await callApi({
-				path: '/stripe/create-session',
-				method: 'POST',
-				token
-			});
+			const session = await callApi(
+				{
+					path: '/stripe/create-session',
+					method: 'POST',
+					token
+				},
+				{ cartId }
+			);
 
 			const result = await stripe.redirectToCheckout({
 				sessionId: session.id

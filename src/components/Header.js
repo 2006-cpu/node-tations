@@ -32,7 +32,14 @@ import {
 	clearCurrentUserToken
 } from '../auth';
 
-export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
+export const Header = ({
+	token,
+	setToken,
+	currentUser,
+	setCurrentUser,
+	setFilterValue,
+	filterValue
+}) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
@@ -144,7 +151,11 @@ export const Header = ({ token, setToken, currentUser, setCurrentUser }) => {
 				<Heading>cutHub</Heading>
 			</Link>
 			<InputGroup>
-				<Input placeholder='Search' value={searchQuery} onChange={handleChange}></Input>
+				<Input
+					placeholder='Search'
+					value={filterValue}
+					onChange={e => setFilterValue(e.target.value)}
+				></Input>
 				<InputRightAddon>
 					<IconButton icon={<FaSearch />} onClick={handleSubmit} />
 				</InputRightAddon>
