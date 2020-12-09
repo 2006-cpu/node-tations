@@ -40,7 +40,7 @@ const App = () => {
 					/>
 					<Switch>
 						<Route path='/store'>
-							<Catalog />
+							<Catalog cart={cart} setCart={setCart}/>
 						</Route>
 						<Route path={'/products/:productId'}>
 							<ProductPage
