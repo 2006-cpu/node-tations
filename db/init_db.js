@@ -125,10 +125,7 @@ async function createInitialProducts() {
 async function createInitialReviews() {
 	console.log('Starting to create Reviews...');
 	try {
-		const newReview = await createReview({ productId : 1, content : "My family can't get enough" , userId : 2})
-		// const newReview2 = await createReview( 3, { content : "my new favorite"})
-	
-		
+		const newReview = await createReview({ productId : 1, content : "My family can't get enough" , userId : 2})	
 
 		console.log('Review created:');
 		console.log(newReview);

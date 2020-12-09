@@ -1,9 +1,6 @@
-
 const reviewsRouter = require('express').Router();
 const { getProductById } = require('../db/products');
 const { getAllReviews, addReview, createReview } = require( '../db/reviews');
-
-
 
 reviewsRouter.get('/products', async (req, res, next) => {
     
@@ -18,7 +15,7 @@ reviewsRouter.get('/products', async (req, res, next) => {
 
 reviewsRouter.get('/products/:productId', async (req, res, next) => {
     const {productId } = req.params
-    const id = Number(productId);
+	const id = Number(productId);
 	try {
 		const {rows : review} = await getProductById(id)
 		
@@ -31,13 +28,7 @@ reviewsRouter.get('/products/:productId', async (req, res, next) => {
 reviewsRouter.patch('/products/:productId', async (req, res, next) => {
     const {fields} = req.body
     const {productId} = req.params
-    // const id = Number(productId);
-
-   
-    
-	try {
-   
-        
+	try {   
 		const updatedReview= await addReview( productId , fields );
 		
 		res.send(updatedReview);
@@ -49,11 +40,7 @@ reviewsRouter.patch('/products/:productId', async (req, res, next) => {
 reviewsRouter.post('/products/:productId', async (req, res, next) => {
     const {productId} = req.params
     const { content, userId } = req.body;
-    
 
-
-   
-    
 	try {
    
         
@@ -64,10 +51,5 @@ reviewsRouter.post('/products/:productId', async (req, res, next) => {
 		next({ name, message });
 	}
 });
-
-
-
-
-
 
 module.exports = { reviewsRouter };
