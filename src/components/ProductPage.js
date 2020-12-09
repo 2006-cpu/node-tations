@@ -25,11 +25,10 @@ import { FaComment } from 'react-icons/fa';
 
 import './productpreviewcard.css'
 
-export const ProductPage = ({ token, currentUser }) => {
+export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 	const { productId } = useParams();
 	const [product, setProduct] = useState({});
 	const [review, setReview] = useState('');
-	const [cart , setCart] = useState([{}]);
 	const [reviews, setReviews] = useState([]);
 	const [newReview, setNewReview] = useState(false)
 	const [quantity, setQuantity] = useState(1);
