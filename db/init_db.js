@@ -6,6 +6,7 @@ const {
 
 const { createProducts } = require('./products');
 const { createUser } = require('./users');
+const { addReview, createReview } = require('./reviews');
 const { createOrder } = require('./orders');
 const { addProductToOrder } = require('./order_products');
 
@@ -17,10 +18,12 @@ async function buildTables() {
 		console.log('Dropping All Tables...');
 
 		await client.query(`
+			DROP TABLE IF EXISTS reviews;
             DROP TABLE IF EXISTS order_products;
             DROP TABLE IF EXISTS orders;
             DROP TABLE IF EXISTS users;
-            DROP TABLE IF EXISTS products;
+			DROP TABLE IF EXISTS products;
+			
             `);
 
 		console.log('Finished dropping tables!');
@@ -65,7 +68,14 @@ async function buildTables() {
             price NUMERIC(10,2) NOT NULL,
 			quantity NUMERIC(10,2) DEFAULT 0 NOT NULL
 			
-            );
+			);
+			
+			CREATE TABLE reviews(
+				id SERIAL PRIMARY KEY,
+				content VARCHAR(255) DEFAULT null, 
+				"userId" INTEGER REFERENCES users(id),
+				"productId" INTEGER references products(id)
+			);
         `);
 
 		console.log('Finished constructing tables!');
@@ -108,6 +118,23 @@ async function createInitialProducts() {
 		console.log('Finished creating Products!');
 	} catch (error) {
 		console.error('Error creating Products!');
+		throw error;
+	}
+}
+
+async function createInitialReviews() {
+	console.log('Starting to create Reviews...');
+	try {
+		const newReview = await createReview({ productId : 1, content : "My family can't get enough" , userId : 2})
+		// const newReview2 = await createReview( 3, { content : "my new favorite"})
+	
+		
+
+		console.log('Review created:');
+		console.log(newReview);
+		console.log('Finished creating Reviews!');
+	} catch (error) {
+		console.error('Error creating Reviews!');
 		throw error;
 	}
 }
@@ -211,6 +238,7 @@ async function populateInitialData() {
 		await createInitialUsers();
 		await createInitialOrders();
 		await createInitialOrderProducts();
+		await createInitialReviews();
 		// create useful starting data
 	} catch (error) {
 		throw error;

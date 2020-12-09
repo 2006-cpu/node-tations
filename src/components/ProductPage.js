@@ -26,38 +26,102 @@ import {} from '@chakra-ui/react';
 import { FaComment } from 'react-icons/fa';
 
 import './productpreviewcard.css'
-
-export const ProductPage = ({ token, currentUser, cart, setCart }) => {
+import { text, submit, click} from '@chakra-ui/react';
+// const getUserById  =  require('../../db/users');
+// import { createReview } from '../../db/reviews';
+// import { getUser, getUserById } from '../../db/users';
+export const ProductPage = ({ token, currentUser }) => {
 	const { productId } = useParams();
 	const [product, setProduct] = useState({});
 	const [review, setReview] = useState('');
-	const [newReview, setNewReview] = useState(false);
+
+	const [cart , setCart] = useState([{}]);
+	const [user , setUser] = useState({});
+	console.log("user;", user)
+	const [reviews, setReviews] = useState([]);
+	const [singleReview, setSingleReview] = useState('');
+	console.log(singleReview)
+	console.log("testreview:", reviews)
+	const [newReview, setNewReview] = useState(false)
 	const [quantity, setQuantity] = useState(1);
 	const toast = useToast();
 
 	const fetchProduct = async () => {
-		const productData = await callApi({ path: `/products/${productId}` });
-		setProduct(productData);
+		try {
+			const productData = await callApi({ path: `/products/${productId}` });
+			// console.log("postedreview:", productData)
+			setProduct(productData);
+		} catch (error) {
+			
+		}
+	
+		
+	};
+
+	const fetchReviews = async () => {
+		try {
+			const config = {
+				method: 'GET',
+				path: `/reviews/products`
+				
+			};
+			
+			const productData = await callApi(config);
+			console.log("test:", productData)
+			setReviews(productData);
+			
+		} catch (error) {
+			
+		}
+		
+	};
+
+	const fetchReview = async () => {
+		try {
+			const config = {
+				method: 'GET',
+				path: `/reviews/products/${productId}`
+				
+			};
+			
+			const productData = await callApi(config);
+			console.log("test:", productData)
+			setSingleReview(productData)
+			;
+			
+		} catch (error) {
+			
+		}
+		
 	};
 
 	const handleAddReviewSubmit = async () => {
+		
+		const config = {
+			method: 'POST',
+			path: `/reviews/products/${productId}`,
+			content: reviews.content,
+			userId : currentUser.id 
+		};
+		
 		try {
-			const { createReview } = await callApi(
-				{ method: 'patch', path: `/reviews/products/${productId}` },
-				{
-					reviews: review ? review : product.review
-				}
-			);
-			console.log('newReview:', createReview);
-			console.log('just maybe', review);
-			setReview(review);
+			
+			console.log("user;", user)
+			const createReview = await callApi({
+			path: `/reviews/products/${productId}`, method: 'POST'}, { content : review ,  userId : currentUser.id});
+			// console.log("newReview:", createReview );
+			// console.log("just maybe" , review)
+			setNewReview(true);
+			console.log('freshreview:', {createReview});
+
 		} catch (error) {
 			console.log(error);
 		}
 	};
 	const handleAddToCart = async e => {
 		e.preventDefault();
-
+		try {
+			
 
 
 		if(!cart && !token)
@@ -122,7 +186,12 @@ export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 				}
 			}
 		};
+		
+		} catch (error) {
+			
 		}
+		
+	};
 
 
 
@@ -131,8 +200,15 @@ export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 	}, []);
 
 	useEffect(() => {
-		fetchProduct();
-	}, [review]);
+		fetchReviews().then(setNewReview(false));
+		
+		
+	}, [newReview === true]);
+
+	// useEffect(() => {
+		
+	// 	fetchReviews();
+	// }, []);
 
 	return (
 		<Grid maxW="50%" className='products'>
@@ -162,42 +238,40 @@ export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 			>
 				Add to Cart
 			</Button>
-			<InputGroup>
-				<Input
-					placeholder='Review'
-					setReview={setReview}
-					onChange={event => {
-						event.preventDefault();
-						setReview(event.target.value);
-					}}
-				></Input>
+			<InputGroup onChange={(e)=>{
+				e.preventDefault()
+				console.log(e.target.value)
+				setReview(e.target.value)
+				
+			}}>
+				<Input placeholder='Review' setReview={setReview} onSubmit={(event) => {
+					event.preventDefault()
+					console.log(event.target.value)
+					setReview(event.target.value);
+					
+					
+
+				}} ></Input>
 				<InputRightAddon>
-					<IconButton
-						icon={<FaComment />}
-						value={setNewReview && review}
-						color='black'
-						onClick={() => {
-							console.log('review:', review);
-							handleAddReviewSubmit();
-							setNewReview(true);
-						}}
-					/>
+					<IconButton icon={<FaComment />} value={setNewReview} color="black"  onClick={(event) => {
+						
+						event.preventDefault();
+						
+						handleAddReviewSubmit()
+						setNewReview(true)
+
+					}} />
 				</InputRightAddon>
 			</InputGroup>
-			{newReview ? (
-				<Box
-					letterSpacing={'1.5px'}
-					padding={'8px'}
-					border='5px groove white'
-					borderRadius={'20px'}
-				>
-					<Text>
-						{currentUser.username} : {review.toUpperCase()}
-					</Text>
-				</Box>
-			) : (
-				''
-			)}
+			{<Box className='reviews' value={reviews} letterSpacing={'1.5px'} padding={'8px'} border="5px groove white" borderRadius={'20px'}><Text> Reviews : { reviews && reviews.map((review, idx) => 
+			
+			<>
+			<Text></Text>
+			<Text> <b><i>{review.userId === currentUser.id ? currentUser.username : "Member:"}</i></b> : {review.productId === product.id ? review.content : ""}</Text>
+			
+			
+			</>
+			)}</Text></Box>}
 		</Grid>
 	);
 };
