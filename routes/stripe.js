@@ -6,8 +6,8 @@ const { getCartByUser } = require('../db/orders');
 
 stripeRouter.post('/create-session', async (req, res, next) => {
 	const { cartId } = req.body;
-
-	console.log(cartId);
+	try {
+		console.log(cartId);
 	if (req.user) {
 		const { id } = req.user;
 
@@ -22,7 +22,7 @@ stripeRouter.post('/create-session', async (req, res, next) => {
 		console.log(session);
 
 		res.send({ id: session.id });
-	} else {
+		} else {
 		const { line_items } = req.body;
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ['card'],
@@ -33,7 +33,11 @@ stripeRouter.post('/create-session', async (req, res, next) => {
 		});
 
 		res.send({ id: session.id });
+		}
+	} catch (error) {
+		
 	}
+	
 });
 
 const convertToCents = total => {
@@ -43,11 +47,12 @@ const convertToCents = total => {
 };
 
 const buildLineItems = async userId => {
-	const [cartData] = await getCartByUser(userId);
+	try {
+		const [cartData] = await getCartByUser(userId);
 
-	let stripeItems = [];
+		let stripeItems = [];
 
-	cartData.products.forEach(product => {
+		cartData.products.forEach(product => {
 		stripeItems.push({
 			price_data: {
 				currency: 'usd',
@@ -59,9 +64,13 @@ const buildLineItems = async userId => {
 			},
 			quantity: Math.trunc(product.quantity)
 		});
-	});
+		});
 
-	return stripeItems;
+		return stripeItems;
+	} catch (error) {
+		
+	}
+	
 };
 
 module.exports = { stripeRouter };

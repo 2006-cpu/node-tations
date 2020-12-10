@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CartProductCard } from '../components';
-import { Grid, Text, Button, useToast } from '@chakra-ui/react';
+import { Grid, Text, Button, useToast, Box } from '@chakra-ui/react';
 import { callApi } from '../api';
 
 //Stripe
@@ -17,23 +17,29 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 	const toast = useToast();
 
 	const fetchCartData = async () => {
-		if (token) {
-			const [cartData] = await callApi({
-				path: '/orders/cart',
-				token: token
-			});
-			if (cartData) {
-				console.log('cart', cartData);
-				setCart(cartData);
-				setCartProducts(cartData.products);
-				setUpdate(false);
-				setCartId(cartData.id);
-			}
-		} else if (cart) {
-			console.log(cart);
-			setCartProducts(cart);
-			setUpdate(false);
-		}
+        try {
+            if (token) {
+                const [cartData] = await callApi({
+                    path: '/orders/cart',
+                    token: token
+                });
+                if (cartData) {
+                    console.log('cart', cartData);
+                    setCart(cartData);
+                    setCartProducts(cartData.products);
+                    setUpdate(false);
+                    setCartId(cartData.id);
+                }
+            } else if (cart) {
+                console.log(cart);
+                setCartProducts(cart);
+                setUpdate(false);
+            }
+
+        } catch (error) {
+            
+        }
+		
 	};
 
 	const calculateCartTotal = () => {
@@ -78,59 +84,64 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 
 	const handleCheckout = async e => {
 		e.preventDefault();
-
-		if (token) {
-			const stripe = await stripePromise;
-
-			const session = await callApi(
-				{
-					path: '/stripe/create-session',
-					method: 'POST',
-					token
-				},
-				{ cartId }
-			);
-
-			const result = await stripe.redirectToCheckout({
-				sessionId: session.id
-			});
-
-			if (result.error) {
-				toast({
-					title: 'Checkout error, please try again',
-					status: 'error',
-					duration: '5000',
-					isClosable: 'true',
-					position: 'top'
-				});
-			}
-		} else {
-			const stripe = await stripePromise;
-
-			const session = await callApi(
-				{
-					path: '/stripe/create-session',
-					method: 'POST'
-				},
-				{
-					line_items: await buildLineItems()
-				}
-			);
-
-			const result = await stripe.redirectToCheckout({
-				sessionId: session.id
-			});
-
-			if (result.error) {
-				toast({
-					title: 'Checkout error, please try again',
-					status: 'error',
-					duration: '5000',
-					isClosable: 'true',
-					position: 'top'
-				});
-			}
-		}
+        try {
+            if (token) {
+                const stripe = await stripePromise;
+    
+                const session = await callApi(
+                    {
+                        path: '/stripe/create-session',
+                        method: 'POST',
+                        token
+                    },
+                    { cartId : cartId }
+                );
+    
+                const result = await stripe.redirectToCheckout({
+                    sessionId: session.id
+                });
+    
+                if (result.error) {
+                    toast({
+                        title: 'Checkout error, please try again',
+                        status: 'error',
+                        duration: '5000',
+                        isClosable: 'true',
+                        position: 'top'
+                    });
+                }
+            } else {
+                const stripe = await stripePromise;
+    
+                const session = await callApi(
+                    {
+                        path: '/stripe/create-session',
+                        method: 'POST'
+                    },
+                    {
+                        line_items: await buildLineItems()
+                    }
+                );
+    
+                const result = await stripe.redirectToCheckout({
+                    sessionId: session.id
+                });
+    
+                if (result.error) {
+                    toast({
+                        title: 'Checkout error, please try again',
+                        status: 'error',
+                        duration: '5000',
+                        isClosable: 'true',
+                        position: 'top'
+                    });
+                }
+            }
+            
+        } catch (error) {
+            
+        }
+		
 	};
 
 	useEffect(() => {
@@ -156,18 +167,19 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 	}, [cartProducts]);
 
 	return (
-		<Grid textAlign='center' marginBottom='20px'>
-			<Text>
+		<Grid border='9px groove darkCyan' borderRightColor='black' borderLeftColor='black' backgroundColor='peru' textAlign='center' marginBottom='20px width'>
+			<Text fontSize='xl' fontFamily='courier'>
 				{!cart
 					? 'Your cart is empty!'
 					: `You have ${cartProducts.length} items in your cart!`}
 			</Text>
-			<Grid templateColumns='repeat(3, 1fr)'>
+			<Grid  templateColumns='repeat(3, 1fr)'>
 				{!cart
 					? null
 					: cartProducts.map((product, i) => {
 							return (
-								<CartProductCard
+                                <Box  backgroundColor='cornFlowerBlue' padding='20px' borderRadius='30px' border='10px double black'>
+								<CartProductCard 
 									product={product}
 									key={product.name + i}
 									token={token}
@@ -176,13 +188,16 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 									setCart={setCart}
 									cartProducts={cartProducts}
 								/>
+                                </Box>
 							);
 					  })}
 			</Grid>
-			{!cart ? null : <Text>Your total is ${cartTotal}</Text>}
+			{!cart ? null : <Text fontFamily='courier' fontSize='xl' >Your total is ${cartTotal}</Text>}
 
 			{!cart ? null : (
 				<Button
+                    fontFamily='courier' 
+                    backgroundColor='darkCyan'
 					width='300px'
 					justifySelf='center'
 					onClick={e => handleCheckout(e)}
@@ -191,7 +206,6 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 				</Button>
 			)}
 
-			{/* {viewCheckout ? <Checkout /> : ''} */}
 		</Grid>
 	);
 };

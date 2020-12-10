@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ProductPreviewCard } from '../components';
 import { callApi } from '../api';
 import { Grid, useToast, Box } from '@chakra-ui/react';
-
+import './catalog.css';
 export const Catalog = ({ filterValue }) => {
 	const [productList, setProductList] = useState([]);
 	const toast = useToast();
@@ -58,7 +58,7 @@ export const Catalog = ({ filterValue }) => {
 	}, []);
 
 	return (
-		<Box>
+		<Box className='store'>
 			<Grid
 				templateColumns='33% 33% 33%'
 				justifyItems='center'
@@ -66,7 +66,7 @@ export const Catalog = ({ filterValue }) => {
 			>
 				{productList.map(product => {
 					return (
-						<ProductPreviewCard
+						<ProductPreviewCard 
 							product={product}
 							key={product.id}
 						/>

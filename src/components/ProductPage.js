@@ -26,6 +26,7 @@ import { FaComment } from 'react-icons/fa';
 import './productpreviewcard.css';
 
 export const ProductPage = ({ token, currentUser, cart, setCart }) => {
+	
 	const { productId } = useParams();
 	const [product, setProduct] = useState({});
 	const [review, setReview] = useState('');
@@ -66,7 +67,15 @@ export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 				{ content: review, userId: currentUser.id }
 			);
 			setNewReview(true);
-			console.log(createReview);
+			if({createReview}) { 
+				toast({
+				title: `Review Posted! Thank you for your feedback ${currentUser.username}!`,
+				status: 'success',
+				duration: '5000',
+				isClosable: 'true',
+				position: 'top'
+			})}
+			console.log({createReview});
 		} catch (error) {
 			console.log(error);
 		}
@@ -235,9 +244,10 @@ export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 						Reviews :{' '}
 						{reviews &&
 							reviews.map((review, idx) => (
+								
 								<>
 									<Text>
-										{review.productId === product.id
+										{review.productId === product.id 
 											? `${review.username} : ${review.content}`
 											: ''}
 									</Text>
