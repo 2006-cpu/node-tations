@@ -33,7 +33,7 @@ const App = () => {
 		<Router>
 			<ChakraProvider>
 				<div className='App'>
-					<Header
+					<Header backgroundColor='black'
 						token={token}
 						setToken={setToken}
 						currentUser={currentUser}

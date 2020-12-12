@@ -1,6 +1,11 @@
 .header {
-    background-image: url(https://media.istockphoto.com/photos/void-wooden-background-with-spices-top-view-picture-id516549898?k=6&m=516549898&s=612x612&w=0&h=DlXCHpDvRWo8V95r0n_4kx1CSVCHtbeeeO94XXTjqTQ=);
-    background-position: bottom;
+    background-image: url(https://public.touch2success.com/static/7df253d7abcaa333bc7fb5c8144d0d4b/img/phpL8AQuT.png);
+   
+    
+    background-position-y: 2500px; 
+    background-position-x: -300px;
+    background-size: cover;
+    
     color : white;
     letter-spacing : 1.5px;
     border : 10px double black;
@@ -8,8 +13,4 @@
     border-bottom : 10px solid black;
     border-left-color: white;
     border-right-color: white;
-}
-
-.searchBar {
-    background-image : url(https://media.istockphoto.com/photos/void-wooden-background-with-spices-top-view-picture-id516549898?k=6&m=516549898&s=612x612&w=0&h=DlXCHpDvRWo8V95r0n_4kx1CSVCHtbeeeO94XXTjqTQ=)
 }
