@@ -186,9 +186,18 @@ async function createInitialProducts() {
 			category: 'pork'
 		});
 
+		const pastrami = await createProducts({
+			name: 'Pastrami',
+			description: 'Artisan, pepper-crusted pastrami. Cows locally and ethically raised',
+			price: '9.99',
+			imageurl: 'https://www.meatpoultrynutrition.org/sites/default/files/metatag/Slices%20Pastrami.jpg',
+			inStock: true,
+			category: 'beef'
+		});
+
 
 		console.log('Products created:');
-		console.log(beef, chicken, pork, shrimp, scallops, salmon, alpastor, turkey, roastbeef, bluefin);
+		console.log(beef, chicken, pork, shrimp, scallops, salmon, alpastor, turkey, roastbeef, bluefin, pastrami);
 		console.log('Finished creating Products!');
 	} catch (error) {
 		console.error('Error creating Products!');
