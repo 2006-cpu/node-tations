@@ -87,9 +87,9 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
                     method: 'POST',
 					path: '/stripe/create-session',
 					
-					token : token 
+					token 
 				},
-				{ cartId : cartId }
+				{ cartId }
 			);
 
 			const result = await stripe.redirectToCheckout({
