@@ -15,4 +15,4 @@ export { UserOrders } from './UserOrders';
 export { AddProduct } from './AddProduct';
 export { AdminProducts } from './AdminProducts';
 export { AdminProductPage } from './AdminProductPage';
-export { Checkout } from './Checkout';
+
