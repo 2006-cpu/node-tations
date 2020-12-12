@@ -243,6 +243,7 @@ export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 					<Text>
 						{' '}
 						Reviews :{' '}
+						
 						{reviews &&
 							reviews.map((review, idx) => (
 								
