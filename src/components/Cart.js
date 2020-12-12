@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { CartProductCard } from '../components';
-import { Grid, Text, Button, useToast } from '@chakra-ui/react';
+import { Grid, Text, Button, useToast, Box } from '@chakra-ui/react';
 import { callApi } from '../api';
 
 //Stripe
 import { loadStripe } from '@stripe/stripe-js';
-const stripePromise = loadStripe(
+const stripePromise =  loadStripe(
 	'pk_test_51Hv5dPAJufyTIvrkuzYxDGPBwmCxhlQXMeEv1FRigHCopVezl1re7DJePj5SDz4WljqK6CL14GCStyp1ZnLl2TVm00TOQiWdT0'
 );
 
@@ -84,9 +84,10 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 
 			const session = await callApi(
 				{
+                    method: 'POST',
 					path: '/stripe/create-session',
-					method: 'POST',
-					token
+					
+					token 
 				},
 				{ cartId }
 			);
@@ -156,18 +157,19 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 	}, [cartProducts]);
 
 	return (
-		<Grid textAlign='center' marginBottom='20px'>
-			<Text>
+		<Grid border='9px groove darkCyan' borderRightColor='black' borderLeftColor='black' backgroundColor='peru' textAlign='center' marginBottom='20px width'>
+			<Text fontSize='xl' fontFamily='courier'>
 				{!cart
 					? 'Your cart is empty!'
 					: `You have ${cartProducts.length} items in your cart!`}
 			</Text>
-			<Grid templateColumns='repeat(3, 1fr)'>
+			<Grid  templateColumns='repeat(3, 1fr)'>
 				{!cart
 					? null
 					: cartProducts.map((product, i) => {
 							return (
-								<CartProductCard
+                                <Box  backgroundColor='cornFlowerBlue' padding='20px' borderRadius='30px' border='10px double white'>
+								<CartProductCard 
 									product={product}
 									key={product.name + i}
 									token={token}
@@ -176,13 +178,16 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 									setCart={setCart}
 									cartProducts={cartProducts}
 								/>
+                                </Box>
 							);
 					  })}
 			</Grid>
-			{!cart ? null : <Text>Your total is ${cartTotal}</Text>}
+			{!cart ? null : <Text fontFamily='courier' fontSize='xl' >Your total is ${cartTotal}</Text>}
 
 			{!cart ? null : (
 				<Button
+                    fontFamily='courier' 
+                    backgroundColor='darkCyan'
 					width='300px'
 					justifySelf='center'
 					onClick={e => handleCheckout(e)}
@@ -191,7 +196,6 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 				</Button>
 			)}
 
-			{/* {viewCheckout ? <Checkout /> : ''} */}
 		</Grid>
 	);
 };

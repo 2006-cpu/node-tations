@@ -74,12 +74,15 @@ export const CartProductCard = ({ cart, setCart, product, token, setUpdate, cart
 
 	return (
 		<Grid
+			
+			borderRadius='10px'
 			border='1px solid black'
 			margin='5px'
 			padding='5px'
 			justifySelf='left'
 			className="products"
-		>
+		>	
+			
 			<Text fontSize='xl'>{product.name}</Text>
 			<Image src={product.imageurl} />
 			<Text fontSize='md'>{product.description}</Text>
@@ -91,13 +94,16 @@ export const CartProductCard = ({ cart, setCart, product, token, setUpdate, cart
 				value={quantity}
 				onChange={value => setQuantity(value)}
 			>
-				<NumberInputField />
+				<NumberInputField  fontSize='xl' color='black' backgroundColor='cornFlowerBlue'/>
 				<NumberInputStepper>
 					<NumberIncrementStepper />
 					<NumberDecrementStepper />
 				</NumberInputStepper>
 			</NumberInput>
 			<Button
+				fontFamily='courier'
+				letterSpacing='2px'
+			    border='6px groove darkCyan'
 				color={'black'}
 				justifySelf='center'
 				onClick={e => handleUpdateQuantity(e, cartProducts.indexOf(product))}
@@ -105,6 +111,10 @@ export const CartProductCard = ({ cart, setCart, product, token, setUpdate, cart
 				Update Quantity
 			</Button>
 			<Button
+
+				fontFamily='courier'
+				letterSpacing='2px'
+				border='6px groove darkCyan'
 				color={'black'}
 				justifySelf='center'
 				onClick={e => handleRemoveFromCart(e, cartProducts.indexOf(product))}

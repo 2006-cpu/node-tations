@@ -97,15 +97,43 @@ async function createInitialProducts() {
 			category: 'beef'
 		});
 		const chicken = await createProducts({
-			name: 'chicken breast',
+			name: 'Chicken Breast',
 			description: '100% organic chicken breast',
 			price: '5.99',
 			imageurl: 'https://cdn.mos.cms.futurecdn.net/gfSKxAQ8ZCoknoctJgFDZa.jpg',
 			inStock: true,
 			category: 'poultry'
 		});
+
+		const turkey = await createProducts({
+			name: 'Turkey Breast',
+			description: '100% organic turkey breast',
+			price: '4.99',
+			imageurl: 'https://exelbyfoods.co.uk/wp-content/uploads/2015/11/Turkey-Slices.jpg',
+			inStock: true,
+			category: 'poultry'
+		});
+
+		const roastbeef = await createProducts({
+			name: 'Roast Beef',
+			description: 'Premium deli-quality, thin sliced roast beef, black pepper encrusted ',
+			price: '9.99',
+			imageurl: 'https://i.pinimg.com/originals/84/a0/17/84a017de7ecd74bb411b367f34448aee.jpg',
+			inStock: true,
+			category: 'beef'
+		});
+		
+		const bluefin = await createProducts({
+			name: 'Blue-Fin Tuna',
+			description: 'Japanese Blue-Fin Tuna, seasonal availability ',
+			price: '15.99',
+			imageurl: 'https://cdn.shopify.com/s/files/1/2270/4111/products/AdobeStock_111821811_345x345@2x.jpeg?v=1503861129',
+			inStock: false,
+			category: 'seafood'
+		});
+
 		const pork = await createProducts({
-			name: 'pork chops',
+			name: 'Pork Chops',
 			description: 'Bone in pork chop',
 			price: '4.99',
 			imageurl: 'https://porterandyork.com/wp-content/uploads/Pork-Chop-e1540411361635.jpg',
@@ -113,8 +141,63 @@ async function createInitialProducts() {
 			category: 'pork'
 		});
 
+		const shrimp = await createProducts({
+			name: 'Shrimp',
+			description: 'whole jumbo shrimp, fresh as can be!',
+			price: '7.99',
+			imageurl: 'https://i.pinimg.com/originals/cc/60/ef/cc60ef0db54e9f746f709fdfd4cc9f10.jpg',
+			inStock: true,
+			category: 'seafood'
+		});
+
+		const scallops = await createProducts({
+			name: 'Scallops',
+			description: 'beautfiful medallion scallops, tender & fresh as can be!',
+			price: '10.99',
+			imageurl: 'https://johnnysfinefoods.com/wp-content/uploads/2011/12/baked-scallops.jpg',
+			inStock: true,
+			category: 'seafood'
+		});
+
+		const salmon = await createProducts({
+			name: 'Salmon',
+			description: 'gorgeous fillets with perfect marbleing, tender & fresh as can be!',
+			price: '7.99',
+			imageurl: 'https://cdn.shopify.com/s/files/1/0008/6890/9116/products/Wild_King_Green_ca97a7f2-a382-4e17-8c12-967a4b80af48_1024x1024@2x.jpg?v=1552620838',
+			inStock: true,
+			category: 'seafood'
+		});
+
+		const kobebeef = await createProducts({
+			name: 'Kobe Wagyu Beef',
+			description: "Japanese Kobe Wagyu Beef,  from the Tajima strain of Japanese Black cattle, raised in Japan's, Hyōgo Prefecture seasonal availability",
+			price: '17.99',
+			imageurl: 'https://3.bp.blogspot.com/-jmqHlos0jws/WAiPIbK1ekI/AAAAAAAAGVk/OvNBp6UTyWUiPAqmH5giSR594CQtRDrMACLcB/s1600/Origins-of-Beef-wagyu.jpg',
+			inStock: false,
+			category: 'beef'
+		});
+
+		const alpastor = await createProducts({
+			name: 'al Pastor',
+			description: 'Delicious pork product, pairs with pineapple, amazing for tacos',
+			price: '6.99',
+			imageurl: 'https://thetacotrail.files.wordpress.com/2014/05/slide4.jpg',
+			inStock: true,
+			category: 'pork'
+		});
+
+		const pastrami = await createProducts({
+			name: 'Pastrami',
+			description: 'Artisan, pepper-crusted pastrami. Cows locally and ethically raised',
+			price: '9.99',
+			imageurl: 'https://www.meatpoultrynutrition.org/sites/default/files/metatag/Slices%20Pastrami.jpg',
+			inStock: true,
+			category: 'beef'
+		});
+
+
 		console.log('Products created:');
-		console.log(beef, chicken, pork);
+		console.log(beef, chicken, pork, shrimp, scallops, salmon, alpastor, turkey, roastbeef, bluefin, pastrami);
 		console.log('Finished creating Products!');
 	} catch (error) {
 		console.error('Error creating Products!');

@@ -148,16 +148,24 @@ export const Header = ({
 			paddingBottom='25px'
 		>
 			<Link to='/store'>
-				<Heading>cutHub</Heading>
+				<Heading color='white' fontSize='40px' letterSpacing='3px' fontFamily='IBM Plex Mono, monospace'><b><i>cutHub</i></b></Heading>
 			</Link>
 			<InputGroup>
 				<Input
+					
+					backgroundColor='white'
+					fontFamily='IBM Plex Mono, monospace'
+					className='searchBar'
+					color='black'
 					placeholder='Search'
+					width='350px'
+					marginLeft='250px'
+					
 					value={filterValue}
 					onChange={e => setFilterValue(e.target.value)}
 				></Input>
 				<InputRightAddon>
-					<IconButton icon={<FaSearch />} onClick={handleSubmit} />
+					<IconButton color='black' icon={<FaSearch />} onClick={handleSubmit} />
 				</InputRightAddon>
 			</InputGroup>
 			{token && currentUser ? (
@@ -181,27 +189,27 @@ export const Header = ({
 				</Link>
 			) : null}
 			{currentUser && token ? (
-				<NavLink to='/myorders' activeClassName='current'>
-					MyOrders
+				<NavLink to='/myorders' activeClassName='current' >
+					<u><b>MyOrders</b></u>
 				</NavLink>
 			) : (
 				''
 			)}
 			{currentUser && currentUser.isAdmin && token ? (
 				<NavLink to='/orders' activeClassName='current'>
-					Orders
+					<b>Orders</b>
 				</NavLink>
 			) : (
 				''
 			)}
 			{currentUser && token && currentUser.isAdmin ? (
 				<NavLink to='/users' activeClassName='current'>
-					Users
+					<b>Users</b>
 				</NavLink>
 			) : null}
 			{currentUser && token && currentUser.isAdmin ? (
 				<NavLink to='/adminproduct' activeClassName='current'>
-					Admin Products
+					<b>Admin Products</b>
 				</NavLink>
 			) : null}
 			<Link to='/cart'>

@@ -95,7 +95,7 @@ const App = () => {
 						<Route exact path='/users/add'>
 							<AddUser currentUser={currentUser} />
 						</Route>
-						<Route path={`/users/:userId`}>
+						<Route exact path={`/users/:userId`}>
 							<UserPage currentUser={currentUser} token={token} />
 						</Route>
 						<Route exact path='/adminproduct'>
@@ -110,7 +110,7 @@ const App = () => {
 								token={token}
 							/>
 						</Route>
-						<Route path={`/adminproduct/:productId`}>
+						<Route exact path={`/adminproduct/:productId`}>
 							<AdminProductPage
 								currentUser={currentUser}
 								token={token}

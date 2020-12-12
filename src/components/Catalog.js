@@ -58,18 +58,20 @@ export const Catalog = ({ filterValue }) => {
 	}, []);
 
 	return (
-		<Box>
+		<Box className='products' >
 			<Grid
 				templateColumns='33% 33% 33%'
 				justifyItems='center'
-				className='products'
+				
 			>
 				{productList.map(product => {
 					return (
-						<ProductPreviewCard
+						<Box border='15px groove peru'>
+						<ProductPreviewCard 
 							product={product}
 							key={product.id}
 						/>
+						</Box>
 					);
 				})}
 			</Grid>

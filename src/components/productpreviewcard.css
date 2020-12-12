@@ -2,6 +2,8 @@
     background-image: url(https://coolwallpapers.me/picsup/2391201-dark-brown-scratched-wooden-cutting-board-wood-texture-background.jpg);
     color:  white;
     padding: 10px;
+    border-radius: '20px';
+    border : '10px solid white';
 }
 
 .orders {
@@ -30,4 +32,10 @@
 .reviews {
     background-color: navajowhite;
     color : black;
+}
+
+.comments {
+    overflow-y: scroll;
+    
+    
 }
