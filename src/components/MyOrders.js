@@ -36,7 +36,8 @@ export const MyOrders = ({ orders, currentUser, token }) => {
 
 	return (
 		<Box textAlign='center' textColor='white' className='myorders'>
-			myOrders
+
+			<Text  fontSize='30px' fontWeight='bold' fontFamily='IBM Plex Mono, monospace'>myOrders</Text>
 			<Grid
 				templateColumns='repeat(3, 1fr)'
 				margin='25px'

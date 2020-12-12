@@ -8,7 +8,7 @@ export const UserOrders = ({orders, currentUser}) => {
     
 	return (
 		<Box textAlign="center" className="orders">
-        <Text color="white" fontSize='40px'><i><b>Welcome to the admin orders page {currentUser.username}!</b></i></Text>
+        <Text color="white" fontWeight='bold' fontSize='25px' fontFamily='IBM Plex Mono, monospace'><i><b>Welcome to the admin orders page {currentUser.username}!</b></i></Text>
 		<Grid templateColumns="repeat(3, 1fr)" margin='25px'
 				justifyItems='center'
 				boxShadow='xs'
