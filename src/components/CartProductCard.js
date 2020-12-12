@@ -74,13 +74,15 @@ export const CartProductCard = ({ cart, setCart, product, token, setUpdate, cart
 
 	return (
 		<Grid
+			
 			borderRadius='10px'
 			border='1px solid black'
 			margin='5px'
 			padding='5px'
 			justifySelf='left'
 			className="products"
-		>
+		>	
+			
 			<Text fontSize='xl'>{product.name}</Text>
 			<Image src={product.imageurl} />
 			<Text fontSize='md'>{product.description}</Text>

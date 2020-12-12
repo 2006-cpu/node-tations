@@ -5,7 +5,7 @@ import { callApi } from '../api';
 
 //Stripe
 import { loadStripe } from '@stripe/stripe-js';
-const stripePromise = loadStripe(
+const stripePromise =  loadStripe(
 	'pk_test_51Hv5dPAJufyTIvrkuzYxDGPBwmCxhlQXMeEv1FRigHCopVezl1re7DJePj5SDz4WljqK6CL14GCStyp1ZnLl2TVm00TOQiWdT0'
 );
 
@@ -17,29 +17,23 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 	const toast = useToast();
 
 	const fetchCartData = async () => {
-        try {
-            if (token) {
-                const [cartData] = await callApi({
-                    path: '/orders/cart',
-                    token: token
-                });
-                if (cartData) {
-                    console.log('cart', cartData);
-                    setCart(cartData);
-                    setCartProducts(cartData.products);
-                    setUpdate(false);
-                    setCartId(cartData.id);
-                }
-            } else if (cart) {
-                console.log(cart);
-                setCartProducts(cart);
-                setUpdate(false);
-            }
-
-        } catch (error) {
-            
-        }
-		
+		if (token) {
+			const [cartData] = await callApi({
+				path: '/orders/cart',
+				token: token
+			});
+			if (cartData) {
+				console.log('cart', cartData);
+				setCart(cartData);
+				setCartProducts(cartData.products);
+				setUpdate(false);
+				setCartId(cartData.id);
+			}
+		} else if (cart) {
+			console.log(cart);
+			setCartProducts(cart);
+			setUpdate(false);
+		}
 	};
 
 	const calculateCartTotal = () => {
@@ -84,64 +78,60 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 
 	const handleCheckout = async e => {
 		e.preventDefault();
-        try {
-            if (token) {
-                const stripe = await stripePromise;
-    
-                const session = await callApi(
-                    {
-                        path: '/stripe/create-session',
-                        method: 'POST',
-                        token
-                    },
-                    { cartId : cartId }
-                );
-    
-                const result = await stripe.redirectToCheckout({
-                    sessionId: session.id
-                });
-    
-                if (result.error) {
-                    toast({
-                        title: 'Checkout error, please try again',
-                        status: 'error',
-                        duration: '5000',
-                        isClosable: 'true',
-                        position: 'top'
-                    });
-                }
-            } else {
-                const stripe = await stripePromise;
-    
-                const session = await callApi(
-                    {
-                        path: '/stripe/create-session',
-                        method: 'POST'
-                    },
-                    {
-                        line_items: await buildLineItems()
-                    }
-                );
-    
-                const result = await stripe.redirectToCheckout({
-                    sessionId: session.id
-                });
-    
-                if (result.error) {
-                    toast({
-                        title: 'Checkout error, please try again',
-                        status: 'error',
-                        duration: '5000',
-                        isClosable: 'true',
-                        position: 'top'
-                    });
-                }
-            }
-            
-        } catch (error) {
-            
-        }
-		
+
+		if (token) {
+			const stripe = await stripePromise;
+
+			const session = await callApi(
+				{
+                    method: 'POST',
+					path: '/stripe/create-session',
+					
+					token : token 
+				},
+				{ cartId : cartId }
+			);
+
+			const result = await stripe.redirectToCheckout({
+				sessionId: session.id
+			});
+
+			if (result.error) {
+				toast({
+					title: 'Checkout error, please try again',
+					status: 'error',
+					duration: '5000',
+					isClosable: 'true',
+					position: 'top'
+				});
+			}
+		} else {
+			const stripe = await stripePromise;
+
+			const session = await callApi(
+				{
+					path: '/stripe/create-session',
+					method: 'POST'
+				},
+				{
+					line_items: await buildLineItems()
+				}
+			);
+
+			const result = await stripe.redirectToCheckout({
+				sessionId: session.id
+			});
+
+			if (result.error) {
+				toast({
+					title: 'Checkout error, please try again',
+					status: 'error',
+					duration: '5000',
+					isClosable: 'true',
+					position: 'top'
+				});
+			}
+		}
 	};
 
 	useEffect(() => {
@@ -178,7 +168,7 @@ export const ShoppingCart = ({ token, cart, setCart }) => {
 					? null
 					: cartProducts.map((product, i) => {
 							return (
-                                <Box  backgroundColor='cornFlowerBlue' padding='20px' borderRadius='30px' border='10px double black'>
+                                <Box  backgroundColor='cornFlowerBlue' padding='20px' borderRadius='30px' border='10px double white'>
 								<CartProductCard 
 									product={product}
 									key={product.name + i}

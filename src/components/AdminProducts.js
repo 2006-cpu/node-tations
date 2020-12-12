@@ -41,25 +41,27 @@ export const AdminProducts = ({currentUser, token}) => {
         <Text textAlign="center" fontWeight="bold" fontSize="xx-large">ProductList</Text>
         {
         currentUser && currentUser.isAdmin ? 
-        <Grid templateColumns="repeat(3, 1fr)" className="products">
+        <Grid templateColumns="repeat(3, 1fr)" className="products" border='15px groove peru'>
         {productList.map(({id, name, imageurl, description, price, category, inStock}) =>
-            <Box key={id} borderRadius="40px" border="5px groove white">
+            <Box key={id} borderRadius="40px" backgroundColor='navajoWhite' border="5px groove white">
 		<Link to={`/adminproduct/${id}`}>
 			<Grid
+                border='15px groove peru' 
+                backgroundColor='black'
 				margin='25px'
 				justifyItems='center'
 				boxShadow='xs'
 				rounded='md'
 			>
-                <Text>Name:  {name} </Text>
+                <Text  letterSpacing='1px' fontFamily='courier' fontSize='xl'>Name:  <b>{name}</b> </Text>
                 <Image
                     src={imageurl}
                     alt={name}
                 /> 
-                <Text>Description: {description}</Text>
-                <Text>Price: {price}</Text>
-                <Text>Category: {category}</Text>
-                <Text>inStock: {inStock ? 'True': 'False'}</Text>
+                <Text fontSize='l'>Description: {description}</Text>
+                <Text fontSize='l'>Price: {price}</Text>
+                <Text fontSize='l'>Category: {category}</Text>
+                <Text fontSize='l'>inStock: {inStock ? 'True': 'False'}</Text>
 			</Grid>
             </Link>
             </Box>)}

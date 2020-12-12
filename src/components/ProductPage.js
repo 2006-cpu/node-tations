@@ -171,13 +171,13 @@ export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 	}, [newReview === true]);
 
 	return (
-		<Grid maxW='50%' className='products'>
-			<Text>Name: {product.name}</Text>
-			<Image src={product.imageurl}></Image>
-			<Text>Description: {product.description}</Text>
-			<Text>Price: ${product.price}</Text>
-			<Text>Category: {product.category}</Text>
-			<Text>inStock: {product.inStock ? 'True' : 'False'}</Text>
+		<Grid maxW='50%' className='products' borderRadius={'20px'} border='15px double white'>
+			<Text fontFamily='courier' letterSpacing='1px' fontSize='xl'>Name: <b>{product.name}</b></Text>
+			<Image borderRadius='20px' src={product.imageurl}></Image>
+			<Text fontSize='l'>Description: {product.description}</Text>
+			<Text fontSize='l'>Price: ${product.price}</Text>
+			<Text fontSize='l'>Category: {product.category}</Text>
+			<Text fontSize='l'>inStock: {product.inStock ? 'True' : 'False'}</Text>
 			<NumberInput
 				width='125px'
 				min={1}
@@ -232,6 +232,7 @@ export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 			) : null}
 			{
 				<Box
+
 					className='reviews'
 					value={reviews}
 					letterSpacing={'1.5px'}
@@ -246,7 +247,7 @@ export const ProductPage = ({ token, currentUser, cart, setCart }) => {
 							reviews.map((review, idx) => (
 								
 								<>
-									<Text>
+									<Text className='comments' fontWeight='bold' fontFamily='IBM Plex Mono, monospace'>
 										{review.productId === product.id 
 											? `${review.username} : ${review.content}`
 											: ''}
