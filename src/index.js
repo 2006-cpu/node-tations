@@ -42,10 +42,10 @@ const App = () => {
 						filterValue={filterValue}
 					/>
 					<Switch>
-						<Route path='/store'>
+						<Route exact path='/'>
 							<Catalog filterValue={filterValue} />
 						</Route>
-						<Route path={'/products/:productId'}>
+						<Route exact path={'/products/:productId'}>
 							<ProductPage
 								token={token}
 								currentUser={currentUser}
@@ -53,13 +53,13 @@ const App = () => {
 								cart={cart}
 							/>
 						</Route>
-						<Route path={'/reviews/products/:productId'}>
+						<Route exact path={'/reviews/products/:productId'}>
 							<ProductPage
 								token={token}
 								currentUser={currentUser}
 							/>
 						</Route>
-						<Route path='/account'>
+						<Route exact path='/account'>
 							<Account currentUser={currentUser} token={token} />
 						</Route>
 					</Switch>

@@ -1,10 +1,11 @@
 .header {
-    background-image: url(https://public.touch2success.com/static/7df253d7abcaa333bc7fb5c8144d0d4b/img/phpL8AQuT.png);
+    background-image: url(https://plateupphotography.files.wordpress.com/2015/02/mcgees-21.jpg);
    
     
-    background-position-y: 2500px; 
-    background-position-x: -300px;
-    background-size: cover;
+    background-position-y: 90%; 
+    background-position-x: 50%;
+    
+    
     
     color : white;
     letter-spacing : 1.5px;
@@ -14,3 +15,4 @@
     border-left-color: white;
     border-right-color: white;
 }
+
