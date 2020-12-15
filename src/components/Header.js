@@ -147,7 +147,7 @@ export const Header = ({
 			borderBottom='1px solid #d3d3d3'
 			paddingBottom='25px'
 		>
-			<Link to='/store'>
+			<Link to='/'>
 				<Heading color='white' fontSize='40px' letterSpacing='3px' fontFamily='IBM Plex Mono, monospace'><b><i>cutHub</i></b></Heading>
 			</Link>
 			<InputGroup>
